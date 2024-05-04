@@ -8,20 +8,23 @@
 
 import SwiftUI
 
-struct Button: View {
+struct CustomButton: View {
+    var title: String
+    var action: () -> Void
+    
     var body: some View {
-        Button(){
-            Text()
+        Button(action: action){
+            Text(title)
         }
-        .frame(width: 200, height: 50)
+        .frame(width: 140, height: 50)
         .background(Color.blue.gradient)
         .foregroundColor(Color.white)
-
         .font(.system(size: 20, weight: .bold, design: .default))
         .clipShape(RoundedRectangle(cornerRadius: 25.0, style: .continuous))
     }
 }
 
 #Preview {
-    Button()
+    CustomButton(title: "test title", action: {
+        print("preview button tapped")})
 }
