@@ -10,21 +10,22 @@ import SwiftUI
 
 struct LandingPageView: View {
     var body: some View {
-        Image("PageTurnerLogo")
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .cornerRadius(30)
-            .padding(30)
-        Spacer()
-        HStack(spacing: 50){
-            Button("Sign In") {
+        ZStack{
+            VStack(spacing: 100){
+                Image("PageTurnerLogo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .cornerRadius(30)
+                    .padding(30)
                 
-            }
-            Button("Sign Up") {
-                
+                HStack(spacing: 20){
+                    CustomButton(title: "Sign In", action: {print("Sign in button tapped")})
+                    CustomButton(title: "Sign Up", action: {print("Sign in button tapped")})
+                }
+                Spacer()
             }
         }
-        Spacer()
+        .globalBackground()
     }
 }
 

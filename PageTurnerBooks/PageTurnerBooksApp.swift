@@ -7,11 +7,24 @@
 
 import SwiftUI
 
+struct RootView: View {
+    //@StateObject var authViewModel = AuthViewModel()
+    
+    var body: some View {
+//        if authViewModel.isAuthenticated {
+            NavBar()
+//        } else {
+//            LandingPageView()
+//                .environmentObject(authViewModel)
+//        }
+        
+    }
+}
 @main
 struct PageTurnerBooksApp: App {
     var body: some Scene {
         WindowGroup {
-            LandingPageView()
+            RootView()
         }
     }
 }
