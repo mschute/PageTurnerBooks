@@ -12,6 +12,7 @@ struct CustomButton: View {
     var title: String
     var action: () -> Void
     
+    // Need to edit so it has min size but then have the button size adjusted based on words
     var body: some View {
         Button(action: action){
             Text(title)
