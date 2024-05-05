@@ -16,11 +16,11 @@ struct NavBar: View {
                     Text("Home")
                 }
             
-            SearchBooksView()
-                .tabItem {
-                    Image(systemName: "magnifyingglass")
-                    Text("Search")
-                }
+//            SearchBooksView()
+//                .tabItem {
+//                    Image(systemName: "magnifyingglass")
+//                    Text("Search")
+//                }
             
             ListsView()
                 .tabItem {
