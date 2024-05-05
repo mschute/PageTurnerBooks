@@ -10,8 +10,8 @@
 		0B4BD9412BE6758500CA8564 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4BD9402BE6758500CA8564 /* Color.swift */; };
 		0B4BD9432BE6760B00CA8564 /* BackgroundViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4BD9422BE6760B00CA8564 /* BackgroundViewModifier.swift */; };
 		0BA5012C2BE67A300049DB7F /* NavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA5012B2BE67A300049DB7F /* NavBar.swift */; };
-		0BFDAEFF2BE6BBA60026E07D /* BookTrackerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFDAEFE2BE6BBA60026E07D /* BookTrackerModel.swift */; };
-		0BFDAF012BE6BC410026E07D /* BookTrackerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFDAF002BE6BC410026E07D /* BookTrackerViewModel.swift */; };
+		A2A307BC2BE711EE00C99DF2 /* BookTrackerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A307BB2BE711EE00C99DF2 /* BookTrackerModel.swift */; };
+		A2A307BE2BE7122000C99DF2 /* BookTrackerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A307BD2BE7122000C99DF2 /* BookTrackerViewModel.swift */; };
 		A2EA5A522BE561A3008956F8 /* PageTurnerBooksApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EA5A512BE561A3008956F8 /* PageTurnerBooksApp.swift */; };
 		A2EA5A562BE561A4008956F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2EA5A552BE561A4008956F8 /* Assets.xcassets */; };
 		A2EA5A592BE561A4008956F8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2EA5A582BE561A4008956F8 /* Preview Assets.xcassets */; };
@@ -36,8 +36,8 @@
 		0B4BD9402BE6758500CA8564 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		0B4BD9422BE6760B00CA8564 /* BackgroundViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundViewModifier.swift; sourceTree = "<group>"; };
 		0BA5012B2BE67A300049DB7F /* NavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBar.swift; sourceTree = "<group>"; };
-		0BFDAEFE2BE6BBA60026E07D /* BookTrackerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BookTrackerModel.swift; path = PageTurnerBooks/Components/BookTrackerModel.swift; sourceTree = SOURCE_ROOT; };
-		0BFDAF002BE6BC410026E07D /* BookTrackerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BookTrackerViewModel.swift; path = PageTurnerBooks/Components/BookTrackerViewModel.swift; sourceTree = SOURCE_ROOT; };
+		A2A307BB2BE711EE00C99DF2 /* BookTrackerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTrackerModel.swift; sourceTree = "<group>"; };
+		A2A307BD2BE7122000C99DF2 /* BookTrackerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTrackerViewModel.swift; sourceTree = "<group>"; };
 		A2EA5A4E2BE561A3008956F8 /* PageTurnerBooks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PageTurnerBooks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2EA5A512BE561A3008956F8 /* PageTurnerBooksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageTurnerBooksApp.swift; sourceTree = "<group>"; };
 		A2EA5A552BE561A4008956F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -101,6 +101,22 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		A2A307B92BE711C100C99DF2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A2A307BB2BE711EE00C99DF2 /* BookTrackerModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A2A307BA2BE711CC00C99DF2 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A2A307BD2BE7122000C99DF2 /* BookTrackerViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		A2EA5A452BE561A3008956F8 = {
 			isa = PBXGroup;
 			children = (
@@ -122,9 +138,9 @@
 			children = (
 				A2EA5A802BE56A11008956F8 /* Components */,
 				0B4BD93F2BE6752000CA8564 /* Extensions */,
+				A2A307B92BE711C100C99DF2 /* Models */,
 				0B4BD93E2BE6751300CA8564 /* Modifiers */,
-				A2EA5A602BE565AC008956F8 /* Models */,
-				A2EA5A612BE565B4008956F8 /* ViewModels */,
+				A2A307BA2BE711CC00C99DF2 /* ViewModels */,
 				A2EA5A5F2BE565A3008956F8 /* Views */,
 				0BFDAEFD2BE6B4460026E07D /* Utilities */,
 				A2EA5A512BE561A3008956F8 /* PageTurnerBooksApp.swift */,
@@ -160,22 +176,6 @@
 				A2EA5A7E2BE567DE008956F8 /* TrackerView.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		A2EA5A602BE565AC008956F8 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				0BFDAEFE2BE6BBA60026E07D /* BookTrackerModel.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		A2EA5A612BE565B4008956F8 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				0BFDAF002BE6BC410026E07D /* BookTrackerViewModel.swift */,
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		A2EA5A802BE56A11008956F8 /* Components */ = {
@@ -267,12 +267,12 @@
 				A2EA5A712BE56755008956F8 /* ListsView.swift in Sources */,
 				A2EA5A6B2BE5670B008956F8 /* LandingPageView.swift in Sources */,
 				A2EA5A672BE566D2008956F8 /* CustomButton.swift in Sources */,
-				0BFDAF012BE6BC410026E07D /* BookTrackerViewModel.swift in Sources */,
+				A2A307BE2BE7122000C99DF2 /* BookTrackerViewModel.swift in Sources */,
 				A2EA5A792BE567AC008956F8 /* SearchBooksView.swift in Sources */,
 				A2EA5A7B2BE567BC008956F8 /* SignInView.swift in Sources */,
 				A2EA5A692BE566F4008956F8 /* HomePageView.swift in Sources */,
 				A2EA5A6D2BE56726008956F8 /* ListCurrentlyReadingView.swift in Sources */,
-				0BFDAEFF2BE6BBA60026E07D /* BookTrackerModel.swift in Sources */,
+				A2A307BC2BE711EE00C99DF2 /* BookTrackerModel.swift in Sources */,
 				A2EA5A752BE5677C008956F8 /* Modal.swift in Sources */,
 				A2EA5A522BE561A3008956F8 /* PageTurnerBooksApp.swift in Sources */,
 				A2EA5A7D2BE567CC008956F8 /* SignUpView.swift in Sources */,
