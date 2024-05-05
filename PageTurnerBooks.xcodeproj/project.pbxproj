@@ -80,6 +80,7 @@
 		A2B2354F2BE7FE0B0088FF0D /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		A2B235512BE7FE100088FF0D /* VideoCaptureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCaptureView.swift; sourceTree = "<group>"; };
 		A2B235552BE8072E0088FF0D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A2B235592BE813360088FF0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A2EA5A4E2BE561A3008956F8 /* PageTurnerBooks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PageTurnerBooks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2EA5A512BE561A3008956F8 /* PageTurnerBooksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageTurnerBooksApp.swift; sourceTree = "<group>"; };
 		A2EA5A552BE561A4008956F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -209,6 +210,7 @@
 		A2EA5A502BE561A3008956F8 /* PageTurnerBooks */ = {
 			isa = PBXGroup;
 			children = (
+				A2B235592BE813360088FF0D /* Info.plist */,
 				A2B235552BE8072E0088FF0D /* GoogleService-Info.plist */,
 				A2EA5A802BE56A11008956F8 /* Components */,
 				0B4BD93F2BE6752000CA8564 /* Extensions */,
@@ -525,7 +527,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"PageTurnerBooks/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = PageTurnerBooks/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -553,7 +555,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"PageTurnerBooks/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = PageTurnerBooks/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
