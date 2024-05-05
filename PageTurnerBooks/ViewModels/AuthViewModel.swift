@@ -10,11 +10,15 @@ import FirebaseFirestore
 
 class AuthViewModel: ObservableObject {
 
-    @Published var userSession: FirebaseAuth.User? // check if fb user is logged in? and show either login page or app launch view
+    @Published var userSession: FirebaseAuth.User? // check if fb user is logged in, and show either login page or app launch view
     @Published var currentUser: User? // local user
+    @Published var isSignedIn = false // flag for sign-in status for access to other views
 
     init(){
         self.userSession = Auth.auth().currentUser
+        if userSession != nil {
+                   self.isSignedIn = true  // Set true if session exists on init
+               }
         if let userSessionNew = userSession {
             print("1...", userSessionNew)
         } else {
@@ -25,20 +29,22 @@ class AuthViewModel: ObservableObject {
             await fetchUser()
         }
 
-
     }
     func signIn(withEmail email: String, password: String) async throws {
-
-        print("Sign in ..")
-        do {
-            let result =  try await Auth.auth().signIn(withEmail: email, password: password)
-            self.userSession = result.user
-            await fetchUser()
-        } catch {
-            print("DEBUG: Failed to sign in  user with error \(error.localizedDescription)")
+            do {
+                let result = try await Auth.auth().signIn(withEmail: email, password: password)
+                DispatchQueue.main.async {  // Ensure UI updates happen on the main thread
+                    self.userSession = result.user
+                    self.isSignedIn = true  // Set to true on successful sign-in
+                }
+                await fetchUser()
+            } catch {
+                DispatchQueue.main.async {
+                    print("DEBUG: Failed to sign in user with error \(error.localizedDescription)")
+                    self.isSignedIn = false  // Set to false on failure
+                }
+            }
         }
-
-    }
 
     func createUser(withEmail email: String, password: String, fullName: String) async throws {
         print("create User ..")
@@ -63,16 +69,19 @@ class AuthViewModel: ObservableObject {
 //        let myLocalTest = User(id: myTest.uid, fullName: fullName, email: <#T##String#>)
     }
 
-    func logOut(){
-        do {
-            try Auth.auth().signOut() // signs out user on backend
-            self.userSession = nil // wipes out user session and presents login screen
-            self.currentUser = nil //wipes out current user data model
-        } catch {
-            print("DEBUG: Failed to sign out with error \(error.localizedDescription)")
+    func logOut() {
+            do {
+                try Auth.auth().signOut()
+                DispatchQueue.main.async {
+                    self.userSession = nil
+                    self.currentUser = nil
+                    self.isSignedIn = false
+                    print("Logged out successfully.")
+                }
+            } catch {
+                print("Logout failed: \(error.localizedDescription)")
+            }
         }
-
-    }
 
     func deleteAccount(){
 
@@ -83,7 +92,7 @@ class AuthViewModel: ObservableObject {
         guard let uid = Auth.auth().currentUser?.uid else { return }
        print("uid.....\(uid)")
         do{
-            let snapshot = try? await Firestore.firestore().collection("users").document(uid).getDocument()
+            let snapshot = try? await Firestore.firestore().collection("Users").document(uid).getDocument()
             //let user = snapshot?.data(as: User.self)
             self.currentUser = try snapshot?.data(as: User.self)
             print("DEBUG: Current user is \(String(describing: self.currentUser))")

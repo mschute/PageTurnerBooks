@@ -11,13 +11,6 @@ struct SignUpView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     var body: some View {
             VStack {
-                Image("fb")
-                    .resizable()
-                    .scaledToFit()
-                    .offset(y: -10)
-                    .frame(width: 100, height: 120)
-                    .padding(.vertical, 32)
-
                 VStack(spacing: 25) {
                     // Email input field
                     inputField(text: $email, title: "Email Address", placeholder: "name@example.com", isSecureField: false)
