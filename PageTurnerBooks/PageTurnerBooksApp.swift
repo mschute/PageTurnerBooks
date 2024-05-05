@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct RootView: View {
     //@StateObject var authViewModel = AuthViewModel()
@@ -22,9 +23,14 @@ struct RootView: View {
 }
 @main
 struct PageTurnerBooksApp: App {
+    @StateObject var authViewModel = AuthViewModel()
+    init(){
+        FirebaseApp.configure()
+        print("Firebase configured.")
+    }
     var body: some Scene {
         WindowGroup {
-            RootView()
+            LandingPageView().environmentObject(authViewModel)
         }
     }
 }
