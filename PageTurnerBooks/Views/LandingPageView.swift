@@ -45,3 +45,9 @@ struct LandingPageView: View {
     }
 }
 
+
+struct LandingPageView_Previews: PreviewProvider {
+    static var previews: some View {
+        LandingPageView()
+    }
+}
