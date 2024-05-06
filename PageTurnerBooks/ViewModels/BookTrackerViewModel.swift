@@ -21,9 +21,5 @@ class BookTrackerViewModel: ObservableObject {
     
     func stopTracking(){
         //Need to add logic to delete the tracker
-    }
-    
-    //function for calculating book progress?
-    
-    
+    } 
 }

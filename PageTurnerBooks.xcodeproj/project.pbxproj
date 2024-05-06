@@ -43,7 +43,6 @@
 		A2EA5A562BE561A4008956F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2EA5A552BE561A4008956F8 /* Assets.xcassets */; };
 		A2EA5A592BE561A4008956F8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2EA5A582BE561A4008956F8 /* Preview Assets.xcassets */; };
 		A2EA5A632BE5662B008956F8 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EA5A622BE5662B008956F8 /* AccountView.swift */; };
-		A2EA5A652BE566A4008956F8 /* BookOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EA5A642BE566A4008956F8 /* BookOverviewView.swift */; };
 		A2EA5A672BE566D2008956F8 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EA5A662BE566D2008956F8 /* CustomButton.swift */; };
 		A2EA5A692BE566F4008956F8 /* HomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EA5A682BE566F4008956F8 /* HomePageView.swift */; };
 		A2EA5A6B2BE5670B008956F8 /* LandingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EA5A6A2BE5670B008956F8 /* LandingPageView.swift */; };
@@ -86,7 +85,6 @@
 		A2EA5A552BE561A4008956F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A2EA5A582BE561A4008956F8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A2EA5A622BE5662B008956F8 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
-		A2EA5A642BE566A4008956F8 /* BookOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookOverviewView.swift; sourceTree = "<group>"; };
 		A2EA5A662BE566D2008956F8 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		A2EA5A682BE566F4008956F8 /* HomePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
 		A2EA5A6A2BE5670B008956F8 /* LandingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageView.swift; sourceTree = "<group>"; };
@@ -239,7 +237,6 @@
 			isa = PBXGroup;
 			children = (
 				A2EA5A622BE5662B008956F8 /* AccountView.swift */,
-				A2EA5A642BE566A4008956F8 /* BookOverviewView.swift */,
 				A2B2353D2BE7FDD80088FF0D /* ContentView.swift */,
 				A2EA5A682BE566F4008956F8 /* HomePageView.swift */,
 				A2EA5A6A2BE5670B008956F8 /* LandingPageView.swift */,
@@ -388,7 +385,6 @@
 				A2EA5A522BE561A3008956F8 /* PageTurnerBooksApp.swift in Sources */,
 				A2EA5A7D2BE567CC008956F8 /* SignUpView.swift in Sources */,
 				A2EA5A632BE5662B008956F8 /* AccountView.swift in Sources */,
-				A2EA5A652BE566A4008956F8 /* BookOverviewView.swift in Sources */,
 				A2B235522BE7FE100088FF0D /* VideoCaptureView.swift in Sources */,
 				A2B2354E2BE7FE060088FF0D /* BookSearchManager.swift in Sources */,
 				0B4BD9412BE6758500CA8564 /* Color.swift in Sources */,
