@@ -8,41 +8,55 @@
 import SwiftUI
 
 struct NavBar: View {
+    private var selectedTab = 4
     var body: some View {
         TabView {
-            HomePageView()
+            Group{
+                NavigationStack{
+                    HomePageView()
+                }
                 .tabItem {
                     Image(systemName: "house.fill")
                     Text("Home")
                 }
-            
-//            SearchBooksView()
-//                .tabItem {
-//                    Image(systemName: "magnifyingglass")
-//                    Text("Search")
-//                }
-            
-            ListsView()
+                .tag(1)
+                
+                NavigationStack{
+                    BookSearchView().environmentObject(BookManager.shared)
+                }
+                .tabItem {
+                    Image(systemName: "magnifyingglass")
+                    Text("Search")
+                }
+                .tag(2)
+                
+                NavigationStack{
+                    ListsView()
+                }
                 .tabItem {
                     Image(systemName: "list.bullet")
                     Text("Lists")
                 }
-            
-            AccountView()
+                .tag(3)
+                
+                NavigationStack{
+                    AccountView()
+                }
                 .tabItem {
                     Image(systemName: "person.fill")
                     Text("Account")
                 }
+                .tag(4)
+            }
         }
         .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-        .accentColor(.white)
-        .onAppear {
-            UITabBar.appearance().backgroundColor = UIColor.black
-            UITabBar.appearance().unselectedItemTintColor = UIColor.gray
-        }
+        .toolbarBackground(Color(.black), for: .tabBar)
+        .toolbarBackground(.visible, for: .tabBar)
+        .toolbarColorScheme(.dark, for: .tabBar)
+
     }
 }
 
 #Preview {
-    NavBar()
+    NavBar().environmentObject(BookManager.shared)
 }
