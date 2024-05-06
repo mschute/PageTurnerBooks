@@ -12,9 +12,9 @@ struct TrackerView: View {
     @State private var lastPageString: String = ""
     @State private var progressText: String = ""
     @State private var pageCount: String = ""
-    //    @State private var hiddenDate: Date = Date()
-    //    @State private var showDate: Bool = false
-    //    @State var date: Date?
+    @State private var hiddenDate: Date = Date()
+    @State private var showDate: Bool = false
+    @State var date: Date?
     
     var body: some View {
         ZStack{
@@ -25,57 +25,57 @@ struct TrackerView: View {
                         VStack(spacing: 30){
                             Text("Tracker 📖")
                                 .font(.largeTitle)
-                            
-                            //Need to replace this with variable
                             Text("\(viewModel.tracker.bookTitle)")
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .multilineTextAlignment(.center)
                             
-                            DatePicker("Start Date", selection: $viewModel.tracker.startDate, displayedComponents: [.date])
+                            DatePicker("Start Date", selection: $viewModel.tracker.startDate, displayedComponents: .date)
                                 .fontWeight(.bold)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
-                            //Need option to not have a selected date, a null date
-                            //                            if showDate {
-                            //                                Button {
-                            //                                    showDate = false
-                            //                                    date = nil
-                            //                                } label: {
-                            //                                    Image(systemName: "xmark.circle")
-                            //                                        .resizable()
-                            //                                        .frame(width: 16, height: 16)
-                            //                                        .tint(.black)
-                            //                                }
-                            //                                DatePicker("End Date", selection: $hiddenDate,
-                            DatePicker("End Date", selection: $viewModel.tracker.endDate, displayedComponents: [.date])
-                                .fontWeight(.bold)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            //                                    .onChange(of: hiddenDate){ oldDate,
-                            //                                        newDate in viewModel.tracker.endDate = newDate
-                            //                                    }
-                            //                            } else {
-                            //                                Button {
-                            //                                    showDate = true
-                            //                                    date = hiddenDate
-                            //                                } label: {
-                            //                                    Text("Add date")
-                            //                                        .multilineTextAlignment(.center)
-                            //                                        .foregroundColor(.black)
-                            //                                }
-                            //                                .frame(width: 120, height: 34)
-                            //                                .background(
-                            //                                    RoundedRectangle(cornerRadius: 8)
-                            //                                        .fill(Color.gray)
-                            //                                )
-                            //                                .multilineTextAlignment(.trailing)
-                            //                            }
-                            
+                            HStack(){
+                                Text("End Date")
+                                    .multilineTextAlignment(/*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/)
+                                Spacer()
+                                if showDate {
+                                    Button {
+                                        showDate = false
+                                        date = nil
+                                    } label: {
+                                        Image(systemName: "xmark.circle")
+                                            .resizable()
+                                            .frame(width: 16, height: 16)
+                                            .tint(.black)
+                                    }
+                                    DatePicker("", selection: $viewModel.tracker.endDate, displayedComponents: .date)
+                                        .fontWeight(.bold)
+                                        .onChange(of: hiddenDate){ oldDate,
+                                            newDate in viewModel.tracker.endDate = newDate
+                                        }
+                                        .labelsHidden()
+                                    
+                                } else {
+                                    Button {
+                                        showDate = true
+                                        date = hiddenDate
+                                        
+                                    } label: {
+                                        Text("Add date")
+                                            .multilineTextAlignment(.center)
+                                            .foregroundColor(.white)
+                                    }
+                                    .frame(width: 100, height: 34)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .fill(Color.blue)
+                                    )
+                                }
+                            }
+                            .fontWeight(.bold)
                         }
                         
-                        
                         //Decimalpad bug, not removing the keyboard after selecting out of the textfield
-                        //Need to add user validation to prevent the user from typing a page above the total page count
                         LabeledContent{
                             TextField("Enter last page you read", text: $lastPageString)
                                 .keyboardType(.decimalPad)
@@ -90,8 +90,11 @@ struct TrackerView: View {
                                 }
                                 .onChange(of: lastPageString, {  oldValue, newValue
                                     in
-                                    if let lastPage = Int(newValue) {
+                                    if let lastPage = Int(newValue), lastPage <= viewModel.tracker.totalPageCount {
                                         viewModel.tracker.lastPageRead = lastPage
+                                    } else if let _ = Int(newValue) {
+                                        lastPageString = String(viewModel.tracker.totalPageCount)
+                                        viewModel.tracker.lastPageRead = viewModel.tracker.totalPageCount
                                     }
                                 })
                         } label: {
@@ -101,47 +104,43 @@ struct TrackerView: View {
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        VStack(spacing: 20) {
-                            Section(header: Text("Progress")
-                                .fontWeight(.bold)
-                            ) {
-                                
-                                VStack(spacing: 5){
-                                    Text(progressText)
-                                        .padding(.bottom)
-                                        .onAppear {
-                                            progressText = String(format: "%.2f", viewModel.tracker.progress * 100) + "%"
-                                        }
+                            VStack(spacing: 10) {
+                                Section(header: Text("Progress")
+                                    .fontWeight(.bold)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                ) {
                                     
-                                    
-                                    ProgressView(value: viewModel.tracker.progress){}
-                                        .scaleEffect(x: 1, y: 4, anchor: .center)
-                                    
-                                    Text(pageCount + " pages")
-                                        .font(.caption)
-                                        .padding(4)
-                                        .frame(maxWidth: .infinity, alignment: .trailing)
-                                        .onAppear {
-                                            pageCount = String(viewModel.tracker.totalPageCount)
-                                        }
-                                        .onChange(of: pageCount, { oldValue, newValue in
-                                            if let pageCount = Int(newValue) {
-                                                viewModel.tracker.totalPageCount = pageCount
+                                    VStack(spacing: 5){
+                                        Text(String(format: "%.2f", viewModel.tracker.progress * 100) + "%")
+                                            .padding(.bottom)
+                                        
+                                        ProgressView(value: viewModel.tracker.progress){}
+                                            .scaleEffect(x: 1, y: 4, anchor: .center)
+                                        
+                                        Text(pageCount + " pages")
+                                            .font(.caption)
+                                            .padding(4)
+                                            .frame(maxWidth: .infinity, alignment: .trailing)
+                                            .onAppear {
+                                                pageCount = String(viewModel.tracker.totalPageCount)
                                             }
-                                        })
+                                            .onChange(of: pageCount, { oldValue, newValue in
+                                                if let pageCount = Int(newValue) {
+                                                    viewModel.tracker.totalPageCount = pageCount
+                                                }
+                                            })
+                                    }
                                 }
                             }
                         }
+                        .padding(10)
                         
-                    }
-                    .padding()
-                    
-                    //Need to adjust code so that it saves the progress
-                    CustomButton(title: "Save") {
-                        print("Saved was pressed")
-                    }
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    
+                        //Need to adjust code so that it saves the progress
+                        CustomButton(title: "Save") {
+                            print("Saved was pressed")
+                        }
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    Spacer()
                     // Need to link button so it stops tracking this book and deletes this BookTrackerModel
                     // Perhaps add a pop-up asking if they are sure they want to delete their progress
                     Button("Stop Tracking") {
@@ -149,14 +148,14 @@ struct TrackerView: View {
                     }
                     .foregroundColor(.red)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding()
+                    .padding(5)
                 }
             }
         }
         .globalBackground()
     }
-        
 }
+
 
 struct TrackerView_Previews: PreviewProvider {
     static var previews: some View {
@@ -166,3 +165,4 @@ struct TrackerView_Previews: PreviewProvider {
         TrackerView(viewModel: viewModel)
     }
 }
+
