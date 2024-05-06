@@ -8,19 +8,34 @@
 import SwiftUI
 
 struct BookDetailComponent: View {
+    @ObservedObject var viewModel: BooksListViewModel
     let bookItem: BookItem
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 12) {
-                thumbnailAndDetailsView
-                descriptionView
-                metadataView
+            ScrollView {
+                VStack(alignment: .leading, spacing: 12) {
+                    thumbnailAndDetailsView
+                    descriptionView
+                    metadataView
+                    addToListView
+                }
+                .padding()
             }
-            .padding()
         }
-    }
-
+    
+    private var addToListView: some View {
+            Menu {
+                Button("Want to Read", action: { viewModel.addBookToFirestore(book: bookItem, listType: .wantToRead) })
+                Button("Currently Reading", action: { viewModel.addBookToFirestore(book: bookItem, listType: .currentlyReading) })
+                Button("Finished Reading", action: { viewModel.addBookToFirestore(book: bookItem, listType: .finishedReading) })
+            } label: {
+                        // Using CustomButton as the label for the Menu
+                        CustomButton(title: "Add to List", action: {})
+                            .fixedSize()
+                    }
+        }
+    
+    
     private var thumbnailAndDetailsView: some View {
         HStack {
             thumbnailView

@@ -8,12 +8,22 @@
 import SwiftUI
 
 struct ListFinishedReadingView: View {
+    @ObservedObject var viewModel: BooksListViewModel
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("Books Finished")
+                .font(.title)
+                .padding()
+            List(viewModel.finishedReadingBooks, id: \.id) { book in
+                Text(book.volumeInfo.title)
+            }
+        }
     }
 }
 
-#Preview {
-    ListFinishedReadingView()
+struct ListFinishedReadingView_Previews: PreviewProvider {
+    static var previews: some View {
+        ListFinishedReadingView(viewModel: BooksListViewModel(userId: "dummyUserId"))
+    }
 }
-

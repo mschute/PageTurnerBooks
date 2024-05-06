@@ -9,6 +9,8 @@ import SwiftUI
 
 struct BookSearchView: View {
     @EnvironmentObject private var bookManager: BookManager
+    @EnvironmentObject private var viewModel: BooksListViewModel
+    
     @State private var isShowingScanner = false
     @State private var isShowingSearchBar = false
     @State private var searchText = ""
@@ -29,17 +31,18 @@ struct BookSearchView: View {
                     isShowingSearchBar = true
                 }
                 .sheet(isPresented: $isShowingSearchBar) {
-                    SearchBarView(searchText: $searchText, coordinator: makeCoordinator())
+                    SearchBarView(searchText: $searchText, viewModel: viewModel, coordinator: makeCoordinator())
                         .environmentObject(bookManager)
                 }
 
                 if bookManager.books.count == 1 {
-                    // Automatically navigate to detail when one book is scanned
-                    BookDetailView(bookItem: bookManager.books.first!)
-                    // Ensure the scanner is closed when navigating to detail view
-                    .onAppear {
-                        isShowingScanner = false
-                    }
+                    NavigationLink(destination: BookDetailView(viewModel: viewModel, bookItem: bookManager.books.first!), isActive: $navigateToDetail) {
+                        EmptyView()
+                        }
+                        .onAppear {
+                            navigateToDetail = true
+                            isShowingScanner = false  // Ensure the scanner is closed when navigating to detail view
+                        }
                 }
             }
         }
@@ -53,8 +56,11 @@ struct BookSearchView: View {
 
 struct BookSearchView_Previews: PreviewProvider {
     static var previews: some View {
-        let bookManager = BookManager()
-        BookSearchView()
+        let bookManager = BookManager.shared
+        let booksListViewModel = BooksListViewModel(userId: "previewUserId")
+        
+        return BookSearchView()
             .environmentObject(bookManager)
+            .environmentObject(booksListViewModel)  // Adding BooksListViewModel to the environment
     }
 }

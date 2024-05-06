@@ -3,6 +3,7 @@ import SwiftUI
 struct SearchBarView: View {
     @Binding var searchText: String
     @EnvironmentObject var bookManager: BookManager
+    @ObservedObject var viewModel: BooksListViewModel
     var coordinator: Coordinator
 
     var body: some View {
@@ -28,7 +29,7 @@ struct SearchBarView: View {
 
                 if !bookManager.books.isEmpty {
                     List(bookManager.books, id: \.id) { book in
-                        BookRow(book: book)
+                        BookRow(book: book, viewModel: viewModel)
                     }
                 }
             }

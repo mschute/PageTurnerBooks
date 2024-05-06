@@ -8,12 +8,23 @@
 import SwiftUI
 
 struct ListWantToReadView: View {
+    @ObservedObject var viewModel: BooksListViewModel
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("Books Wanted")
+                .font(.title)
+                .padding()
+            List(viewModel.wantToReadBooks, id: \.id) { book in
+                Text(book.volumeInfo.title)
+            }
+        }
     }
 }
 
-#Preview {
-    ListWantToReadView()
+struct ListWantToReadView_Previews: PreviewProvider {
+    static var previews: some View {
+        // Provide a dummy userId when initializing the ViewModel for previews
+        ListWantToReadView(viewModel: BooksListViewModel(userId: "dummyUserId"))
+    }
 }
-

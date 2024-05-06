@@ -8,11 +8,22 @@
 import SwiftUI
 
 struct ListCurrentlyReadingView: View {
+    @ObservedObject var viewModel: BooksListViewModel
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("Books Currently Being Read")
+                .font(.title)
+                .padding()
+            List(viewModel.currentlyReadingBooks, id: \.id) { book in
+                Text(book.volumeInfo.title)
+            }
+        }
     }
 }
 
-#Preview {
-    ListCurrentlyReadingView()
+struct ListCurrentlyReadingView_Previews: PreviewProvider {
+    static var previews: some View {
+        ListCurrentlyReadingView(viewModel: BooksListViewModel(userId: "dummyUserId"))
+    }
 }

@@ -31,7 +31,7 @@ struct NavBar: View {
                 .tag(2)
                 
                 NavigationStack{
-                    ListsView()
+                    ListsView(viewModel: BooksListViewModel(userId: "exampleUserId"))
                 }
                 .tabItem {
                     Image(systemName: "list.bullet")
@@ -55,8 +55,4 @@ struct NavBar: View {
         .toolbarColorScheme(.dark, for: .tabBar)
 
     }
-}
-
-#Preview {
-    NavBar().environmentObject(BookManager.shared)
 }
