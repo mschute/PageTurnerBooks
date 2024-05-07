@@ -15,11 +15,15 @@ struct AccountView: View {
     @State private var currentPassword: String = ""
     @State private var newPassword: String = ""
     @State private var confirmNewPassword: String = ""
+    @State private var showingDeleteConfirmation = false
     //TODO: Unsure about the look of the inputfields in the Account Information. Especially with the "Old email" mixed in
     
     var body: some View {
         Form{
-            Section(header: Text("Account Information").font(.headline)){
+            Text("Account Information")
+                .font(.largeTitle)
+                .frame(maxWidth: .infinity, alignment: .center)
+            Section(){
                 DisclosureGroup("Email", isExpanded: $showEmailFields){
                     VStack(alignment: .leading){
                         //TODO: Need to link to current email
@@ -55,6 +59,7 @@ struct AccountView: View {
                         //TODO: Need to add functionality to update password
                         SmallPrimaryButton(title: "Update Password", action: {
                             print("Updated password")
+                            //TODO: Add confirmation that the password was saved?
                         })
                     }
                     // TODO: Bug Fix button alignment to leading
@@ -77,11 +82,25 @@ struct AccountView: View {
                         
                         Divider()
                         
-                        Button("Delete Account", action: authViewModel.deleteAccount)
+                        Button("Delete Account", action: {})
                             .padding(5)
                         //TODO: Change to Turner book color
                             .foregroundColor(.red)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .actionSheet(isPresented: $showingDeleteConfirmation){
+                                ActionSheet(
+                                    title: Text("Confirm Account Deletion"),
+                                    message: Text("Are you sure you want to permanently delete your account?"),
+                                    buttons: [.destructive(Text("Delete Account")) {
+                                        //TODO: Update this to the actual delete function
+                                        //TODO: Debug, even the deletion simulation crashse this
+                                        // Terminating app due to uncaught exception 'FIRInvalidArgumentException', reason: 'Document path cannot be empty.'
+                                        print("Account deletion simulated")
+                                        //authViewModel.deleteAccount()
+                                    },
+                                              .cancel()]
+                                )
+                            }
                     }
                 }
             }
