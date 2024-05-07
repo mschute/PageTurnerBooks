@@ -23,10 +23,14 @@ struct ListsView: View {
                     Text("Finished Reading")
                 }
             }
-            .navigationBarTitle("Reading Lists")
+            .navigationBarTitle("Reading Lists 📚")
         }
     }
 }
 
-
+struct ListsView_Preview: PreviewProvider {
+    static var previews: some View {
+        ListsView(viewModel: BooksListViewModel(userId: "9laC5umqf4T6fviudjD6HcuN1pW2"))
+    }
+}
 

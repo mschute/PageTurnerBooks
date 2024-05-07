@@ -12,12 +12,13 @@ struct ListFinishedReadingView: View {
 
     var body: some View {
         VStack {
-            Text("Finished Books")
+            Text("Finished Books 🏁")
                 .font(.largeTitle)
                 .padding()
             List(viewModel.finishedReadingBooks, id: \.id) { book in
                 HStack {
                     VStack{
+                        //TODO: Need to replace this with a BookRow that then links to a BookDetail
                         Text(book.volumeInfo.title)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
