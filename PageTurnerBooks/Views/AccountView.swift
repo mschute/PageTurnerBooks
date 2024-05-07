@@ -88,19 +88,22 @@ struct AccountView: View {
                             .padding(5)
                         //TODO: Change to Turner book color
                             .foregroundColor(.red)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .actionSheet(isPresented: $showingDeleteConfirmation){
-                                ActionSheet(
-                                    title: Text("Confirm Account Deletion"),
-                                    message: Text("Are you sure you want to permanently delete your account?"),
-                                    buttons: [.destructive(Text("Delete Account")) {
-                                        //TODO: Update this to the actual delete function
-                                        //TODO: Debug, even the deletion simulation crashse this
-                                        // Terminating app due to uncaught exception 'FIRInvalidArgumentException', reason: 'Document path cannot be empty.'
-                                        print("Account deletion simulated")
-                                        //authViewModel.deleteAccount()
-                                    },
-                                              .cancel()]
+                                    .actionSheet(isPresented: $showingDeleteConfirmation) {
+                                        ActionSheet(
+                                            title: Text("Confirm Account Deletion"),
+                                            message: Text("Are you sure you want to permanently delete your account? This action cannot be undone."),
+                                            buttons: [
+                                                .destructive(Text("Delete Account")) {
+                                                    authViewModel.deleteUser { success, error in
+                                                        if success {
+                                                            print("Account deletion successful")
+                                                            } else if let error = error {
+                                                            print("Error deleting account: \(error.localizedDescription)")
+                                                        }
+                                                    }
+                                                },
+                                                .cancel()
+                                            ]
                                 )
                             }
                     }
