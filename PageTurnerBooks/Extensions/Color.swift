@@ -8,10 +8,9 @@
 import SwiftUI
 
 extension Color {
-    static let backgroundColor = Color("BackgroundColor")
-//    static let pTDarkBlue = Color("PTDarkBlue")
-//    static let pTMediumBlue = Color("PTMediumBlue")
-//    static let pTTealBlue = Color("PTTealBlue")
-//    static let pTLightBlue = Color("PTLightBlue")
-//    static let pTDarkRed = Color("PTDarkRed")
+    static let pTWarning = Color("Warning")
+    static let pTPrimary = Color("Primary")
+    static let pTSecondary = Color("Secondary")
+    static let pTTertiary = Color("Tertiary")
+    static let pTDarkText = Color("pTDarkText")
 }
