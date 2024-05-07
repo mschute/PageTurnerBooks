@@ -11,20 +11,23 @@ struct SignUpView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     var body: some View {
             VStack {
+                Text("Register")
+                    .font(.largeTitle)
+                Spacer()
                 VStack(spacing: 25) {
                     // Email input field
-                    inputField(text: $email, title: "Email Address", placeholder: "name@example.com", isSecureField: false)
+                    InputField(text: $email, title: "Email Address", placeholder: "name@example.com", isSecureField: false)
                         .autocapitalization(.none)
 
                     // Full name input field
-                    inputField(text: $fullName, title: "Full Name", placeholder: "John Doe", isSecureField: false)
+                    InputField(text: $fullName, title: "Full Name", placeholder: "John Doe", isSecureField: false)
 
                     // Password input field
-                    inputField(text: $password, title: "Password", placeholder: "Enter your password", isSecureField: true)
+                    InputField(text: $password, title: "Password", placeholder: "Enter your password", isSecureField: true)
                         .autocapitalization(.none)
 
                     // Confirm Password input field
-                    inputField(text: $confirmPassword, title: "Confirm Password", placeholder: "Confirm your password", isSecureField: true)
+                    InputField(text: $confirmPassword, title: "Confirm Password", placeholder: "Confirm your password", isSecureField: true)
                         .autocapitalization(.none)
                 }
                 .padding(.horizontal)
@@ -33,8 +36,11 @@ struct SignUpView: View {
                 // Register button can be added here.
                 NavigationLink(destination: SignInView()) {
                                     Text("Already have an account? Sign In")
+                        
                                         .foregroundColor(.blue)
                                 }
+                .padding(.top, 30)
+                
 
                 // Button to perform registration (printing a message to the console for now)
                                 Button(action: {
@@ -50,31 +56,11 @@ struct SignUpView: View {
                                         .background(Color.blue)
                                         .cornerRadius(8)
                                 }
-                                .padding(.top, 20)
+                                .padding(.top, 30)
                 .navigationBarBackButtonHidden(true)
+                Spacer()
             }
-    }
-
-    // Shouldn't have a function in a view, need to change
-    func inputField(text: Binding<String>, title: String, placeholder: String, isSecureField: Bool) -> some View {
-        VStack(alignment: .leading, spacing: 15) {
-            Text(title)
-                .foregroundColor(Color(.darkGray))
-                .fontWeight(.semibold)
-                .font(.footnote)
-
-            // Depending on whether it's a secure field or not, use TextField or SecureField.
-            if isSecureField {
-                SecureField(placeholder, text: text)
-                    .font(.system(size: 14))
-            } else {
-                TextField(placeholder, text: text)
-                    .font(.system(size: 14))
-            }
-
-            Divider()
-
-        }
+            .padding()
     }
 }
 
@@ -83,4 +69,3 @@ struct SignUpView_Previews: PreviewProvider {
         SignUpView()
     }
 }
-

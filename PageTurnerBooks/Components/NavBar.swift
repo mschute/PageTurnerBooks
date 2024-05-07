@@ -10,7 +10,7 @@ import SwiftUI
 struct NavBar: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     
-    private var selectedTab = 4
+    private var selectedTab = 1
     
     var body: some View {
         TabView {
@@ -53,9 +53,9 @@ struct NavBar: View {
             }
         }
         .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-        .toolbarBackground(Color(.black), for: .tabBar)
-        .toolbarBackground(.visible, for: .tabBar)
-        .toolbarColorScheme(.dark, for: .tabBar)
+//        .toolbarBackground(Color(.black), for: .tabBar)
+//        .toolbarBackground(.visible, for: .tabBar)
+//        .toolbarColorScheme(.dark, for: .tabBar)
 
     }
 }

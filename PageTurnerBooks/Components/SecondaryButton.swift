@@ -1,14 +1,13 @@
 //
-//  Button.swift
+//  SecondaryButton.swift
 //  PageTurnerBooks
 //
-//  Created by Brad on 03/05/2024.
+//  Created by Staff on 07/05/2024.
 //
-
 
 import SwiftUI
 
-struct PrimaryButton: View {
+struct SecondaryButton: View {
     var title: String
     var action: () -> Void
     
@@ -19,14 +18,18 @@ struct PrimaryButton: View {
         .font(.system(size: 18, weight: .bold, design: .default))
         .padding(.horizontal, 20)
         .padding(.vertical, 10)
-        .background(LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.8), Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing))
+        .background(LinearGradient(gradient: Gradient(colors: [Color.green.opacity(0.8), Color.green]), startPoint: .topLeading, endPoint: .bottomTrailing))
         .foregroundColor(Color.white)
+        .font(.system(size: 20, weight: .bold, design: .default))
         .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
         .frame(minWidth: 100, idealWidth: .infinity, maxWidth: .infinity, minHeight: 50, idealHeight: 50, maxHeight: 50, alignment: .center)
     }
 }
 
-#Preview {
-    PrimaryButton(title: "Test button", action: {
-        print("preview button tapped")})
+struct SecondaryButton_Previews: PreviewProvider {
+    static var previews: some View {
+        SecondaryButton(title: "Test Button", action: {
+            print("preview button tapped")})
+        
+    }
 }
