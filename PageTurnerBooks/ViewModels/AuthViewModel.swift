@@ -4,9 +4,7 @@ import Foundation
 import Firebase
 import FirebaseFirestoreSwift
 import FirebaseAuth
-import FirebaseStorage
 import FirebaseFirestore
-
 
 class AuthViewModel: ObservableObject {
 

@@ -12,19 +12,25 @@ struct ListWantToReadView: View {
 
     var body: some View {
         VStack {
-            Text("Books Wanted")
+            Text("Books Wanted (\(viewModel.wantToReadBooks.count) books)")
                 .font(.title)
                 .padding()
             List(viewModel.wantToReadBooks, id: \.id) { book in
-                Text(book.volumeInfo.title)
+                VStack(alignment: .leading) {
+                    Text(book.volumeInfo.title)
+                    Text(book.id) // Display the book ID as well to confirm the data is correct
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
             }
+            .onAppear {
+                print("Want to Read Books: \(viewModel.wantToReadBooks)")
+            }
+            
+        }
+        Button("Refresh") {
+            viewModel.loadBooksFor(listType: .wantToRead)
         }
     }
 }
 
-struct ListWantToReadView_Previews: PreviewProvider {
-    static var previews: some View {
-        // Provide a dummy userId when initializing the ViewModel for previews
-        ListWantToReadView(viewModel: BooksListViewModel(userId: "dummyUserId"))
-    }
-}

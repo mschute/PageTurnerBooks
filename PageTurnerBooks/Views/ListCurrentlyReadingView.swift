@@ -22,8 +22,3 @@ struct ListCurrentlyReadingView: View {
     }
 }
 
-struct ListCurrentlyReadingView_Previews: PreviewProvider {
-    static var previews: some View {
-        ListCurrentlyReadingView(viewModel: BooksListViewModel(userId: "dummyUserId"))
-    }
-}

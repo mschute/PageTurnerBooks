@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct NavBar: View {
+    @EnvironmentObject var authViewModel: AuthViewModel
+    
     private var selectedTab = 4
+    
     var body: some View {
         TabView {
             Group{
@@ -31,7 +34,7 @@ struct NavBar: View {
                 .tag(2)
                 
                 NavigationStack{
-                    ListsView(viewModel: BooksListViewModel(userId: "exampleUserId"))
+                    ListsView(viewModel: BooksListViewModel(userId: authViewModel.currentUserId))
                 }
                 .tabItem {
                     Image(systemName: "list.bullet")

@@ -28,9 +28,5 @@ struct ListsView: View {
     }
 }
 
-struct ListsView_Previews: PreviewProvider {
-    static var previews: some View {
-        ListsView(viewModel: BooksListViewModel(userId: "testUser"))
-    }
-}
+
 

@@ -22,8 +22,4 @@ struct ListFinishedReadingView: View {
     }
 }
 
-struct ListFinishedReadingView_Previews: PreviewProvider {
-    static var previews: some View {
-        ListFinishedReadingView(viewModel: BooksListViewModel(userId: "dummyUserId"))
-    }
-}
+

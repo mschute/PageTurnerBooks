@@ -29,19 +29,27 @@ class BooksListViewModel: ObservableObject {
     }
 
     // Function to load books for a specific list
-    private func loadBooksFor(listType: BookListType) {
+    func loadBooksFor(listType: BookListType) {
         let db = Firestore.firestore()
         let userRef = db.collection("Users").document(userId)
         let listCollection = userRef.collection(listType.rawValue)
+        print("Fetching books for \(userId) from \(listType.rawValue)")
 
         listCollection.getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error fetching books for \(listType.rawValue): \(error)")
+                return
+            }
             guard let documents = snapshot?.documents else {
-                print("Error fetching document: \(error?.localizedDescription ?? "Unknown error")")
+                print("No documents found for \(listType.rawValue)")
                 return
             }
             let books = documents.compactMap { queryDocumentSnapshot -> BookItem? in
-                try? queryDocumentSnapshot.data(as: BookItem.self)
+                let data = try? queryDocumentSnapshot.data(as: BookItem.self)
+                print("Book data: \(data)")
+                return data
             }
+            print("Loaded \(books.count) books for \(listType.rawValue)")
             DispatchQueue.main.async {
                 switch listType {
                 case .wantToRead:
@@ -61,7 +69,27 @@ class BooksListViewModel: ObservableObject {
         let userRef = db.collection("Users").document(userId)
         let listCollection = userRef.collection(listType.rawValue)
 
-        listCollection.addDocument(data: ["id": book.id, "title": book.volumeInfo.title]) { error in
+        // Construct the data dictionary to match the nested structure
+        var data: [String: Any] = [
+            "id": book.id,
+            "volumeInfo": [
+                "title": book.volumeInfo.title,
+                "subtitle": book.volumeInfo.subtitle as Any, // Use 'as Any' to handle optional nils
+                "authors": book.volumeInfo.authors as Any,
+                "publishedDate": book.volumeInfo.publishedDate as Any,
+                "pageCount": book.volumeInfo.pageCount as Any,
+                "language": book.volumeInfo.language as Any,
+                "description": book.volumeInfo.description as Any,
+                "imageLinks": [
+                    "smallThumbnail": book.volumeInfo.imageLinks?.smallThumbnail as Any,
+                    "thumbnail": book.volumeInfo.imageLinks?.thumbnail as Any
+                ],
+                "categories": book.volumeInfo.categories as Any
+            ]
+        ]
+
+        // Adding the book to Firestore with the nested structure
+        listCollection.addDocument(data: data) { error in
             if let error = error {
                 print("Error adding book: \(error.localizedDescription)")
             } else {
@@ -84,7 +112,7 @@ class BooksListViewModel: ObservableObject {
         addBookToFirestore(book: book, listType: .finishedReading)
     }
 
-    private func addBookToList(book: BookItem, listType: BookListType) {
+    func addBookToList(book: BookItem, listType: BookListType) {
         DispatchQueue.main.async {
             switch listType {
             case .wantToRead:
