@@ -242,12 +242,12 @@
 				A2EA5A7C2BE567CC008956F8 /* SignUpView.swift */,
 				A2EA5A7E2BE567DE008956F8 /* TrackerView.swift */,
 				A2B235512BE7FE100088FF0D /* VideoCaptureView.swift */,
-				A2B235492BE7FDFB0088FF0D /* BarcodeScannerView.swift */,
-				A2B2353F2BE7FDDD0088FF0D /* SearchBarView.swift */,
 				A2B235372BE7FDC30088FF0D /* BookDetailView.swift */,
 				A2B235432BE7FDEA0088FF0D /* BookDetailsComponent.swift */,
 				A2B2354B2BE7FE000088FF0D /* BarcodeOverlay.swift */,
 				A2B235412BE7FDE30088FF0D /* BookRow.swift */,
+				A2B2353F2BE7FDDD0088FF0D /* SearchBarView.swift */,
+				A2B235492BE7FDFB0088FF0D /* BarcodeScannerView.swift */,
 				0B4F6C772BE968AA001B7D2D /* BookSearchView.swift */,
 			);
 			path = Views;
@@ -517,6 +517,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PageTurnerBooks/Preview Content\"";
+				DEVELOPMENT_TEAM = 9RYK768TSR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PageTurnerBooks/Info.plist;
@@ -545,6 +546,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PageTurnerBooks/Preview Content\"";
+				DEVELOPMENT_TEAM = 9RYK768TSR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PageTurnerBooks/Info.plist;

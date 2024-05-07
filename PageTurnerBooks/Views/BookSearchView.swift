@@ -10,12 +10,10 @@ import SwiftUI
 struct BookSearchView: View {
     @EnvironmentObject private var bookManager: BookManager
     @EnvironmentObject private var viewModel: BooksListViewModel
-    
     @State private var isShowingScanner = false
     @State private var isShowingSearchBar = false
     @State private var searchText = ""
-    @State private var navigateToDetail = false
-    
+    @State private var isShowingDetail = false
     
     var body: some View {
         NavigationView {
@@ -23,7 +21,7 @@ struct BookSearchView: View {
                 Button("Start Scanning") {
                     isShowingScanner = true
                 }
-                .sheet(isPresented: $isShowingScanner) {
+                .sheet(isPresented: $isShowingScanner, onDismiss: checkForBooks) {
                     BarcodeScannerView(isShowingScanner: $isShowingScanner, coordinator: makeCoordinator())
                 }
 
@@ -35,22 +33,25 @@ struct BookSearchView: View {
                         .environmentObject(bookManager)
                 }
 
-                if bookManager.books.count == 1 {
-                    NavigationLink(destination: BookDetailView(viewModel: viewModel, bookItem: bookManager.books.first!), isActive: $navigateToDetail) {
-                        EmptyView()
-                        }
-                        .onAppear {
-                            navigateToDetail = true
-                            isShowingScanner = false  // Ensure the scanner is closed when navigating to detail view
-                        }
+                .sheet(isPresented: $isShowingDetail) {
+                    if let book = bookManager.books.first {
+                        BookDetailView(viewModel: viewModel, bookItem: book)
+                    }
                 }
             }
         }
     }
+    
     private func makeCoordinator() -> Coordinator {
         let coordinator = Coordinator()
         coordinator.delegate = bookManager
         return coordinator
+    }
+    
+    private func checkForBooks() {
+        if bookManager.books.count == 1 {
+            isShowingDetail = true
+        }
     }
 }
 

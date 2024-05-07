@@ -14,7 +14,14 @@ class Coordinator: NSObject, AVCaptureMetadataOutputObjectsDelegate {
     weak var delegate: CoordinatorDelegate?
     var captureSession: AVCaptureSession?
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
-    
+    var onBookRetrieved: (() -> Void)?
+
+    override init() {
+        super.init()
+        self.captureSession = AVCaptureSession()
+        self.videoPreviewLayer = AVCaptureVideoPreviewLayer()
+    }
+
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         if let metadataObject = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
            let stringValue = metadataObject.stringValue {
@@ -27,34 +34,50 @@ class Coordinator: NSObject, AVCaptureMetadataOutputObjectsDelegate {
             }
         }
     }
-    
-    /// Checks if the extracted string is a valid ISBN.
+
     func isValidISBN(_ isbn: String) -> Bool {
         let strippedISBN = isbn.filter("0123456789".contains)
-        print("Stripped ISBN: \(strippedISBN)")  // Additional logging
-        let isValid = strippedISBN.count == 10 || strippedISBN.count == 13
-        print("Is ISBN Valid: \(isValid)")  // Log validity check result
-        return isValid
+        return strippedISBN.count == 10 || strippedISBN.count == 13
     }
-    
-    
-    /// Searches for books based on the query provided which should be an ISBN.
+
     func searchBooks(_ query: String, source: SearchSource) {
         let searchType = (source == .scanner) ? BookSearchManager.SearchType.barcode : BookSearchManager.SearchType.searchBar
-        print("Starting book search with query: \(query), searchType: \(searchType)")
-        
         BookSearchManager().getBookInfo(query: query, searchType: searchType) { bookData in
             DispatchQueue.main.async {
                 if let books = bookData {
-                    print("Fetched \(books.items.count) books successfully.")
                     self.delegate?.didRetrieveBooks(books.items)
-                    print("Data passed to delegate.")
+                    self.onBookRetrieved?()
                 } else {
                     print("Failed to fetch book data or no data available")
                 }
             }
         }
     }
+
+    func startSession() {
+        guard let captureDevice = AVCaptureDevice.default(for: .video) else {
+            print("Failed to get the camera device")
+            return
+        }
+        do {
+            let input = try AVCaptureDeviceInput(device: captureDevice)
+            captureSession?.addInput(input)
+
+            let metadataOutput = AVCaptureMetadataOutput()
+            captureSession?.addOutput(metadataOutput)
+
+            metadataOutput.metadataObjectTypes = [.qr, .ean8, .ean13, .pdf417]
+            metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+
+            videoPreviewLayer?.session = captureSession
+            videoPreviewLayer?.videoGravity = .resizeAspectFill
+            videoPreviewLayer?.frame = UIScreen.main.bounds
+
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.captureSession?.startRunning()
+            }
+        } catch {
+            print("Error starting the camera: \(error)")
+        }
+    }
 }
-
-
