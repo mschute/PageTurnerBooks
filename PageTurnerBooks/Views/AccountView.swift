@@ -35,10 +35,10 @@ struct AccountView: View {
                             //TODO: Need to add action to save email
                             print("email updated")
                         })
-                        
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
+                    
                     // TODO: Bug Fix button alignment to leading
-                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                     
                 }
@@ -55,7 +55,7 @@ struct AccountView: View {
                         //TODO: Need to add user validation to confirm new password and confirm new password match
                         InputField(text: $currentPassword, title: "Confirm New Password", placeholder: "Confirm new password", isSecureField: true)
                             .keyboardType(.default)
-                            
+                        
                         //TODO: Need to add functionality to update password
                         SmallPrimaryButton(title: "Update Password", action: {
                             print("Updated password")
@@ -82,7 +82,9 @@ struct AccountView: View {
                         
                         Divider()
                         
-                        Button("Delete Account", action: {})
+                        Button("Delete Account", action: {
+                            showingDeleteConfirmation = true
+                        })
                             .padding(5)
                         //TODO: Change to Turner book color
                             .foregroundColor(.red)

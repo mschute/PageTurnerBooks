@@ -138,7 +138,7 @@ struct TrackerView: View {
                                 .padding(.top, 40)
                                 Spacer()
                                 // Need to link button so it stops tracking this book and deletes this BookTrackerModel
-                                // Perhaps add a pop-up asking if they are sure they want to delete their progress
+                                //TODO: Add action sheet
                                 Button("Stop Tracking") {
                                     print("Stop tracking was pressed")
                                 }
