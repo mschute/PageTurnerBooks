@@ -12,14 +12,14 @@ struct ListCurrentlyReadingView: View {
 
     var body: some View {
         VStack {
-            Text("Books Currently Being Read")
-                .font(.title)
+            Text("Currently Reading")
+                .font(.largeTitle)
                 .padding()
 
             List(viewModel.currentlyReadingBooks, id: \.id) { book in
                 HStack {
                     Text(book.volumeInfo.title)
-                        .frame(maxWidth: .infinity, alignment: .leading)  // Ensures the text takes up most of the space
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     
                     Button(action: {
                         viewModel.deleteBookFromFirestore(bookId: book.id, listType: .currentlyReading)
@@ -30,5 +30,11 @@ struct ListCurrentlyReadingView: View {
                 }
             }
         }
+    }
+}
+
+struct ListCurrentlyReadingView_Preview: PreviewProvider {
+    static var previews: some View {
+        ListCurrentlyReadingView(viewModel: BooksListViewModel(userId: "9laC5umqf4T6fviudjD6HcuN1pW2"))
     }
 }

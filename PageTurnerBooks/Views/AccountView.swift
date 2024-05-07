@@ -27,13 +27,16 @@ struct AccountView: View {
                             .padding(.bottom, 10)
                         InputField(text: $newEmail, title: "New Email", placeholder: "Enter your new email")
                             .keyboardType(.default)
-                        PrimaryButton(title: "Save", action: {
+                        SmallPrimaryButton(title: "Save", action: {
                             //TODO: Need to add action to save email
                             print("email updated")
                         })
-                        .frame(alignment: .leading)
+                        
                     }
+                    // TODO: Bug Fix button alignment to leading
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
+                    
                 }
                 //TODO: Change to Turner book color
                 .accentColor(.blue)
@@ -50,12 +53,12 @@ struct AccountView: View {
                             .keyboardType(.default)
                             
                         //TODO: Need to add functionality to update password
-                        //TODO: Redo the button
-                        PrimaryButton(title: "Update Password", action: {
+                        SmallPrimaryButton(title: "Update Password", action: {
                             print("Updated password")
                         })
-                        .frame(alignment: .leading)
                     }
+                    // TODO: Bug Fix button alignment to leading
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 //TODO: Change to Turner book color
                 .accentColor(.blue)

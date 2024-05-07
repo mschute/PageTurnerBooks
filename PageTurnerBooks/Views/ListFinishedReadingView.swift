@@ -12,25 +12,31 @@ struct ListFinishedReadingView: View {
 
     var body: some View {
         VStack {
-            Text("Books Finished")
-                .font(.title)
+            Text("Finished Books")
+                .font(.largeTitle)
                 .padding()
             List(viewModel.finishedReadingBooks, id: \.id) { book in
                 HStack {
-                    Text(book.volumeInfo.title)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
+                    VStack{
+                        Text(book.volumeInfo.title)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                     Button(action: {
                         viewModel.deleteBookFromFirestore(bookId: book.id, listType: .finishedReading)
                     }) {
                         Image(systemName: "trash")
                             .foregroundColor(.red)
                     }
+                        
                 }
             }
         }
     }
 }
 
-
+struct ListFinishedReadingView_Preview: PreviewProvider {
+    static var previews: some View {
+        ListFinishedReadingView(viewModel: BooksListViewModel(userId: "9laC5umqf4T6fviudjD6HcuN1pW2"))
+    }
+}
 
