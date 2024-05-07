@@ -82,37 +82,74 @@ class AuthViewModel: ObservableObject {
         }
     }
 
-    func deleteUser(completion: @escaping (Bool, Error?) -> Void) {
+
+    func deleteUser() {
+        
         guard let user = Auth.auth().currentUser, !user.uid.isEmpty else {
             print("Delete user failed - No user logged in or invalid user ID")
-            completion(false, nil)
             return
         }
-
+        
+        print("Attempting to delete user with ID: \(user.uid)")
+        
         let db = Firestore.firestore()
-        db.collection("Users").document(user.uid).delete { error in
-            if let error = error {
-                print("Failed to delete user data from Firestore: \(error.localizedDescription)")
-                completion(false, error)
-                return
+        
+        // Function to delete a subcollection
+        func deleteSubcollection(_ collectionPath: String, completion: @escaping () -> Void) {
+            db.collection(collectionPath).getDocuments { snapshot, error in
+                guard let documents = snapshot?.documents else {
+                    print("No documents found in subcollection: \(collectionPath)")
+                    completion()
+                    return
+                }
+                
+                for document in documents {
+                    document.reference.delete()
+                }
+                
+                completion()
             }
-
-            user.delete { error in
+        }
+        
+        // Delete each subcollection
+        let subcollections = ["CurrentlyReading", "FinishedReading", "WantToRead"]
+        let group = DispatchGroup()
+        
+        for subcollection in subcollections {
+            let path = "Users/\(user.uid)/\(subcollection)"
+            group.enter()
+            deleteSubcollection(path) {
+                group.leave()
+            }
+        }
+        
+        // After all subcollections are deleted, delete the user document and account
+        group.notify(queue: .main) {
+            db.collection("Users").document(user.uid).delete { error in
                 if let error = error {
-                    print("Failed to delete user account: \(error.localizedDescription)")
-                    completion(false, error)
-                } else {
-                    DispatchQueue.main.async {
-                        self.userSession = nil
-                        self.currentUser = nil
-                        self.isSignedIn = false
-                        print("User account deleted successfully.")
-                        completion(true, nil)
+                    print("Failed to delete user data from Firestore: \(error.localizedDescription)")
+                    return
+                }
+                
+                print("User data deleted from Firestore for User ID: \(user.uid)")
+                
+                user.delete { error in
+                    if let error = error {
+                        print("Failed to delete user account: \(error.localizedDescription)")
+                    } else {
+                        DispatchQueue.main.async {
+                            self.userSession = nil
+                            self.currentUser = nil
+                            self.isSignedIn = false
+                            print("User account deleted successfully.")
+                        }
                     }
                 }
             }
         }
     }
+
+
     
     func fetchUser() async {
         guard let uid = Auth.auth().currentUser?.uid, !uid.isEmpty else {

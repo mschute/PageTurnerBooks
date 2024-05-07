@@ -67,7 +67,7 @@ struct AccountView: View {
                 }
                 //TODO: Change to Turner book color
                 .accentColor(.blue)
-                
+
                 Section{
                     VStack{
                         //TODO: Make Sign Out button Red?
@@ -81,31 +81,20 @@ struct AccountView: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                         
                         Divider()
-                        
+                    }
+                    
+                    
+                    VStack{
                         Button("Delete Account", action: {
-                            showingDeleteConfirmation = true
+                            print("Delete button pressed. Attempting to delete user...")
+                            authViewModel.deleteUser()
                         })
-                            .padding(5)
-                        //TODO: Change to Turner book color
-                            .foregroundColor(.red)
-                                    .actionSheet(isPresented: $showingDeleteConfirmation) {
-                                        ActionSheet(
-                                            title: Text("Confirm Account Deletion"),
-                                            message: Text("Are you sure you want to permanently delete your account? This action cannot be undone."),
-                                            buttons: [
-                                                .destructive(Text("Delete Account")) {
-                                                    authViewModel.deleteUser { success, error in
-                                                        if success {
-                                                            print("Account deletion successful")
-                                                            } else if let error = error {
-                                                            print("Error deleting account: \(error.localizedDescription)")
-                                                        }
-                                                    }
-                                                },
-                                                .cancel()
-                                            ]
-                                )
-                            }
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.red)
+                        .cornerRadius(10)
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .center)
                     }
                 }
             }
@@ -113,11 +102,10 @@ struct AccountView: View {
     }
 }
 
-// Preview with environment object (Mock AuthViewModel if needed)
+import SwiftUI
+
 struct AccountView_Previews: PreviewProvider {
     static var previews: some View {
-        let authViewModel = AuthViewModel()  // Create an instance for preview purposes
         AccountView()
-            .environmentObject(authViewModel)  // Provide the AuthViewModel to the environment
     }
 }
