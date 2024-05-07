@@ -30,7 +30,7 @@ struct BookDetailComponent: View {
                 Button("Finished Reading", action: { viewModel.addBookToFirestore(book: bookItem, listType: .finishedReading) })
             } label: {
                         // Using CustomButton as the label for the Menu
-                        PrimaryButton(title: "Add to List", action: {})
+                        Button("Add to List", action: {})
                             .fixedSize()
                     }
         }
