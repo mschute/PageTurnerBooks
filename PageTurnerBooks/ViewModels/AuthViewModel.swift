@@ -14,37 +14,42 @@ class AuthViewModel: ObservableObject {
     @Published var currentUser: User? // local user
     @Published var isSignedIn = false // flag for sign-in status for access to other views
 
+    var currentUserId: String {
+            userSession?.uid ?? ""  // Use the Firebase User uid
+        }
+
     init(){
-        self.userSession = Auth.auth().currentUser
-        if userSession != nil {
-                   self.isSignedIn = true  // Set true if session exists on init
-               }
-        if let userSessionNew = userSession {
-            print("1...", userSessionNew)
-        } else {
-            print("no active userSession")
-        }
+            self.userSession = Auth.auth().currentUser
+            if userSession != nil {
+                       self.isSignedIn = true  // Set true if session exists on init
+                   }
+            if let userSessionNew = userSession {
+                print("1...", userSessionNew)
+            } else {
+                print("no active userSession")
+            }
 
-        Task {
-            await fetchUser()
-        }
-
-    }
-    func signIn(withEmail email: String, password: String) async throws {
-            do {
-                let result = try await Auth.auth().signIn(withEmail: email, password: password)
-                DispatchQueue.main.async {  // Ensure UI updates happen on the main thread
-                    self.userSession = result.user
-                    self.isSignedIn = true  // Set to true on successful sign-in
-                }
+            Task {
                 await fetchUser()
-            } catch {
-                DispatchQueue.main.async {
-                    print("DEBUG: Failed to sign in user with error \(error.localizedDescription)")
-                    self.isSignedIn = false  // Set to false on failure
-                }
+            }
+    }
+    
+    func signIn(withEmail email: String, password: String) async throws {
+        do {
+            let result = try await Auth.auth().signIn(withEmail: email, password: password)
+            DispatchQueue.main.async {
+                self.userSession = result.user
+                self.isSignedIn = true
+                print("Sign-in successful, User ID:", result.user.uid)
+            }
+            await fetchUser()
+        } catch {
+            print("Sign-in failed:", error)
+            DispatchQueue.main.async {
+                self.isSignedIn = false
             }
         }
+    }
 
     func createUser(withEmail email: String, password: String, fullName: String) async throws {
         print("create User ..")
@@ -88,18 +93,17 @@ class AuthViewModel: ObservableObject {
     }
     
     func fetchUser() async {
-        print("fetch active")
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-       print("uid.....\(uid)")
-        do{
-            let snapshot = try? await Firestore.firestore().collection("Users").document(uid).getDocument()
-            //let user = snapshot?.data(as: User.self)
-            self.currentUser = try snapshot?.data(as: User.self)
-            print("DEBUG: Current user is \(String(describing: self.currentUser))")
-        } catch {
-            print("DEBUG: did not get user \(error.localizedDescription)")
+        guard let uid = Auth.auth().currentUser?.uid, !uid.isEmpty else {
+            print("User ID is nil or empty.")
+            return
         }
-
+        do {
+            let snapshot = try await Firestore.firestore().collection("Users").document(uid).getDocument()
+            self.currentUser = try snapshot.data(as: User.self)
+            print("DEBUG: Current user fetched:", self.currentUser)
+        } catch {
+            print("Failed to fetch user:", error)
+        }
     }
     
 }
