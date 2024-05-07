@@ -33,9 +33,13 @@ struct NavBar: View {
                 }
                 .tag(2)
                 
-                NavigationStack{
-                    ListsView(viewModel: BooksListViewModel(userId: authViewModel.currentUserId))
-                }
+                NavigationStack {
+                                    if !authViewModel.currentUserId.isEmpty {
+                                        ListsView(viewModel: BooksListViewModel(userId: authViewModel.currentUserId))
+                                    } else {
+                                        Text("No user logged in")
+                                    }
+                                }
                 .tabItem {
                     Image(systemName: "list.bullet")
                     Text("Lists")
@@ -52,6 +56,9 @@ struct NavBar: View {
                 .tag(4)
             }
         }
+        .onAppear {
+                    print("NavBar is using user ID: \(authViewModel.currentUserId)")
+                }
         .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
 //        .toolbarBackground(Color(.black), for: .tabBar)
 //        .toolbarBackground(.visible, for: .tabBar)

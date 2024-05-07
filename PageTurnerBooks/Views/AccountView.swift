@@ -26,9 +26,10 @@ struct AccountView: View {
             Section(){
                 DisclosureGroup("Email", isExpanded: $showEmailFields){
                     VStack(alignment: .leading){
-                        //TODO: Need to link to current email
-                        Text("Old email: get old email")
-                            .padding(.bottom, 10)
+                        if let email = authViewModel.currentUser?.email {
+                            Text("Current Email: \(email)")
+                                .padding(.bottom, 10)
+                        }
                         InputField(text: $newEmail, title: "New Email", placeholder: "Enter your new email")
                             .keyboardType(.default)
                         SmallPrimaryButton(title: "Save", action: {
@@ -67,7 +68,7 @@ struct AccountView: View {
                 }
                 //TODO: Change to Turner book color
                 .accentColor(.blue)
-                
+
                 Section{
                     VStack{
                         //TODO: Make Sign Out button Red?
@@ -81,40 +82,23 @@ struct AccountView: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                         
                         Divider()
-                        
+                    }
+                    
+                    
+                    VStack{
                         Button("Delete Account", action: {
-                            showingDeleteConfirmation = true
+                            print("Delete button pressed. Attempting to delete user...")
+                            authViewModel.deleteUser()
                         })
-                            .padding(5)
-                        //TODO: Change to Turner book color
-                            .foregroundColor(.red)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .actionSheet(isPresented: $showingDeleteConfirmation){
-                                ActionSheet(
-                                    title: Text("Confirm Account Deletion"),
-                                    message: Text("Are you sure you want to permanently delete your account?"),
-                                    buttons: [.destructive(Text("Delete Account")) {
-                                        //TODO: Update this to the actual delete function
-                                        //TODO: Debug, even the deletion simulation crashse this
-                                        // Terminating app due to uncaught exception 'FIRInvalidArgumentException', reason: 'Document path cannot be empty.'
-                                        print("Account deletion simulated")
-                                        //authViewModel.deleteAccount()
-                                    },
-                                              .cancel()]
-                                )
-                            }
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.red)
+                        .cornerRadius(10)
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .center)
                     }
                 }
             }
         }
-    }
-}
-
-// Preview with environment object (Mock AuthViewModel if needed)
-struct AccountView_Previews: PreviewProvider {
-    static var previews: some View {
-        let authViewModel = AuthViewModel()  // Create an instance for preview purposes
-        AccountView()
-            .environmentObject(authViewModel)  // Provide the AuthViewModel to the environment
     }
 }

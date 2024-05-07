@@ -29,7 +29,16 @@ struct HomePageView: View {
                     
                     //.padding(.bottom, 20)
                     Divider()
-                    
+
+                    //TODO: Improve animation (needed to stop placeholder name loading before fullName)
+                    if let fullName = authViewModel.currentUser?.fullName {
+                            Text("Welcome, \(fullName)")
+                            .font(.largeTitle)
+                            .padding()
+                            .transition(.opacity)  // Apply a fade transition
+                            .animation(.easeIn(duration: 0.5))
+                        }
+
                     Text("You're currently reading...")
                         .font(.system(size: 25, weight: .semibold))
                     //TODO: Add Scroll View
