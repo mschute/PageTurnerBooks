@@ -87,7 +87,7 @@ class AuthViewModel: ObservableObject {
         }
 
     func deleteAccount(){
-
+        print("Account was deleted")
     }
     
     func fetchUser() async {
