@@ -26,9 +26,10 @@ struct AccountView: View {
             Section(){
                 DisclosureGroup("Email", isExpanded: $showEmailFields){
                     VStack(alignment: .leading){
-                        //TODO: Need to link to current email
-                        Text("Old email: get old email")
-                            .padding(.bottom, 10)
+                        if let email = authViewModel.currentUser?.email {
+                            Text("Current Email: \(email)")
+                                .padding(.bottom, 10)
+                        }
                         InputField(text: $newEmail, title: "New Email", placeholder: "Enter your new email")
                             .keyboardType(.default)
                         SmallPrimaryButton(title: "Save", action: {
@@ -99,13 +100,5 @@ struct AccountView: View {
                 }
             }
         }
-    }
-}
-
-import SwiftUI
-
-struct AccountView_Previews: PreviewProvider {
-    static var previews: some View {
-        AccountView()
     }
 }
