@@ -35,7 +35,8 @@ class BooksListViewModel: ObservableObject {
         let listCollection = userRef.collection(listType.rawValue)
         print("Fetching books for \(userId) from \(listType.rawValue)")
 
-        listCollection.getDocuments { (snapshot, error) in
+        // Set up a listener for real-time updates
+        listCollection.addSnapshotListener { (snapshot, error) in
             if let error = error {
                 print("Error fetching books for \(listType.rawValue): \(error)")
                 return
@@ -44,10 +45,9 @@ class BooksListViewModel: ObservableObject {
                 print("No documents found for \(listType.rawValue)")
                 return
             }
+            print("Found \(documents.count) documents in \(listType.rawValue)")
             let books = documents.compactMap { queryDocumentSnapshot -> BookItem? in
-                let data = try? queryDocumentSnapshot.data(as: BookItem.self)
-                print("Book data: \(data)")
-                return data
+                try? queryDocumentSnapshot.data(as: BookItem.self)
             }
             print("Loaded \(books.count) books for \(listType.rawValue)")
             DispatchQueue.main.async {
@@ -95,6 +95,31 @@ class BooksListViewModel: ObservableObject {
             } else {
                 // Update local state if needed
                 self.addBookToList(book: book, listType: listType)
+            }
+        }
+    }
+    
+    func deleteBookFromFirestore(bookId: String, listType: BookListType) {
+        let db = Firestore.firestore()
+        let userRef = db.collection("Users").document(userId)
+        let listCollection = userRef.collection(listType.rawValue)
+
+        // Find the document with the corresponding bookId
+        listCollection.whereField("id", isEqualTo: bookId).getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error finding book: \(error.localizedDescription)")
+                return
+            }
+
+            // Assuming there is one unique entry for each bookId
+            if let document = snapshot?.documents.first {
+                document.reference.delete() { error in
+                    if let error = error {
+                        print("Error deleting book: \(error.localizedDescription)")
+                    } else {
+                        print("Book successfully deleted")
+                    }
+                }
             }
         }
     }

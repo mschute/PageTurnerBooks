@@ -16,10 +16,21 @@ struct ListFinishedReadingView: View {
                 .font(.title)
                 .padding()
             List(viewModel.finishedReadingBooks, id: \.id) { book in
-                Text(book.volumeInfo.title)
+                HStack {
+                    Text(book.volumeInfo.title)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Button(action: {
+                        viewModel.deleteBookFromFirestore(bookId: book.id, listType: .finishedReading)
+                    }) {
+                        Image(systemName: "trash")
+                            .foregroundColor(.red)
+                    }
+                }
             }
         }
     }
 }
+
 
 

@@ -15,10 +15,20 @@ struct ListCurrentlyReadingView: View {
             Text("Books Currently Being Read")
                 .font(.title)
                 .padding()
+
             List(viewModel.currentlyReadingBooks, id: \.id) { book in
-                Text(book.volumeInfo.title)
+                HStack {
+                    Text(book.volumeInfo.title)
+                        .frame(maxWidth: .infinity, alignment: .leading)  // Ensures the text takes up most of the space
+                    
+                    Button(action: {
+                        viewModel.deleteBookFromFirestore(bookId: book.id, listType: .currentlyReading)
+                    }) {
+                        Image(systemName: "trash")
+                            .foregroundColor(.red)
+                    }
+                }
             }
         }
     }
 }
-
