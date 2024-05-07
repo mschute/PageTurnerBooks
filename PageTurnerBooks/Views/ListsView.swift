@@ -8,18 +8,25 @@
 import SwiftUI
 
 struct ListsView: View {
-    var body: some View {
-        ZStack{
-            Text("Reading Lists")
-            Spacer()
-        }
-        .globalBackground()
-    }
+    @ObservedObject var viewModel: BooksListViewModel
     
+    var body: some View {
+        NavigationView {
+            List {
+                NavigationLink(destination: ListWantToReadView(viewModel: viewModel)) {
+                    Text("Want to Read")
+                }
+                NavigationLink(destination: ListCurrentlyReadingView(viewModel: viewModel)) {
+                    Text("Currently Reading")
+                }
+                NavigationLink(destination: ListFinishedReadingView(viewModel: viewModel)) {
+                    Text("Finished Reading")
+                }
+            }
+            .navigationBarTitle("Reading Lists")
+        }
+    }
 }
 
 
-#Preview {
-    ListsView()
-}
 

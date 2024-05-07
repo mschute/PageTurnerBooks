@@ -8,11 +8,27 @@
 import SwiftUI
 
 struct ListCurrentlyReadingView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+    @ObservedObject var viewModel: BooksListViewModel
 
-#Preview {
-    ListCurrentlyReadingView()
+    var body: some View {
+        VStack {
+            Text("Books Currently Being Read")
+                .font(.title)
+                .padding()
+
+            List(viewModel.currentlyReadingBooks, id: \.id) { book in
+                HStack {
+                    Text(book.volumeInfo.title)
+                        .frame(maxWidth: .infinity, alignment: .leading)  // Ensures the text takes up most of the space
+                    
+                    Button(action: {
+                        viewModel.deleteBookFromFirestore(bookId: book.id, listType: .currentlyReading)
+                    }) {
+                        Image(systemName: "trash")
+                            .foregroundColor(.red)
+                    }
+                }
+            }
+        }
+    }
 }

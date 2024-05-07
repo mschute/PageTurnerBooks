@@ -8,12 +8,29 @@
 import SwiftUI
 
 struct ListFinishedReadingView: View {
+    @ObservedObject var viewModel: BooksListViewModel
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("Books Finished")
+                .font(.title)
+                .padding()
+            List(viewModel.finishedReadingBooks, id: \.id) { book in
+                HStack {
+                    Text(book.volumeInfo.title)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Button(action: {
+                        viewModel.deleteBookFromFirestore(bookId: book.id, listType: .finishedReading)
+                    }) {
+                        Image(systemName: "trash")
+                            .foregroundColor(.red)
+                    }
+                }
+            }
+        }
     }
 }
 
-#Preview {
-    ListFinishedReadingView()
-}
+
 

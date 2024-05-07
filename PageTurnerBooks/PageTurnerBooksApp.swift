@@ -19,7 +19,8 @@ struct PageTurnerBooksApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(authViewModel)
+            ContentView()
+                .environmentObject(authViewModel)
         }
     }
 }

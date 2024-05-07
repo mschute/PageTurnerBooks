@@ -6,7 +6,4 @@ struct User: Identifiable, Codable {
     let fullName: String
     let email: String
 }
-extension User {
-    static var MOCK_USER = User(id: UUID().uuidString, fullName: "Test User", email: "testuser@test.com")
-}
 
