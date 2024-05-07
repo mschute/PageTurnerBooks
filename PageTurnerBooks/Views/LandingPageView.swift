@@ -14,15 +14,6 @@ struct LandingPageView: View {
                 VStack(spacing: 20){
                     RotateLogo()
                         .padding()
-                    //TODO: BUG: Slogan disappeared
-                    Text("Track Your Journey, One Page at a Time...")
-                        .font(.largeTitle)
-                        .foregroundColor(Color.pTDarkText)
-                        .fontWeight(.bold)
-                        .padding(.bottom, 20)
-                        .padding(.horizontal, 50)
-                        .multilineTextAlignment(.center)
-                        .shadow(radius: 1)
                     HStack(spacing: 30) {
                         NavigationLink(destination: SignInView()) {
                             Text("Sign In")

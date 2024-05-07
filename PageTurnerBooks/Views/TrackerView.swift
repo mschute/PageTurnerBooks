@@ -35,7 +35,7 @@ struct TrackerView: View {
                         
                         HStack(){
                             Text("End Date")
-                                .multilineTextAlignment(/*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/)
+                                .multilineTextAlignment(.leading)
                             Spacer()
                             if showDate {
                                 Button {
@@ -47,12 +47,15 @@ struct TrackerView: View {
                                         .frame(width: 16, height: 16)
                                         .tint(.black)
                                 }
-                                DatePicker("", selection: $viewModel.tracker.endDate, displayedComponents: .date)
-                                    .fontWeight(.bold)
-                                    .onChange(of: hiddenDate){ oldDate,
-                                        newDate in viewModel.tracker.endDate = newDate
-                                    }
-                                    .labelsHidden()
+//                                DatePicker(
+//                                    "",
+//                                    selection: Binding($viewModel.tracker.endDate, replacingNilWith: Date()),
+//                                    displayedComponents: .date
+//                                )
+//                                .onChange(of: viewModel.tracker.endDate ?? Date()) { newEndDate in
+//                                    viewModel.tracker.endDate = newEndDate
+//                                }
+//                                .labelsHidden()
                                 
                             } else {
                                 Button {
@@ -80,7 +83,7 @@ struct TrackerView: View {
                         TextField("Enter last page you read", text: $lastPageString)
                             .keyboardType(.decimalPad)
                         //TODO: Add back in
-                            //.pTTextFieldStyle()
+                        //.pTTextFieldStyle()
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .onAppear {
                                 lastPageString = String(viewModel.tracker.lastPageRead)
@@ -153,17 +156,18 @@ struct TrackerView: View {
                 .padding(10)
                 
             }
+            //            .onAppear {
+            //                viewModel.fetchTracking()
+            //            }
         }
     }
-}
-
-
-struct TrackerView_Previews: PreviewProvider {
-    static var previews: some View {
-        let sampleModel = BookTrackerModel(startDate: Date(), endDate: Date(), lastPageRead: 100, totalPageCount: 300, bookTitle: "Harry Potter and the Scorcerers Stone")
-        let viewModel = BookTrackerViewModel(tracker: sampleModel)
-        
-        TrackerView(viewModel: viewModel)
-    }
+    
+    //
+    //    struct TrackerView_Previews: PreviewProvider {
+    //        static var previews: some View {
+    //            let sampleTracker = BookTrackerModel(id: "sampleId", userId: "sampleUser", startDate: Date(), endDate: nil, lastPageRead: 100, totalPageCount: 300, bookTitle: "Sample Book")
+    //            TrackerView(viewModel: BookTrackerViewModel(userId: "sampleUser", tracker: sampleTracker))
+    //        }
+    //    }
 }
 

@@ -12,5 +12,4 @@ extension Color {
     static let pTPrimary = Color("Primary")
     static let pTSecondary = Color("Secondary")
     static let pTTertiary = Color("Tertiary")
-    static let pTDarkText = Color("pTDarkText")
 }

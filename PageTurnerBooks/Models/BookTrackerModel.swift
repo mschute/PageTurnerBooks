@@ -7,17 +7,12 @@
 
 import Foundation
 
-struct BookTrackerModel{
+struct BookTrackerModel: Codable, Identifiable {
+    var id: String // Usually same as the bookId for uniqueness per user
+    var userId: String
     var startDate: Date
-    var endDate: Date
+    var endDate: Date?
     var lastPageRead: Int
-    // These two maybe we get through a connection with the bookModel
     var totalPageCount: Int
     var bookTitle: String
-    //Maybe get rid of progress variable as its merely calculated
-    var progress: Double {
-        Double(lastPageRead) / Double(totalPageCount)
-    }
-    //var userId: String
-    //var bookId: String
 }

@@ -16,7 +16,7 @@ struct NavBar: View {
         TabView {
             Group{
                 NavigationStack{
-                    HomePageView()
+                    //HomePageView()
                 }
                 .tabItem {
                     Image(systemName: "house.fill")
