@@ -19,7 +19,7 @@ struct PrimaryButton: View {
         .font(.system(size: 18, weight: .bold, design: .default))
         .padding(.horizontal, 20)
         .padding(.vertical, 10)
-        .background(LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.8), Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing))
+        .background(LinearGradient(gradient: Gradient(colors: [Color.pTPrimary.opacity(0.8), Color.pTPrimary]), startPoint: .topLeading, endPoint: .bottomTrailing))
         .foregroundColor(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
         .frame(minWidth: 100, idealWidth: .infinity, maxWidth: .infinity, minHeight: 50, idealHeight: 50, maxHeight: 50, alignment: .center)

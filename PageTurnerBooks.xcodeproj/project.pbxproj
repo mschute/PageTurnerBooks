@@ -14,8 +14,8 @@
 		0B4012842BEA5B27001DAA3C /* SmallPrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4012832BEA5B27001DAA3C /* SmallPrimaryButton.swift */; };
 		0B4012862BEA6199001DAA3C /* PrimaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4012852BEA6199001DAA3C /* PrimaryButtonStyle.swift */; };
 		0B40128A2BEA62BF001DAA3C /* SecondaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4012892BEA62BF001DAA3C /* SecondaryButtonStyle.swift */; };
+		0B40128C2BEA9F70001DAA3C /* RotateLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B40128B2BEA9F70001DAA3C /* RotateLogo.swift */; };
 		0B4BD9412BE6758500CA8564 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4BD9402BE6758500CA8564 /* Color.swift */; };
-		0B4BD9432BE6760B00CA8564 /* BackgroundViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4BD9422BE6760B00CA8564 /* BackgroundViewModifier.swift */; };
 		0B4F6C782BE968AA001B7D2D /* BookSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4F6C772BE968AA001B7D2D /* BookSearchView.swift */; };
 		0BA5012C2BE67A300049DB7F /* NavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA5012B2BE67A300049DB7F /* NavBar.swift */; };
 		A2A307BC2BE711EE00C99DF2 /* BookTrackerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A307BB2BE711EE00C99DF2 /* BookTrackerModel.swift */; };
@@ -72,8 +72,8 @@
 		0B4012832BEA5B27001DAA3C /* SmallPrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallPrimaryButton.swift; sourceTree = "<group>"; };
 		0B4012852BEA6199001DAA3C /* PrimaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonStyle.swift; sourceTree = "<group>"; };
 		0B4012892BEA62BF001DAA3C /* SecondaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButtonStyle.swift; sourceTree = "<group>"; };
+		0B40128B2BEA9F70001DAA3C /* RotateLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateLogo.swift; sourceTree = "<group>"; };
 		0B4BD9402BE6758500CA8564 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
-		0B4BD9422BE6760B00CA8564 /* BackgroundViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundViewModifier.swift; sourceTree = "<group>"; };
 		0B4F6C772BE968AA001B7D2D /* BookSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookSearchView.swift; sourceTree = "<group>"; };
 		0BA5012B2BE67A300049DB7F /* NavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBar.swift; sourceTree = "<group>"; };
 		A2A307BB2BE711EE00C99DF2 /* BookTrackerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTrackerModel.swift; sourceTree = "<group>"; };
@@ -147,7 +147,6 @@
 			isa = PBXGroup;
 			children = (
 				0B4012852BEA6199001DAA3C /* PrimaryButtonStyle.swift */,
-				0B4BD9422BE6760B00CA8564 /* BackgroundViewModifier.swift */,
 				0B40127D2BEA5711001DAA3C /* PTTextFieldStyle.swift */,
 				0B4012892BEA62BF001DAA3C /* SecondaryButtonStyle.swift */,
 			);
@@ -267,6 +266,7 @@
 				A2B235492BE7FDFB0088FF0D /* BarcodeScannerView.swift */,
 				0B4F6C772BE968AA001B7D2D /* BookSearchView.swift */,
 				0B40127B2BEA550A001DAA3C /* InputField.swift */,
+				0B40128B2BEA9F70001DAA3C /* RotateLogo.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -377,7 +377,6 @@
 				A2B235442BE7FDEA0088FF0D /* BookDetailsComponent.swift in Sources */,
 				0BA5012C2BE67A300049DB7F /* NavBar.swift in Sources */,
 				0B4012822BEA5B13001DAA3C /* SecondaryButton.swift in Sources */,
-				0B4BD9432BE6760B00CA8564 /* BackgroundViewModifier.swift in Sources */,
 				0B4F6C782BE968AA001B7D2D /* BookSearchView.swift in Sources */,
 				A2EA5A732BE5676C008956F8 /* ListWantToReadView.swift in Sources */,
 				A2EA5A6F2BE5673D008956F8 /* ListFinishedReadingView.swift in Sources */,
@@ -406,6 +405,7 @@
 				A2EA5A752BE5677C008956F8 /* Modal.swift in Sources */,
 				0B40128A2BEA62BF001DAA3C /* SecondaryButtonStyle.swift in Sources */,
 				A2A307CF2BE71E3F00C99DF2 /* AuthViewModel.swift in Sources */,
+				0B40128C2BEA9F70001DAA3C /* RotateLogo.swift in Sources */,
 				A2EA5A522BE561A3008956F8 /* PageTurnerBooksApp.swift in Sources */,
 				A2EA5A7D2BE567CC008956F8 /* SignUpView.swift in Sources */,
 				A2EA5A632BE5662B008956F8 /* AccountView.swift in Sources */,

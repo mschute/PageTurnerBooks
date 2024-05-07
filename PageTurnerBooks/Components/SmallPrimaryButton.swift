@@ -18,7 +18,7 @@ struct SmallPrimaryButton: View {
         .font(.system(size: 15, weight: .bold, design: .default))
         .padding(.horizontal, 15)
         .padding(.vertical, 10)
-        .background(LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.8), Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing))
+        .background(LinearGradient(gradient: Gradient(colors: [Color.pTPrimary.opacity(0.8), Color.pTPrimary]), startPoint: .topLeading, endPoint: .bottomTrailing))
         .foregroundColor(Color.white)
         .font(.system(size: 20, weight: .bold, design: .default))
         .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))

@@ -16,9 +16,20 @@ struct HomePageView: View {
     let bookTrackerData = BookTrackerViewModel(tracker: BookTrackerModel(startDate: Date(), endDate: Date(), lastPageRead: 100, totalPageCount: 300, bookTitle: "Harry Potter and the Scorcerers Stone"))
     
     var body: some View {
-        NavigationView{
+        NavigationStack{
             VStack(spacing: 10){
                 VStack(spacing: 30){
+                    //TODO: Need to replace username with the user's email prefix
+                    Image("SubtleBook")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                    
+                    Text("Welcome, {user}")
+                        .font(.system(size: 35, weight: .semibold))
+                    
+                    //.padding(.bottom, 20)
+                    Divider()
+
                     //TODO: Improve animation (needed to stop placeholder name loading before fullName)
                     if let fullName = authViewModel.currentUser?.fullName {
                             Text("Welcome, \(fullName)")
@@ -27,10 +38,11 @@ struct HomePageView: View {
                             .transition(.opacity)  // Apply a fade transition
                             .animation(.easeIn(duration: 0.5))
                         }
-                    //TODO: What else should we add here? Maybe just our Logo?
+
                     Text("You're currently reading...")
-                        .font(.title2)
-                    //TODO: Need to add Book Previews / perhaps 1st or 2nd on the list?
+                        .font(.system(size: 25, weight: .semibold))
+                    //TODO: Add Scroll View
+                    //TODO: Need to add Book Previews / perhaps 3 from list?
                     //TODO: Need to replace action in button to take user to tracking page for this book
                     
                     NavigationLink(destination: TrackerView(viewModel: bookTrackerData)) {
@@ -38,7 +50,7 @@ struct HomePageView: View {
                         
                     }
                     .buttonStyle(PrimaryButtonStyle())
-
+                    
                     Spacer()
                 }
             }
