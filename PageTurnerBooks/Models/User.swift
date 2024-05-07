@@ -1,5 +1,3 @@
-// Girish code, may need modifying
-
 import Foundation
 struct User: Identifiable, Codable {
     let id: String

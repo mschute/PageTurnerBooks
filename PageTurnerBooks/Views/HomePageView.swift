@@ -19,10 +19,14 @@ struct HomePageView: View {
         NavigationView{
             VStack(spacing: 10){
                 VStack(spacing: 30){
-                    //TODO: Need to replace username with the user's email prefix
-                    Text("Welcome, {username}")
-                        .font(.largeTitle)
-                        .padding()
+                    //TODO: Improve animation (needed to stop placeholder name loading before fullName)
+                    if let fullName = authViewModel.currentUser?.fullName {
+                            Text("Welcome, \(fullName)")
+                            .font(.largeTitle)
+                            .padding()
+                            .transition(.opacity)  // Apply a fade transition
+                            .animation(.easeIn(duration: 0.5))
+                        }
                     //TODO: What else should we add here? Maybe just our Logo?
                     Text("You're currently reading...")
                         .font(.title2)
