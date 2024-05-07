@@ -19,10 +19,11 @@ struct TrackerView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Tracking Details")){
+                Text("Tracker 📖")
+                    .font(.largeTitle)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                Section(){
                     VStack(spacing: 30){
-                        Text("Tracker 📖")
-                            .font(.largeTitle)
                         Text("\(viewModel.tracker.bookTitle)")
                             .font(.title2)
                             .fontWeight(.bold)
