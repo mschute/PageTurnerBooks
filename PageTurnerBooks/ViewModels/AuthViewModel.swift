@@ -42,6 +42,7 @@ class AuthViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.isSignedIn = false
             }
+            throw error
         }
     }
 
