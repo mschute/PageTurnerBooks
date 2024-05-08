@@ -161,13 +161,6 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		0BFDAEFD2BE6B4460026E07D /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Utilities;
-			sourceTree = "<group>";
-		};
 		A2A307B92BE711C100C99DF2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -227,9 +220,8 @@
 				0B4BD93E2BE6751300CA8564 /* Modifiers */,
 				A2A307BA2BE711CC00C99DF2 /* ViewModels */,
 				A2EA5A5F2BE565A3008956F8 /* Views */,
-				0BFDAEFD2BE6B4460026E07D /* Utilities */,
-				A2EA5A512BE561A3008956F8 /* PageTurnerBooksApp.swift */,
 				0B4BD93D2BE674FF00CA8564 /* Resources */,
+				A2EA5A512BE561A3008956F8 /* PageTurnerBooksApp.swift */,
 				A2EA5A572BE561A4008956F8 /* Preview Content */,
 			);
 			path = PageTurnerBooks;

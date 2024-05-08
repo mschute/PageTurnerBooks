@@ -39,6 +39,24 @@ class BookTrackerViewModel: ObservableObject {
             print("Error serializing tracking data: \(serializationError.localizedDescription)")
         }
     }
+    
+    // Function to update the last page read
+        func updateLastPageRead(bookId: String, lastPage: Int) {
+            let trackingRef = db.collection("Users").document(userId)
+                                 .collection("CurrentlyReading").document(bookId)
+                                 .collection("tracking").document("trackingData")
+
+            trackingRef.updateData(["lastPageRead": lastPage]) { error in
+                if let error = error {
+                    print("Error updating last page read: \(error.localizedDescription)")
+                } else {
+                    print("Last page read successfully updated for bookId: \(bookId)")
+                    DispatchQueue.main.async {
+                        self.tracker.lastPageRead = lastPage
+                    }
+                }
+            }
+        }
 
 
     // Function to fetch tracking data

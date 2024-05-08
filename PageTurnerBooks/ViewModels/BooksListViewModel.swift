@@ -29,7 +29,7 @@ class BooksListViewModel: ObservableObject {
                                                   startDate: Date(),
                                                   endDate: nil,
                                                   lastPageRead: 0,
-                                                  totalPageCount: 0,  // You might need to adjust this
+                                                  totalPageCount: 0,
                                                   bookTitle: "")
             // Initialize the BookTrackerViewModel with the userId and the default tracker
             self.bookTrackerVM = BookTrackerViewModel(userId: userId, tracker: defaultTracker)
