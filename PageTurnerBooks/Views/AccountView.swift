@@ -84,7 +84,7 @@ struct AccountView: View {
                         Divider()
                     }
                     
-                    
+                    // Delete account needs to be in a separate VStack from logout, Xcode fails delete account function otherwise
                     VStack{
                         Button("Delete Account", action: {
                             print("Delete button pressed. Attempting to delete user...")

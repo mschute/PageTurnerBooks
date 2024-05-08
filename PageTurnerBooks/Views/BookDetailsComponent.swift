@@ -26,7 +26,7 @@ struct BookDetailComponent: View {
     private var addToListView: some View {
             Menu {
                 Button("Want to Read", action: { viewModel.addBookToFirestore(book: bookItem, listType: .wantToRead) })
-                Button("Currently Reading", action: { viewModel.addBookToFirestore(book: bookItem, listType: .currentlyReading) })
+                Button("Currently Reading", action: { viewModel.addBookToCurrentlyReadingAndTrack(book: bookItem) })
                 Button("Finished Reading", action: { viewModel.addBookToFirestore(book: bookItem, listType: .finishedReading) })
             } label: {
                         // Using CustomButton as the label for the Menu
