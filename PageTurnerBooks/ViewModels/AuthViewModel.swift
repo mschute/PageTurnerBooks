@@ -172,20 +172,13 @@ class AuthViewModel: ObservableObject {
             throw NSError(domain: "AuthError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No authenticated user found."])
         }
 
-        // Reauthenticate the user to ensure they are the one requesting the password change
         let credential = EmailAuthProvider.credential(withEmail: email, password: currentPassword)
         do {
             try await user.reauthenticate(with: credential)
 
-            // Update the password
             try await user.updatePassword(to: newPassword)
             print("Password updated successfully.")
 
-            // Optional: Update Firestore if needed
-            // let db = Firestore.firestore()
-            // try await db.collection("Users").document(user.uid).updateData(["lastPasswordChange": FieldValue.serverTimestamp()])
-            
-            // Feedback for UI
             DispatchQueue.main.async {
                 print("Your password has been updated successfully.")
             }
