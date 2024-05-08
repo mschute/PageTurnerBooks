@@ -11,8 +11,11 @@ import SwiftUI
 
 struct TrackerView: View {
     @ObservedObject var viewModel: BookTrackerViewModel
+    @ObservedObject var listViewModel: BooksListViewModel
     @State private var lastPageString: String = ""
     @State private var isEditing: Bool = false
+    @State private var showingConfirmation = false
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         NavigationView {
@@ -20,7 +23,6 @@ struct TrackerView: View {
                 Text("Tracker 📖")
                     .font(.largeTitle)
                     .frame(maxWidth: .infinity, alignment: .center)
-
                 Section {
                     VStack(spacing: 30) {
                         Text(viewModel.tracker.bookTitle)
@@ -31,12 +33,22 @@ struct TrackerView: View {
                         DatePicker("Start Date", selection: $viewModel.tracker.startDate, displayedComponents: .date)
                             .fontWeight(.bold)
                             .frame(maxWidth: .infinity, alignment: .leading)
-
-                        Button("Finished") {
-                            // Placeholder for functionality
+                        
+                        //TODO: Needs to re-direct to ListFinishedReadingView?
+                        Button("Finish Reading") {
+                            showingConfirmation = true
                         }
-                        .foregroundColor(.red)
-                        .buttonStyle(BorderlessButtonStyle())
+                        .alert(isPresented: $showingConfirmation) {
+                            Alert(
+                                title: Text("Confirm Finish"),
+                                message: Text("Are you sure you want to mark this book as finished?"),
+                                primaryButton: .destructive(Text("Finish")) {
+                                    listViewModel.completeBookAndMoveToFinished(bookId: viewModel.tracker.id)
+                                    presentationMode.wrappedValue.dismiss()
+                                },
+                                secondaryButton: .cancel()
+                            )
+                        }
 
                         HStack {
                             Text("Last Page Read:")
@@ -83,8 +95,9 @@ struct TrackerView: View {
     }
 }
 
-struct TrackerView_Previews: PreviewProvider {
-    static var previews: some View {
-        TrackerView(viewModel: BookTrackerViewModel(userId: "testUserID", tracker: BookTrackerModel(id: "testID", userId: "testUserID", startDate: Date(), endDate: nil, lastPageRead: 50, totalPageCount: 300, bookTitle: "Harry Potter and the Sorcerer's Stone")))
-    }
-}
+
+//struct TrackerView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TrackerView(viewModel: BookTrackerViewModel(userId: "testUserID", tracker: BookTrackerModel(id: "testID", userId: "testUserID", startDate: Date(), endDate: nil, lastPageRead: 50, totalPageCount: 300, bookTitle: "Harry Potter and the Sorcerer's Stone")))
+//    }
+//}

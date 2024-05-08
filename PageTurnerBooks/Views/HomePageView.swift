@@ -38,7 +38,7 @@ struct HomePageView: View {
                                         ScrollView(.horizontal, showsIndicators: false) {
                                             HStack {
                                                 ForEach(booksListViewModel.currentlyReadingBooks) { book in
-                                                    NavigationLink(destination: TrackerView(viewModel: BookTrackerViewModel(userId: authViewModel.currentUser?.id ?? "", tracker: BookTrackerModel(id: book.id, userId: authViewModel.currentUser?.id ?? "", startDate: Date(), endDate: nil, lastPageRead: 0, totalPageCount: book.volumeInfo.pageCount ?? 0, bookTitle: book.volumeInfo.title)))) {
+                                                    NavigationLink(destination: TrackerView(viewModel: BookTrackerViewModel(userId: authViewModel.currentUser?.id ?? "", tracker: BookTrackerModel(id: book.id, userId: authViewModel.currentUser?.id ?? "", startDate: Date(), endDate: nil, lastPageRead: 0, totalPageCount: book.volumeInfo.pageCount ?? 0, bookTitle: book.volumeInfo.title)), listViewModel: booksListViewModel)) {
                                                         VStack {
                                                             Text(book.volumeInfo.title)
                                                                 .foregroundColor(.primary)

@@ -171,6 +171,50 @@ class BooksListViewModel: ObservableObject {
         }
     }
     
+    func completeBookAndMoveToFinished(bookId: String) {
+        let endDate = Date() // Setting the current date as the end date
+        let userRef = Firestore.firestore().collection("Users").document(userId)
+        let currentlyReadingRef = userRef.collection("CurrentlyReading").document(bookId)
+        let finishedReadingRef = userRef.collection("FinishedReading").document(bookId)
+
+        // Fetch book data from CurrentlyReading
+        currentlyReadingRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                var bookData = document.data() ?? [:]
+                bookData["endDate"] = endDate  // Add the end date to the book data
+                
+                // Fetch tracking data
+                currentlyReadingRef.collection("tracking").document("trackingData").getDocument { (trackingDoc, trackingError) in
+                    if let trackingDoc = trackingDoc, trackingDoc.exists {
+                        var trackingData = trackingDoc.data() ?? [:]
+                        trackingData["endDate"] = endDate  // Add the end date to the tracking data
+
+                        // Start copying process
+                        Firestore.firestore().runTransaction({ (transaction, errorPointer) -> Any? in
+                            transaction.setData(bookData, forDocument: finishedReadingRef)
+                            transaction.setData(trackingData, forDocument: finishedReadingRef.collection("tracking").document("trackingData"))
+                            transaction.deleteDocument(currentlyReadingRef)
+                            transaction.deleteDocument(currentlyReadingRef.collection("tracking").document("trackingData"))
+                            return nil
+                        }) { (object, error) in
+                            if let error = error {
+                                print("Error moving book to FinishedReading: \(error.localizedDescription)")
+                            } else {
+                                print("Book successfully moved to FinishedReading with end date")
+                            }
+                        }
+                    } else {
+                        print("Error fetching tracking data: \(trackingError?.localizedDescription ?? "Unknown error")")
+                    }
+                }
+            } else {
+                print("Error fetching book data: \(error?.localizedDescription ?? "Unknown error")")
+            }
+        }
+    }
+
+
+    
     func addBookToWantToRead(book: BookItem) {
         addBookToFirestore(book: book, listType: .wantToRead)
     }
