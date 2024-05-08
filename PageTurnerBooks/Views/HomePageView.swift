@@ -44,26 +44,43 @@ struct HomePageView: View {
                         .background(Color.pTPrimary)
                         .multilineTextAlignment(.center)
                         .padding(.top, 60)
-                  
+                    
                     NavigationStack{
-                        ScrollView(.vertical, showsIndicators: false) {
-                            VStack(alignment: .leading) {
-                                ForEach(Array(booksListViewModel.currentlyReadingBooks.prefix(4)), id: \.id) { book in
-                                    VStack(alignment: .leading, spacing: 10){
-                                        BookRow(book: book, viewModel: booksListViewModel)
-                                        //TODO: Link to tracker
-                                        Button("Track", action: {
-                                            print("Tracker clicked")
-                                        })
-                                        .fontWeight(.bold)
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {
+                                ForEach(booksListViewModel.currentlyReadingBooks) { book in
+                                    NavigationLink(destination: TrackerView(viewModel: BookTrackerViewModel(userId: authViewModel.currentUser?.id ?? "", tracker: BookTrackerModel(id: book.id, userId: authViewModel.currentUser?.id ?? "", startDate: Date(), endDate: nil, lastPageRead: 0, totalPageCount: book.volumeInfo.pageCount ?? 0, bookTitle: book.volumeInfo.title)), listViewModel: booksListViewModel)) {
+                                        VStack {
+                                            Text(book.volumeInfo.title)
+                                                .foregroundColor(.primary)
+                                            Text("Tap to track progress")
+                                                .font(.caption)
+                                                .foregroundColor(.secondary)
+                                        }
                                     }
-                                    Divider()
                                 }
                             }
                         }
+                        .frame(height: 200)
+                        //                        ScrollView(.vertical, showsIndicators: false) {
+                        //                            VStack(alignment: .leading) {
+                        //                                ForEach(Array(booksListViewModel.currentlyReadingBooks.prefix(4)), id: \.id) { book in
+                        //                                    VStack(alignment: .leading, spacing: 10){
+                        //                                        BookRow(book: book, viewModel: booksListViewModel)
+                        //                                        //TODO: Link to tracker
+                        //                                        Button("Track", action: {
+                        //                                            print("Tracker clicked")
+                        //                                        })
+                        //                                        .fontWeight(.bold)
+                        //                                    }
+                        //                                    Divider()
+                        //                                }
+                        //                            }
+                        //                        }
+                        //                    }
+                        //                    .padding()
+                        //                    .tint(.pTSecondary)
                     }
-                    .padding()
-                    .tint(.pTSecondary)
                 }
             }
         }
