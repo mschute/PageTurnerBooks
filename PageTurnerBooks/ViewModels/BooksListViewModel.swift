@@ -113,23 +113,43 @@ class BooksListViewModel: ObservableObject {
         let db = Firestore.firestore()
         let userRef = db.collection("Users").document(userId)
         let listCollection = userRef.collection(listType.rawValue)
+        let bookDocument = listCollection.document(bookId)
         
-        // Find the document with the corresponding bookId
-        listCollection.whereField("id", isEqualTo: bookId).getDocuments { (snapshot, error) in
-            if let error = error {
-                print("Error finding book: \(error.localizedDescription)")
+        // Delete the tracking data subcollection first
+        deleteTrackingData(bookDocument: bookDocument) {
+            // After deleting tracking data, delete the book document
+            bookDocument.delete { error in
+                if let error = error {
+                    print("Error deleting book: \(error.localizedDescription)")
+                } else {
+                    print("Book and tracking data successfully deleted from \(listType.rawValue)")
+                }
+            }
+        }
+    }
+
+    func deleteTrackingData(bookDocument: DocumentReference, completion: @escaping () -> Void) {
+        let trackingCollection = bookDocument.collection("tracking")
+        // Retrieve all documents in the tracking subcollection
+        trackingCollection.getDocuments { (snapshot, error) in
+            guard let documents = snapshot?.documents else {
+                print("No tracking data found or error: \(error?.localizedDescription ?? "Unknown error")")
+                completion()
                 return
             }
             
-            // Assuming there is one unique entry for each bookId
-            if let document = snapshot?.documents.first {
-                document.reference.delete() { error in
-                    if let error = error {
-                        print("Error deleting book: \(error.localizedDescription)")
-                    } else {
-                        print("Book successfully deleted")
-                    }
+            // Use a batch to delete all tracking data documents
+            let batch = Firestore.firestore().batch()
+            documents.forEach { batch.deleteDocument($0.reference) }
+            
+            // Commit the batch
+            batch.commit { error in
+                if let error = error {
+                    print("Error deleting tracking data: \(error.localizedDescription)")
+                } else {
+                    print("Tracking data successfully deleted")
                 }
+                completion()
             }
         }
     }
