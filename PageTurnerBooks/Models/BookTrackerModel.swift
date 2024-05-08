@@ -8,7 +8,7 @@
 import Foundation
 
 struct BookTrackerModel: Codable, Identifiable {
-    var id: String // Usually same as the bookId for uniqueness per user
+    var id: String
     var userId: String
     var startDate: Date
     var endDate: Date?

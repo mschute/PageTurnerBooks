@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct TrackerView: View {
     @ObservedObject var viewModel: BookTrackerViewModel
     @ObservedObject var listViewModel: BooksListViewModel
@@ -30,9 +28,24 @@ struct TrackerView: View {
                             .fontWeight(.bold)
                             .multilineTextAlignment(.center)
 
-                        DatePicker("Start Date", selection: $viewModel.tracker.startDate, displayedComponents: .date)
-                            .fontWeight(.bold)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                        //TODO: Needs testing on a trackable book
+                        DatePicker("Start Date", selection: Binding<Date>(
+                            get: { viewModel.tracker.startDate },
+                            set: { newDate in
+                                viewModel.updateStartDate(bookId: viewModel.tracker.id, startDate: newDate)
+                            }
+                        ), displayedComponents: .date)
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        //TODO: Needs testing on a trackable book
+                        DatePicker("End Date", selection: Binding<Date>(
+                            get: { viewModel.tracker.endDate ?? Date() },
+                            set: { newDate in
+                                viewModel.updateEndDate(bookId: viewModel.tracker.id, endDate: newDate)
+                            }
+                        ), displayedComponents: .date)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         
                         //TODO: Needs to re-direct to ListFinishedReadingView?
                         Button("Finish Reading") {

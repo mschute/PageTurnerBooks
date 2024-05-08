@@ -75,6 +75,43 @@ class BookTrackerViewModel: ObservableObject {
             }
         }
     }
+    
+    //TODO: Needs testing on a trackable book
+    func updateStartDate(bookId: String, startDate: Date) {
+            let trackingRef = db.collection("Users").document(userId)
+                                 .collection("CurrentlyReading").document(bookId)
+                                 .collection("tracking").document("trackingData")
+
+            trackingRef.updateData(["startDate": startDate]) { error in
+                if let error = error {
+                    print("Error updating start date: \(error.localizedDescription)")
+                } else {
+                    print("Start date successfully updated for bookId: \(bookId)")
+                    DispatchQueue.main.async {
+                        self.tracker.startDate = startDate
+                    }
+                }
+            }
+        }
+    
+    //TODO: Needs testing on a trackable book
+    func updateEndDate(bookId: String, endDate: Date) {
+        let trackingRef = db.collection("Users").document(userId)
+                             .collection("CurrentlyReading").document(bookId)
+                             .collection("tracking").document("trackingData")
+
+        trackingRef.updateData(["endDate": endDate]) { error in
+            if let error = error {
+                print("Error updating end date: \(error.localizedDescription)")
+            } else {
+                print("End date successfully updated for bookId: \(bookId)")
+                DispatchQueue.main.async {
+                    self.tracker.endDate = endDate
+                }
+            }
+        }
+    }
+    
 }
 
 extension BookTrackerViewModel {

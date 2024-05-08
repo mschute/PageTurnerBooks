@@ -14,7 +14,7 @@ struct AccountView: View {
     @State private var newEmail: String = ""
     @State private var currentPassword: String = ""
     @State private var newPassword: String = ""
-    @State private var confirmNewPassword: String = ""
+    @State private var confirmPassword: String = ""
     @State private var showingDeleteConfirmation = false
     //TODO: Unsure about the look of the inputfields in the Account Information. Especially with the "Old email" mixed in
     
@@ -30,13 +30,6 @@ struct AccountView: View {
                             Text("Current Email: \(email)")
                                 .padding(.bottom, 10)
                         }
-                        InputField(text: $newEmail, title: "New Email", placeholder: "Enter your new email")
-                            .keyboardType(.default)
-                        SmallPrimaryButton(title: "Save", action: {
-                            //TODO: Need to add action to save email
-                            print("email updated")
-                        })
-                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     
                     // TODO: Bug Fix button alignment to leading
@@ -49,19 +42,23 @@ struct AccountView: View {
                 DisclosureGroup("Password", isExpanded: $showPasswordFields){
                     VStack(alignment: .leading, spacing: 15){
                         //TODO: Need to add user validation to confirm current password
-                        InputField(text: $currentPassword, title: "Current Password", placeholder: "Enter current password", isSecureField: true)
-                            .keyboardType(.default)
-                        InputField(text: $newPassword, title: "New Password", placeholder: "Enter new password", isSecureField: true)
-                            .keyboardType(.default)
-                        //TODO: Need to add user validation to confirm new password and confirm new password match
-                        InputField(text: $currentPassword, title: "Confirm New Password", placeholder: "Confirm new password", isSecureField: true)
-                            .keyboardType(.default)
+                        SecureField("Current Password", text: $currentPassword)
+                        SecureField("New Password", text: $newPassword)
+                        SecureField("Confirm New Password", text: $confirmPassword)
                         
-                        //TODO: Need to add functionality to update password
-                        SmallPrimaryButton(title: "Update Password", action: {
-                            print("Updated password")
-                            //TODO: Add confirmation that the password was saved?
-                        })
+                        Button("Update Password") {
+                            if newPassword == confirmPassword {
+                                Task {
+                                    do {
+                                        try await authViewModel.updatePassword(currentPassword: currentPassword, newPassword: newPassword)
+                                    } catch {
+                                        print("Failed to update password: \(error.localizedDescription)")
+                                    }
+                                }
+                            } else {
+                                print("The new passwords do not match.")
+                            }
+                        }
                     }
                     // TODO: Bug Fix button alignment to leading
                     .frame(maxWidth: .infinity, alignment: .leading)

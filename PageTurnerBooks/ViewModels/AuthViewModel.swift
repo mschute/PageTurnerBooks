@@ -5,15 +5,15 @@ import FirebaseAuth
 import FirebaseFirestore
 
 class AuthViewModel: ObservableObject {
-
+    
     @Published var userSession: FirebaseAuth.User?
     @Published var currentUser: User?
     @Published var isSignedIn = false
-
+    
     var currentUserId: String {
         userSession?.uid ?? ""
     }
-
+    
     init() {
         self.userSession = Auth.auth().currentUser
         if let userSession = userSession {
@@ -22,7 +22,7 @@ class AuthViewModel: ObservableObject {
         } else {
             print("Session Init - No active user session")
         }
-
+        
         Task {
             await fetchUser()
         }
@@ -45,7 +45,7 @@ class AuthViewModel: ObservableObject {
             throw error
         }
     }
-
+    
     func createUser(withEmail email: String, password: String, fullName: String) async throws {
         do {
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
@@ -63,13 +63,13 @@ class AuthViewModel: ObservableObject {
             print("Failed to create user: \(error.localizedDescription)")
         }
     }
-
+    
     func logOut() {
         guard let user = Auth.auth().currentUser, !user.uid.isEmpty else {
             print("Logout failed - No user session found")
             return
         }
-
+        
         do {
             try Auth.auth().signOut()
             DispatchQueue.main.async {
@@ -82,8 +82,8 @@ class AuthViewModel: ObservableObject {
             print("Logout failed: \(error.localizedDescription)")
         }
     }
-
-
+    
+    
     func deleteUser() {
         
         guard let user = Auth.auth().currentUser, !user.uid.isEmpty else {
@@ -149,8 +149,8 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
-
-
+    
+    
     
     func fetchUser() async {
         guard let uid = Auth.auth().currentUser?.uid, !uid.isEmpty else {
@@ -165,6 +165,31 @@ class AuthViewModel: ObservableObject {
             print("Failed to fetch user: \(error.localizedDescription)")
         }
     }
+    
+    
+    func updatePassword(currentPassword: String, newPassword: String) async throws {
+        guard let user = Auth.auth().currentUser, let email = user.email else {
+            throw NSError(domain: "AuthError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No authenticated user found."])
+        }
+
+        let credential = EmailAuthProvider.credential(withEmail: email, password: currentPassword)
+        do {
+            try await user.reauthenticate(with: credential)
+
+            try await user.updatePassword(to: newPassword)
+            print("Password updated successfully.")
+
+            DispatchQueue.main.async {
+                print("Your password has been updated successfully.")
+            }
+        } catch let error as NSError {
+            print("Error updating password: \(error.localizedDescription)")
+            throw error
+        }
+    }
+    
+    
+    
 }
 
 extension AuthViewModel {
