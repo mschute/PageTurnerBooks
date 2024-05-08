@@ -212,6 +212,39 @@ class BooksListViewModel: ObservableObject {
             }
         }
     }
+    
+    //TODO: Needs testing on a book within WantToRead list (also needs button/link implemented to test the function in there)
+    func moveBookToCurrentlyReading(bookId: String) {
+        let wantToReadRef = Firestore.firestore().collection("Users").document(userId)
+                                                 .collection("WantToRead").document(bookId)
+
+        // Fetch book data from WantToRead
+        wantToReadRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                // Deserialise the document into a BookItem object
+                do {
+                    let book = try document.data(as: BookItem.self)
+                    
+                    // Add the book to CurrentlyReading and set up tracking
+                    self.addBookToCurrentlyReadingAndTrack(book: book)
+
+                    // Delete the book from WantToRead after successfully moving it to CurrentlyReading
+                    wantToReadRef.delete { error in
+                        if let error = error {
+                            print("Error deleting book from WantToRead: \(error.localizedDescription)")
+                        } else {
+                            print("Book successfully moved from WantToRead to CurrentlyReading")
+                        }
+                    }
+                } catch {
+                    print("Error decoding book data: \(error.localizedDescription)")
+                }
+            } else {
+                print("Error fetching book data: \(error?.localizedDescription ?? "Unknown error")")
+            }
+        }
+    }
+
 
 
     
