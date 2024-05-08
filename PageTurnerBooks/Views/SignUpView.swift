@@ -7,74 +7,82 @@ struct SignUpView: View {
     @State private var fullName = ""
     @State private var password = ""
     @State private var confirmPassword = ""
+    @State private var showingError = false
+    @State private var errorMessage = ""
     @FocusState private var fieldIsFocused: Bool
 
     @EnvironmentObject var authViewModel: AuthViewModel
     var body: some View {
-        //TODO: Style choice ignore safe edges? or visit sign in page for other view
-            VStack {
-                Text("Register")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.pTPrimary)
+        VStack {
+            Text("Register")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color.pTPrimary)
+            
+            VStack(spacing: 25) {
+                InputField(text: $email, title: "Email Address", placeholder: "name@example.com", isSecureField: false)
+                    .keyboardType(.emailAddress)
+                    .focused($fieldIsFocused)
+                    .autocapitalization(.none)
                 
-                Spacer()
-                VStack(spacing: 25) {
-                    // Email input field
-                    InputField(text: $email, title: "Email Address", placeholder: "name@example.com", isSecureField: false)
-                        .keyboardType(.emailAddress)
-                        .focused($fieldIsFocused)
-                        .autocapitalization(.none)
-
-                    // Full name input field
-                    InputField(text: $fullName, title: "Full Name", placeholder: "John Doe", isSecureField: false)
-                        .keyboardType(.default)
-                        .focused($fieldIsFocused)
-
-                    // Password input field
-                    InputField(text: $password, title: "Password", placeholder: "Enter your password", isSecureField: true)
-                        .autocapitalization(.none)
-                        .keyboardType(.default)
-                        .focused($fieldIsFocused)
-
-                    // Confirm Password input field
-                    InputField(text: $confirmPassword, title: "Confirm Password", placeholder: "Confirm your password", isSecureField: true)
-                        .autocapitalization(.none)
-                        .keyboardType(.default)
-                        .focused($fieldIsFocused)
-                }
-                .padding(.horizontal)
-                .padding(.top, 10)
-
-                // Register button can be added here.
-                NavigationLink(destination: SignInView()) {
-                                    Text("Already have an account? Sign In")
-                                        .foregroundColor(.blue)
-                                }
-                .padding(.top, 30)
+                InputField(text: $fullName, title: "Full Name", placeholder: "John Doe", isSecureField: false)
+                    .keyboardType(.default)
+                    .focused($fieldIsFocused)
                 
-
-                // Button to perform registration (printing a message to the console for now)
-                                Button(action: {
-                                    print("Register button tapped")
-                                    Task {
-                                        try await authViewModel.createUser(withEmail:email, password:password,fullName: fullName)
-
-                                    }
-                                }) {
-                                    Text("Register")
-                                        .foregroundColor(.white)
-                                        .padding()
-                                        .background(Color.blue)
-                                        .cornerRadius(8)
-                                }
-                                .padding(.top, 30)
+                InputField(text: $password, title: "Password", placeholder: "Enter your password", isSecureField: true)
+                    .autocapitalization(.none)
+                    .keyboardType(.default)
+                    .focused($fieldIsFocused)
+                
+                // Confirm Password input field
+                InputField(text: $confirmPassword, title: "Confirm Password", placeholder: "Confirm your password", isSecureField: true)
+                    .autocapitalization(.none)
+                    .keyboardType(.default)
+                    .focused($fieldIsFocused)
+            }
+            .padding(40)
+            .padding(.top, 20)
+            
+            VStack(spacing: 30){
+                Button("Register", action: {
+                    fieldIsFocused = false
+                    Task {
+                        Task {
+                            try await authViewModel.createUser(withEmail:email, password:password,fullName: fullName)
+                        }
+                    }
+                })
+                .font(.system(size: 18, weight: .bold, design: .default))
+                .padding(.horizontal, 20)
+                .padding(.vertical, 10)
+                .background(email.isEmpty || fullName.isEmpty || password.isEmpty || confirmPassword.isEmpty ? Color.gray : Color.pTPrimary)
+                .foregroundColor(Color.white)
+                .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
+                .frame(minWidth: 100, minHeight: 50, maxHeight: 50, alignment: .center)
+                .padding(.top, 20)
+                .disabled(email.isEmpty || fullName.isEmpty || password.isEmpty || confirmPassword.isEmpty)
                 .navigationBarBackButtonHidden(true)
+                .alert("Error", isPresented: $showingError, actions: {
+                    Button("Close", role: .cancel) { }
+                }, message: {
+                    Text(errorMessage)
+                })
+                
+                HStack{
+                    Text("Already have an account?")
+                    NavigationLink(destination: SignInView()) {
+                        Text("Sign In")
+                            .foregroundColor(.pTSecondary)
+                            .fontWeight(.bold)
+                    }
+                }
+                .padding(.top, 30)
                 Spacer()
             }
+        }
     }
 }
 

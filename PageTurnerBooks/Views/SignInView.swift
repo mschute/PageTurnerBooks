@@ -13,32 +13,29 @@ struct SignInView: View {
     
     var body: some View {
         //TODO: Style choice stripe? or visit sign up page for other view
+
         NavigationStack{
+            Text("Sign In")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color.pTPrimary)
+                .padding(.top, 50)
+                .ignoresSafeArea()
             VStack(spacing: 20) {
                 ScrollView{
-                    Text("Sign In")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.pTPrimary)
-                        .padding(.top, 40)
-                        .padding(.bottom, 50)
-                    
-                    VStack(spacing: 20) {
-                        TextField("Email Address", text: $email)
-                            .pTTextFieldStyle()
-                            .padding(.horizontal)
-                            .autocapitalization(.none)
-                            .focused($fieldIsFocused)
+                    VStack(spacing: 25) {
+                        InputField(text: $email, title: "Email Address", placeholder: "name@example.com", isSecureField: false)
                             .keyboardType(.emailAddress)
-                        
-                        SecureField("Password", text: $password)
-                            .pTTextFieldStyle()
-                            .padding(.horizontal)
                             .focused($fieldIsFocused)
-                            .keyboardType(/*@START_MENU_TOKEN@*/.default/*@END_MENU_TOKEN@*/)
+                            .autocapitalization(.none)
+  
+                        InputField(text: $password, title: "Password", placeholder: "Enter your password", isSecureField: true)
+                            .autocapitalization(.none)
+                            .keyboardType(.default)
+                            .focused($fieldIsFocused)
                         
                         VStack(spacing: 30){
                             Button("Sign In", action: {
@@ -62,7 +59,7 @@ struct SignInView: View {
                             .foregroundColor(Color.white)
                             .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
                             .frame(minWidth: 100, minHeight: 50, maxHeight: 50, alignment: .center)
-                            .padding(.top, 20)
+                            .padding(.top, 40)
                             .disabled(email.isEmpty || password.isEmpty)
                             .alert("Error", isPresented: $showingError, actions: {
                                 Button("Close", role: .cancel) { }
@@ -78,15 +75,10 @@ struct SignInView: View {
                                         .fontWeight(.bold)
                                 }
                             }
+                            .padding(30)
                         }
                     }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color(.secondarySystemBackground))
-                    .cornerRadius(12)
-                    .padding()
-                    
+                    .padding(.horizontal, 40)
                     
                 }
                 .navigationBarBackButtonHidden(true)
