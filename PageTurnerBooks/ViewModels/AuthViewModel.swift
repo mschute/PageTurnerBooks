@@ -166,3 +166,12 @@ class AuthViewModel: ObservableObject {
     }
 }
 
+extension AuthViewModel {
+    static var mock: AuthViewModel {
+        let mock = AuthViewModel()
+        mock.currentUser = User(id: "testUser", fullName: "Brad Turner", email: "bradturner@gmail.com")
+        mock.isSignedIn = true
+        return mock
+    }
+}
+

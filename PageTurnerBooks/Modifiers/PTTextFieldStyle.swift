@@ -10,10 +10,11 @@ import SwiftUI
 struct PTTextFieldStyle: ViewModifier {
     func body(content: Content) -> some View{
         content
-            .padding(8)
+            .padding(10)
+            .background(Color.white)
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.black, lineWidth: 0.5)
+                    .stroke(Color.gray, lineWidth: 0.5)
         )
     }
 }

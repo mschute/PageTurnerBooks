@@ -55,14 +55,24 @@ struct NavBar: View {
                 }
                 .tag(4)
             }
+            .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+            .toolbarBackground(Color(.black), for: .tabBar)
+            .toolbarBackground(.visible, for: .tabBar)
+            .toolbarColorScheme(.dark, for: .tabBar)
         }
         .onAppear {
                     print("NavBar is using user ID: \(authViewModel.currentUserId)")
                 }
-        .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-//        .toolbarBackground(Color(.black), for: .tabBar)
-//        .toolbarBackground(.visible, for: .tabBar)
-//        .toolbarColorScheme(.dark, for: .tabBar)
 
+    }
+}
+
+struct NavBar_Previews: PreviewProvider {
+    static var previews: some View {
+
+        NavBar()
+            .environmentObject(AuthViewModel())
+            .environmentObject(BookTrackerViewModel(userId: "9laC5umqf4T6fviudjD6HcuN1pW2", tracker: BookTrackerModel.mock))
+            .environmentObject(BooksListViewModel(userId: "9laC5umqf4T6fviudjD6HcuN1pW2"))
     }
 }

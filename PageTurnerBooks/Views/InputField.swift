@@ -18,7 +18,7 @@ struct InputField: View {
             Text(title)
                 .foregroundColor(Color(.darkGray))
                 .fontWeight(.semibold)
-                .font(.footnote)
+                .font(.subheadline)
             
             if isSecureField{
                 SecureField(placeholder, text: $text)
@@ -36,7 +36,7 @@ struct InputField: View {
 }
 
 struct InputField_Previews: PreviewProvider {
-    @State static var text = "Test text"
+    @State static var text = ""
 
     static var previews: some View {
         InputField(text: $text, title: "Test Title", placeholder: "Enter your text", isSecureField: false)

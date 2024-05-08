@@ -76,3 +76,9 @@ class BookTrackerViewModel: ObservableObject {
         }
     }
 }
+
+extension BookTrackerViewModel {
+    static var mock: BookTrackerViewModel {
+        return BookTrackerViewModel(userId: "testUser", tracker: .mock)
+    }
+}

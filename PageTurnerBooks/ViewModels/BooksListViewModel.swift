@@ -245,3 +245,14 @@ class BooksListViewModel: ObservableObject {
     }
 }
 
+extension BooksListViewModel {
+    static var mock: BooksListViewModel {
+        let viewModel = BooksListViewModel(userId: "mockUser")
+        viewModel.currentlyReadingBooks = [
+            BookItem(id: "1", volumeInfo: VolumeInfo(title: "The Great Gatsby", subtitle: "A tale of the Jazz Age", authors: ["F. Scott Fitzgerald"], publishedDate: "1925", pageCount: 218, language: "English", description: "The story of the mysteriously wealthy Jay Gatsby and his love for Daisy Buchanan, told by his friend Nick Carraway.", imageLinks: ImageLinks(smallThumbnail: "url1", thumbnail: "url1"), categories: ["Fiction", "Classic"])),
+            BookItem(id: "2", volumeInfo: VolumeInfo(title: "1984", subtitle: "A dystopian novel", authors: ["George Orwell"], publishedDate: "1949", pageCount: 328, language: "English", description: "A novel about totalitarianism and surveillance.", imageLinks: ImageLinks(smallThumbnail: "url2", thumbnail: "url2"), categories: ["Fiction", "Dystopian"]))
+        ]
+        return viewModel
+    }
+}
+

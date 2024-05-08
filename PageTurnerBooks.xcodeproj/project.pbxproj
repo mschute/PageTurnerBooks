@@ -18,6 +18,8 @@
 		0B4BD9412BE6758500CA8564 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4BD9402BE6758500CA8564 /* Color.swift */; };
 		0B4F6C782BE968AA001B7D2D /* BookSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4F6C772BE968AA001B7D2D /* BookSearchView.swift */; };
 		0BA5012C2BE67A300049DB7F /* NavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA5012B2BE67A300049DB7F /* NavBar.swift */; };
+		0BE3D7552BEBBEF80099FC01 /* Flip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE3D7542BEBBEF80099FC01 /* Flip.swift */; };
+		0BE3D7572BEBE3250099FC01 /* DisabledButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE3D7562BEBE3250099FC01 /* DisabledButtonStyle.swift */; };
 		A2A307BC2BE711EE00C99DF2 /* BookTrackerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A307BB2BE711EE00C99DF2 /* BookTrackerModel.swift */; };
 		A2A307BE2BE7122000C99DF2 /* BookTrackerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A307BD2BE7122000C99DF2 /* BookTrackerViewModel.swift */; };
 		A2A307CD2BE71DD300C99DF2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A307CC2BE71DD300C99DF2 /* User.swift */; };
@@ -76,6 +78,8 @@
 		0B4BD9402BE6758500CA8564 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		0B4F6C772BE968AA001B7D2D /* BookSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookSearchView.swift; sourceTree = "<group>"; };
 		0BA5012B2BE67A300049DB7F /* NavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBar.swift; sourceTree = "<group>"; };
+		0BE3D7542BEBBEF80099FC01 /* Flip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flip.swift; sourceTree = "<group>"; };
+		0BE3D7562BEBE3250099FC01 /* DisabledButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisabledButtonStyle.swift; sourceTree = "<group>"; };
 		A2A307BB2BE711EE00C99DF2 /* BookTrackerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTrackerModel.swift; sourceTree = "<group>"; };
 		A2A307BD2BE7122000C99DF2 /* BookTrackerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTrackerViewModel.swift; sourceTree = "<group>"; };
 		A2A307CC2BE71DD300C99DF2 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -149,6 +153,8 @@
 				0B4012852BEA6199001DAA3C /* PrimaryButtonStyle.swift */,
 				0B40127D2BEA5711001DAA3C /* PTTextFieldStyle.swift */,
 				0B4012892BEA62BF001DAA3C /* SecondaryButtonStyle.swift */,
+				0BE3D7542BEBBEF80099FC01 /* Flip.swift */,
+				0BE3D7562BEBE3250099FC01 /* DisabledButtonStyle.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -253,6 +259,7 @@
 				A2EA5A6E2BE5673D008956F8 /* ListFinishedReadingView.swift */,
 				A2EA5A702BE56755008956F8 /* ListsView.swift */,
 				A2EA5A722BE5676C008956F8 /* ListWantToReadView.swift */,
+				0BA5012B2BE67A300049DB7F /* NavBar.swift */,
 				0B40128B2BEA9F70001DAA3C /* RotateLogo.swift */,
 				A2B2353F2BE7FDDD0088FF0D /* SearchBarView.swift */,
 				A2EA5A7A2BE567BC008956F8 /* SignInView.swift */,
@@ -267,7 +274,6 @@
 			isa = PBXGroup;
 			children = (
 				A2EA5A742BE5677C008956F8 /* Modal.swift */,
-				0BA5012B2BE67A300049DB7F /* NavBar.swift */,
 				A2EA5A662BE566D2008956F8 /* PrimaryButton.swift */,
 				0B4012812BEA5B13001DAA3C /* SecondaryButton.swift */,
 				0B4012832BEA5B27001DAA3C /* SmallPrimaryButton.swift */,
@@ -388,6 +394,7 @@
 				A2EA5A672BE566D2008956F8 /* PrimaryButton.swift in Sources */,
 				A2A307BE2BE7122000C99DF2 /* BookTrackerViewModel.swift in Sources */,
 				A2B235462BE7FDF10088FF0D /* URLExtensions.swift in Sources */,
+				0BE3D7552BEBBEF80099FC01 /* Flip.swift in Sources */,
 				A2A307CD2BE71DD300C99DF2 /* User.swift in Sources */,
 				A2EA5A7B2BE567BC008956F8 /* SignInView.swift in Sources */,
 				A2B235402BE7FDDE0088FF0D /* SearchBarView.swift in Sources */,
@@ -398,6 +405,7 @@
 				0B40128A2BEA62BF001DAA3C /* SecondaryButtonStyle.swift in Sources */,
 				A2A307CF2BE71E3F00C99DF2 /* AuthViewModel.swift in Sources */,
 				0B40128C2BEA9F70001DAA3C /* RotateLogo.swift in Sources */,
+				0BE3D7572BEBE3250099FC01 /* DisabledButtonStyle.swift in Sources */,
 				A2EA5A522BE561A3008956F8 /* PageTurnerBooksApp.swift in Sources */,
 				A2EA5A7D2BE567CC008956F8 /* SignUpView.swift in Sources */,
 				A2EA5A632BE5662B008956F8 /* AccountView.swift in Sources */,

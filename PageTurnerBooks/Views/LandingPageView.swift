@@ -10,27 +10,44 @@ import SwiftUI
 
 struct LandingPageView: View {
     var body: some View {
-            NavigationStack {
-                VStack(spacing: 20){
+        //TODO: Sliver of white space at the bottom
+        //TODO: Adjust for landscape
+        NavigationStack {
+            ZStack{
+                Image("backgroundImage")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .edgesIgnoringSafeArea(.all)
+                    .opacity(0.2)
+                
+                Spacer(minLength: 40)
+                VStack{
+                    
                     RotateLogo()
-                        .padding()
-                    HStack(spacing: 30) {
-                        NavigationLink(destination: SignInView()) {
-                            Text("Sign In")
-                        }
-                        .buttonStyle(PrimaryButtonStyle())
-                        
-                        NavigationLink(destination: SignUpView()) {
-                            Text("Sign Up")
+                        .padding(.top, 20)
+                        .frame(maxWidth: .infinity)
+                    
+                    Spacer(minLength: 100)
+                    
+                    VStack(spacing: 20){
+                        HStack(spacing: 20) {
+                            NavigationLink(destination: SignInView()) {
+                                Text("Sign In")
+                            }
+                            .buttonStyle(PrimaryButtonStyle())
                             
+                            NavigationLink(destination: SignUpView()) {
+                                Text("Sign Up")
+                            }
+                            .buttonStyle(SecondaryButtonStyle())
                         }
-                        .buttonStyle(SecondaryButtonStyle())
+                        .padding(.horizontal)
+                        
+                        Spacer()
                     }
-                    Spacer()
+                    .navigationBarHidden(true)
                 }
-                .background(LinearGradient(gradient: Gradient(colors: [Color.white, Color.gray.opacity(0.3)]), startPoint: .top, endPoint: .bottom),
-                            ignoresSafeAreaEdges: .all)
-                .navigationBarHidden(true)
+            }
         }
     }
 }
