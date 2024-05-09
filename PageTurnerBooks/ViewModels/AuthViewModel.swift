@@ -188,6 +188,26 @@ class AuthViewModel: ObservableObject {
         }
     }
     
+    func validateCurrentPassword(currentPassword: String, completion: @escaping (Bool, Error?) -> Void) {
+            guard let user = Auth.auth().currentUser, let email = user.email else {
+                completion(false, NSError(domain: "AuthError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No authenticated user found."]))
+                return
+            }
+
+            let credential = EmailAuthProvider.credential(withEmail: email, password: currentPassword)
+            
+            // Re-authenticate user with the provided credentials
+            user.reauthenticate(with: credential) { result, error in
+                if let error = error {
+                    print("Re-authentication failed: \(error.localizedDescription)")
+                    completion(false, error)
+                } else {
+                    print("Re-authentication successful.")
+                    completion(true, nil)
+                }
+            }
+        }
+    
     
     
 }

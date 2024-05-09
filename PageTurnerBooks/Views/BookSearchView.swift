@@ -17,8 +17,7 @@ struct BookSearchView: View {
     
     var body: some View {
         NavigationView {
-            VStack {  // Added spacing for aesthetics
-                // Picture box for searching books
+            VStack {
                 Button(action: {
                     isShowingSearchBar = true
                 }) {
@@ -38,7 +37,6 @@ struct BookSearchView: View {
                 }
                 .padding(50)
                 
-                // Picture box for scanning
                 Button(action: {
                     isShowingScanner = true
                 }) {
@@ -57,7 +55,7 @@ struct BookSearchView: View {
                 }
             }
             .frame(maxHeight: .infinity, alignment: .top)
-            .padding(.top, 60)
+            .padding(.top, 80)
             .ignoresSafeArea(edges: .top)
         }
     }
@@ -82,7 +80,7 @@ struct BookSearchView_Previews: PreviewProvider {
         
         return BookSearchView()
             .environmentObject(bookManager)
-            .environmentObject(booksListViewModel)  // Adding BooksListViewModel to the environment
+            .environmentObject(booksListViewModel)
     }
 }
 
