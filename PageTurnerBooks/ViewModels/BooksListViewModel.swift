@@ -24,13 +24,14 @@ class BooksListViewModel: ObservableObject {
     init(userId: String) {
             self.userId = userId
             // Create a default tracker model
-            let defaultTracker = BookTrackerModel(id: "",
-                                                  userId: userId,
-                                                  startDate: Date(),
-                                                  endDate: nil,
-                                                  lastPageRead: 0,
-                                                  totalPageCount: 0,
-                                                  bookTitle: "")
+            let defaultTracker = BookTrackerModel(
+            id: "",
+              userId: userId,
+              startDate: Date(),
+              endDate: nil,
+              lastPageRead: 0,
+              totalPageCount: 0,
+              bookTitle: "")
             // Initialize the BookTrackerViewModel with the userId and the default tracker
             self.bookTrackerVM = BookTrackerViewModel(userId: userId, tracker: defaultTracker)
             // Fetch books from Firestore for each list
@@ -74,39 +75,75 @@ class BooksListViewModel: ObservableObject {
         }
     }
     
-    func addBookToFirestore(book: BookItem, listType: BookListType, completion: @escaping () -> Void = {}) {
+    func bookExistsInAnyList(bookId: String, completion: @escaping (Bool) -> Void) {
         let db = Firestore.firestore()
         let userRef = db.collection("Users").document(userId)
-        let listCollection = userRef.collection(listType.rawValue)
+        let lists = ["CurrentlyReading", "FinishedReading", "WantToRead"]
 
-        var data: [String: Any] = [
-            "id": book.id,
-            "volumeInfo": [
-                "title": book.volumeInfo.title,
-                "subtitle": book.volumeInfo.subtitle as Any,
-                "authors": book.volumeInfo.authors as Any,
-                "publishedDate": book.volumeInfo.publishedDate as Any,
-                "pageCount": book.volumeInfo.pageCount as Any,
-                "language": book.volumeInfo.language as Any,
-                "description": book.volumeInfo.description as Any,
-                "imageLinks": [
-                    "smallThumbnail": book.volumeInfo.imageLinks?.smallThumbnail as Any,
-                    "thumbnail": book.volumeInfo.imageLinks?.thumbnail as Any
-                ],
-                "categories": book.volumeInfo.categories as Any
-            ]
-        ]
+        let dispatchGroup = DispatchGroup()
+        var exists = false
 
-        // Set data for the book in Firestore and then execute the completion handler if successful
-        listCollection.document(book.id).setData(data) { error in
-            if let error = error {
-                print("Error adding book: \(error.localizedDescription)")
+        for list in lists {
+            dispatchGroup.enter()
+            userRef.collection(list).document(bookId).getDocument { (document, error) in
+                if let document = document, document.exists {
+                    exists = true
+                }
+                dispatchGroup.leave()
+            }
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            completion(exists)
+        }
+    }
+
+    
+    func addBookToFirestore(book: BookItem, listType: BookListType, completion: @escaping (Bool, String) -> Void) {
+        let db = Firestore.firestore()
+        let userRef = db.collection("Users").document(userId)
+
+        // First, check if the book already exists in any list
+        bookExistsInAnyList(bookId: book.id) { exists in
+            if exists {
+                print("Book already exists in one of the lists.")
+                completion(false, "This book is already on one of your lists.") // Notify caller that the book exists
+                return // Exit the function if the book already exists
             } else {
-                self.addBookToList(book: book, listType: listType)
-                completion()
+                // Proceed with adding the book if it does not exist
+                let listCollection = userRef.collection(listType.rawValue)
+                var data: [String: Any] = [
+                    "id": book.id,
+                    "volumeInfo": [
+                        "title": book.volumeInfo.title,
+                        "subtitle": book.volumeInfo.subtitle as Any,
+                        "authors": book.volumeInfo.authors as Any,
+                        "publishedDate": book.volumeInfo.publishedDate as Any,
+                        "pageCount": book.volumeInfo.pageCount as Any,
+                        "language": book.volumeInfo.language as Any,
+                        "description": book.volumeInfo.description as Any,
+                        "imageLinks": [
+                            "smallThumbnail": book.volumeInfo.imageLinks?.smallThumbnail as Any,
+                            "thumbnail": book.volumeInfo.imageLinks?.thumbnail as Any
+                        ],
+                        "categories": book.volumeInfo.categories as Any
+                    ]
+                ]
+
+                // Set data for the book in Firestore and then execute the completion handler if successful
+                listCollection.document(book.id).setData(data) { error in
+                    if let error = error {
+                        print("Error adding book: \(error.localizedDescription)")
+                        completion(false, "Error adding book: \(error.localizedDescription)") // Notify caller of error
+                    } else {
+                        print("Book successfully added.")
+                        completion(true, "Book successfully added to your \(listType.rawValue) list.") // Notify caller of success
+                    }
+                }
             }
         }
     }
+
 
     
     func deleteBookFromFirestore(bookId: String, listType: BookListType) {
@@ -154,22 +191,59 @@ class BooksListViewModel: ObservableObject {
         }
     }
     
-    func addBookToCurrentlyReadingAndTrack(book: BookItem) {
-        // First, add the book to Firestore
-        addBookToFirestore(book: book, listType: .currentlyReading) {
-            // After the book is added, then update tracking
-            let newTracking = BookTrackerModel(
-                id: book.id,
-                userId: self.userId,
-                startDate: Date(),
-                endDate: nil,
-                lastPageRead: 0,
-                totalPageCount: book.volumeInfo.pageCount ?? 0,
-                bookTitle: book.volumeInfo.title
-            )
-            self.bookTrackerVM.updateTracking(bookId: book.id, tracking: newTracking)
+    func addBookToCurrentlyReadingAndTrack(book: BookItem, completion: @escaping (Bool, String) -> Void) {
+        self.bookExistsInAnyList(bookId: book.id) { exists in
+            if exists {
+                completion(false, "This book is already on one of your lists.")
+            } else {
+                self.addBookToFirestore(book: book, listType: .currentlyReading) { success, message in
+                    if success {
+                        let newTracking = BookTrackerModel(
+                            id: book.id,
+                            userId: self.userId,
+                            startDate: Date(),
+                            endDate: nil,
+                            lastPageRead: 0,
+                            totalPageCount: book.volumeInfo.pageCount ?? 0,
+                            bookTitle: book.volumeInfo.title
+                        )
+                        self.bookTrackerVM.updateTracking(bookId: book.id, tracking: newTracking, trackingStatus: "CurrentlyReading")
+                        completion(true, "Book successfully added to your Currently Reading list.")
+                    } else {
+                        completion(false, message)
+                    }
+                }
+            }
         }
     }
+
+    
+    func addBookToFinishedReadingAndTrack(book: BookItem, completion: @escaping (Bool, String) -> Void) {
+        self.bookExistsInAnyList(bookId: book.id) { exists in
+            if exists {
+                completion(false, "This book is already on one of your lists.")
+            } else {
+                self.addBookToFirestore(book: book, listType: .finishedReading) { success, message in
+                    if success {
+                        let newTracking = BookTrackerModel(
+                            id: book.id,
+                            userId: self.userId,
+                            startDate: Date(),
+                            endDate: Date(),
+                            lastPageRead: book.volumeInfo.pageCount ?? 0, // Assume they read all the pages
+                            totalPageCount: book.volumeInfo.pageCount ?? 0,
+                            bookTitle: book.volumeInfo.title
+                        )
+                        self.bookTrackerVM.updateTracking(bookId: book.id, tracking: newTracking, trackingStatus: "FinishedReading")
+                        completion(true, "Book successfully added to your Finished Reading list.")
+                    } else {
+                        completion(false, message)
+                    }
+                }
+            }
+        }
+    }
+    
     
     func completeBookAndMoveToFinished(bookId: String) {
         let endDate = Date() // Setting the current date as the end date
@@ -216,7 +290,7 @@ class BooksListViewModel: ObservableObject {
     //TODO: Needs testing on a book within WantToRead list (also needs button/link implemented to test the function in there)
     func moveBookToCurrentlyReading(bookId: String) {
         let wantToReadRef = Firestore.firestore().collection("Users").document(userId)
-                                                 .collection("WantToRead").document(bookId)
+                                                     .collection("WantToRead").document(bookId)
 
         // Fetch book data from WantToRead
         wantToReadRef.getDocument { (document, error) in
@@ -226,14 +300,18 @@ class BooksListViewModel: ObservableObject {
                     let book = try document.data(as: BookItem.self)
                     
                     // Add the book to CurrentlyReading and set up tracking
-                    self.addBookToCurrentlyReadingAndTrack(book: book)
-
-                    // Delete the book from WantToRead after successfully moving it to CurrentlyReading
-                    wantToReadRef.delete { error in
-                        if let error = error {
-                            print("Error deleting book from WantToRead: \(error.localizedDescription)")
+                    self.addBookToCurrentlyReadingAndTrack(book: book) { success, message in
+                        if success {
+                            // Delete the book from WantToRead after successfully moving it to CurrentlyReading
+                            wantToReadRef.delete { error in
+                                if let error = error {
+                                    print("Error deleting book from WantToRead: \(error.localizedDescription)")
+                                } else {
+                                    print("Book successfully moved from WantToRead to CurrentlyReading")
+                                }
+                            }
                         } else {
-                            print("Book successfully moved from WantToRead to CurrentlyReading")
+                            print("Failed to move book to Currently Reading: \(message)")
                         }
                     }
                 } catch {
@@ -245,16 +323,26 @@ class BooksListViewModel: ObservableObject {
         }
     }
 
-
-
-    
     func addBookToWantToRead(book: BookItem) {
-        addBookToFirestore(book: book, listType: .wantToRead)
+        addBookToFirestore(book: book, listType: .wantToRead) { success, message in
+            if success {
+                print("Book successfully added to your Want to Read list.")
+            } else {
+                print("Failed to add book to Want to Read: \(message)")
+            }
+        }
     }
     
     func addBookToFinishedReading(book: BookItem) {
-        addBookToFirestore(book: book, listType: .finishedReading)
+        addBookToFirestore(book: book, listType: .finishedReading) { success, message in
+            if success {
+                print("Book successfully added to your Finished Reading list.")
+            } else {
+                print("Failed to add book to Finished Reading: \(message)")
+            }
+        }
     }
+
 
     func addBookToList(book: BookItem, listType: BookListType) {
         DispatchQueue.main.async {

@@ -19,11 +19,11 @@ class BookTrackerViewModel: ObservableObject {
             self.tracker = tracker
         }
 
-    func updateTracking(bookId: String, tracking: BookTrackerModel) {
-        // This should be the correct path to nest the tracking document inside the book document
+    func updateTracking(bookId: String, tracking: BookTrackerModel, trackingStatus: String) {
+        // Define the tracking document based on the status
         let trackingRef = db.collection("Users").document(userId)
-                             .collection("CurrentlyReading").document(bookId)
-                             .collection("tracking").document("trackingData") // Changed to a fixed document name for tracking
+                             .collection(trackingStatus).document(bookId)
+                             .collection("tracking").document("trackingData")
 
         print("Updating tracking at path: \(trackingRef.path)")
 
