@@ -21,7 +21,7 @@ struct BookSearchView: View {
                 Button(action: {
                     isShowingSearchBar = true
                 }) {
-                    Image("searchIcon")
+                    Image("searchIcon") // Ensure this image is correctly set in your assets
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 300, height: 220)
@@ -31,8 +31,8 @@ struct BookSearchView: View {
                             .foregroundColor(.white))
                         .cornerRadius(10)
                 }
-                .sheet(isPresented: $isShowingSearchBar) {
-                    SearchBarView(searchText: $searchText, viewModel: viewModel, coordinator: makeCoordinator())
+                .fullScreenCover(isPresented: $isShowingSearchBar) {
+                    SearchBarView(searchText: $searchText, isShowingSearchBar: $isShowingSearchBar, viewModel: viewModel, coordinator: makeCoordinator())
                         .environmentObject(bookManager)
                 }
                 .padding(50)
@@ -40,7 +40,7 @@ struct BookSearchView: View {
                 Button(action: {
                     isShowingScanner = true
                 }) {
-                    Image("scanIcon")
+                    Image("scanIcon") // Ensure this image is correctly set in your assets
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 300, height: 220)
@@ -50,7 +50,7 @@ struct BookSearchView: View {
                             .foregroundColor(.white))
                         .cornerRadius(10)
                 }
-                .sheet(isPresented: $isShowingScanner, onDismiss: checkForBooks) {
+                .fullScreenCover(isPresented: $isShowingScanner, onDismiss: checkForBooks) {
                     BarcodeScannerView(isShowingScanner: $isShowingScanner, coordinator: makeCoordinator())
                 }
             }
@@ -72,6 +72,7 @@ struct BookSearchView: View {
         }
     }
 }
+
 
 struct BookSearchView_Previews: PreviewProvider {
     static var previews: some View {

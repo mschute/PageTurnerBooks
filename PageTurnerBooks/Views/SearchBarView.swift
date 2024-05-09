@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SearchBarView: View {
     @Binding var searchText: String
+    @Binding var isShowingSearchBar: Bool  // Added this line
     @EnvironmentObject var bookManager: BookManager
     @ObservedObject var viewModel: BooksListViewModel
     var coordinator: Coordinator
@@ -18,7 +19,7 @@ struct SearchBarView: View {
                     
                     Button(action: {
                         coordinator.searchBooks(searchText, source: .searchBar)
-                        searchText = ""  // Clear text after search
+                        searchText = ""
                     }) {
                         Image(systemName: "magnifyingglass")
                             .font(.title)
@@ -33,8 +34,10 @@ struct SearchBarView: View {
                     }
                 }
             }
+            .navigationBarTitle("Search Books", displayMode: .inline)
+            .navigationBarItems(leading: Button("Back") {
+                isShowingSearchBar = false
+            })
         }
     }
 }
-
-
