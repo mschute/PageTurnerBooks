@@ -157,7 +157,7 @@ class BooksListViewModel: ObservableObject {
     func addBookToCurrentlyReadingAndTrack(book: BookItem) {
         // First, add the book to Firestore
         addBookToFirestore(book: book, listType: .currentlyReading) {
-            // After the book is added, then update tracking
+            // Create tracking model for currently reading
             let newTracking = BookTrackerModel(
                 id: book.id,
                 userId: self.userId,
@@ -167,7 +167,24 @@ class BooksListViewModel: ObservableObject {
                 totalPageCount: book.volumeInfo.pageCount ?? 0,
                 bookTitle: book.volumeInfo.title
             )
-            self.bookTrackerVM.updateTracking(bookId: book.id, tracking: newTracking)
+            self.bookTrackerVM.updateTracking(bookId: book.id, tracking: newTracking, trackingStatus: "CurrentlyReading")
+        }
+    }
+    
+    func addBookToFinishedReadingAndTrack(book: BookItem) {
+        // First, add the book to Firestore
+        addBookToFirestore(book: book, listType: .finishedReading) {
+            // Create tracking model for finished reading
+            let newTracking = BookTrackerModel(
+                id: book.id,
+                userId: self.userId,
+                startDate: Date(),
+                endDate: Date(),
+                lastPageRead: book.volumeInfo.pageCount ?? 0, // Assume they read all the pages
+                totalPageCount: book.volumeInfo.pageCount ?? 0,
+                bookTitle: book.volumeInfo.title
+            )
+            self.bookTrackerVM.updateTracking(bookId: book.id, tracking: newTracking, trackingStatus: "FinishedReading")
         }
     }
     
