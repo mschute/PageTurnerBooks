@@ -24,7 +24,8 @@ struct AccountView: View {
     @FocusState private var fieldIsFocused: Bool
     
     var body: some View {
-        VStack{
+        //TODO: Commented out Vstack currently disables Sign Out button
+//        VStack{
             NavigationStack {
                 //TODO: Close the white gap between the form and Account Info
                 Text("Account Information")
@@ -54,28 +55,43 @@ struct AccountView: View {
                         DisclosureGroup("Password", isExpanded: $showPasswordFields) {
                             VStack(spacing: 15) {
                                 
-                                SecureField("Current Password", text: $currentPassword)
-                                    .padding(8)
-                                    .overlay(
-                                        Rectangle()
-                                            .frame(height: 0.4)
-                                            .foregroundColor(.gray),
-                                        alignment: .bottom
-                                    )
-                                    .focused($fieldIsFocused)
-                                
-                                //TODO: Need to update to take in two parameters
-                                    .onChange(of: currentPassword) { _ in
+                                HStack {
+                                    SecureField("Current Password", text: $currentPassword)
+                                        .padding(8)
+                                        .overlay(
+                                            Rectangle()
+                                                .frame(height: 0.4)
+                                                .foregroundColor(.gray),
+                                            alignment: .bottom
+                                        )
+                                        .focused($fieldIsFocused)
+                                    
+                                    Button(action: {
                                         authViewModel.validateCurrentPassword(currentPassword: currentPassword) { isValid, error in
                                             DispatchQueue.main.async {
                                                 if let error = error {
                                                     print("Validation error: \(error.localizedDescription)")
+                                                } else {
+                                                    print("Re-authentication success, isValid set to \(isValid)")
                                                 }
                                                 isCurrentPasswordValid = isValid
                                             }
                                         }
+                                    }) {
+                                        Image(systemName: "checkmark.circle")
+                                            .foregroundColor(isCurrentPasswordValid ? .green : .gray)
                                     }
-                                
+                                    .padding(.trailing, 10)
+                                }
+
+                                if !isCurrentPasswordValid && !currentPassword.isEmpty {
+                                    Text("Wrong password. Please try again.")
+                                        .font(.caption)
+                                        .foregroundColor(.red)
+                                        .padding(.leading, 8)
+                                        .padding(.top, 2)
+                                }
+
                                 SecureField("New Password", text: $newPassword)
                                     .padding(8)
                                     .overlay(
@@ -91,7 +107,7 @@ struct AccountView: View {
                                         .foregroundColor(.red)
                                         .padding(.bottom, 5)
                                 }
-                                
+
                                 SecureField("Confirm New Password", text: $confirmPassword)
                                     .padding(8)
                                     .overlay(
@@ -102,7 +118,7 @@ struct AccountView: View {
                                     )
                                     .padding(.bottom, 10)
                                     .focused($fieldIsFocused)
-                                
+
                                 Button("Update Password") {
                                     if newPassword == confirmPassword {
                                         showingConfirmation = true
@@ -181,10 +197,10 @@ struct AccountView: View {
                         )
                     }
             }
-        }
-        .onTapGesture {
-            fieldIsFocused = false
-        }
+//        }
+//        .onTapGesture {
+//            fieldIsFocused = false
+//        }
     }
 }
 
