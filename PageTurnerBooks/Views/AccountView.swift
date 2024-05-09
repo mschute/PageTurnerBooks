@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AccountView: View {
-    @EnvironmentObject var authViewModel: AuthViewModel  // Injected AuthViewModel
+    @EnvironmentObject var authViewModel: AuthViewModel
     @State private var showEmailFields = false
     @State private var showPasswordFields = false
     @State private var newEmail: String = ""
@@ -16,86 +16,168 @@ struct AccountView: View {
     @State private var newPassword: String = ""
     @State private var confirmPassword: String = ""
     @State private var showingDeleteConfirmation = false
-    //TODO: Unsure about the look of the inputfields in the Account Information. Especially with the "Old email" mixed in
+    @State private var showAccountAlert = false
+    @State private var showLogoutAlert = false
+    @State private var showingConfirmation = false
+    @State private var isCurrentPasswordValid = false
+    @State private var showSuccessAlert = false
     
     var body: some View {
-        Form{
+        NavigationStack {
             Text("Account Information")
                 .font(.largeTitle)
-                .frame(maxWidth: .infinity, alignment: .center)
-            Section(){
-                DisclosureGroup("Email", isExpanded: $showEmailFields){
-                    VStack(alignment: .leading){
-                        if let email = authViewModel.currentUser?.email {
-                            Text("Current Email: \(email)")
-                                .padding(.bottom, 10)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color.pTPrimary)
+                .padding(.top, 50)
+                .ignoresSafeArea()
+            Form{
+                Section(){
+                    DisclosureGroup("Email", isExpanded: $showEmailFields){
+                        VStack(alignment: .leading) {
+                            if let email = authViewModel.currentUser?.email {
+                                Text(email)
+                                    .bold()
+                                    .padding(.bottom, 10)
+                            }
                         }
-                    }
-                    
-                    // TODO: Bug Fix button alignment to leading
-                    .padding()
-                    
-                }
-                //TODO: Change to Turner book color
-                .accentColor(.blue)
-                
-                DisclosureGroup("Password", isExpanded: $showPasswordFields){
-                    VStack(alignment: .leading, spacing: 15){
-                        //TODO: Need to add user validation to confirm current password
-                        SecureField("Current Password", text: $currentPassword)
-                        SecureField("New Password", text: $newPassword)
-                        SecureField("Confirm New Password", text: $confirmPassword)
+                        .padding()
                         
-                        Button("Update Password") {
-                            if newPassword == confirmPassword {
-                                Task {
-                                    do {
-                                        try await authViewModel.updatePassword(currentPassword: currentPassword, newPassword: newPassword)
-                                    } catch {
-                                        print("Failed to update password: \(error.localizedDescription)")
+                    }
+                    .accentColor(Color.pTPrimary)
+                    
+                    DisclosureGroup("Password", isExpanded: $showPasswordFields) {
+                        VStack(spacing: 15) {
+                            
+                            SecureField("Current Password", text: $currentPassword)
+                                .padding(8)
+                                .overlay(
+                                    Rectangle()
+                                        .frame(height: 0.4)
+                                        .foregroundColor(.gray),
+                                    alignment: .bottom
+                                )
+                                .onChange(of: currentPassword) { _ in
+                                    authViewModel.validateCurrentPassword(currentPassword: currentPassword) { isValid, error in
+                                        DispatchQueue.main.async {
+                                            if let error = error {
+                                                print("Validation error: \(error.localizedDescription)")
+                                            }
+                                            isCurrentPasswordValid = isValid
+                                        }
                                     }
                                 }
-                            } else {
-                                print("The new passwords do not match.")
+
+                            SecureField("New Password", text: $newPassword)
+                                .padding(8)
+                                .overlay(
+                                    Rectangle()
+                                        .frame(height: 0.4)
+                                        .foregroundColor(.gray),
+                                    alignment: .bottom
+                                )
+                            if newPassword.count > 0 && newPassword.count < 6 {
+                                        Text("Password must be at least 6 characters long.")
+                                            .font(.caption)
+                                            .foregroundColor(.red)
+                                            .padding(.bottom, 5)
+                                    }
+
+                            SecureField("Confirm New Password", text: $confirmPassword)
+                                .padding(8)
+                                .overlay(
+                                    Rectangle()
+                                        .frame(height: 0.4)
+                                        .foregroundColor(.gray),
+                                    alignment: .bottom
+                                )
+                                .padding(.bottom, 10)
+
+                            Button("Update Password") {
+                                if newPassword == confirmPassword {
+                                    showingConfirmation = true
+                                } else {
+                                    print("The new passwords do not match.")
+                                }
+                            }
+                            .disabled(!isCurrentPasswordValid || newPassword.isEmpty || confirmPassword.isEmpty || newPassword != confirmPassword || newPassword.count < 6)
+                            .accentColor(.blue)
+                            .confirmationDialog("Are you sure you want to update your password?", isPresented: $showingConfirmation, titleVisibility: .visible) {
+                                Button("Update", role: .destructive) {
+                                    Task {
+                                        do {
+                                            try await authViewModel.updatePassword(currentPassword: currentPassword, newPassword: newPassword)
+                                            DispatchQueue.main.async {
+                                                currentPassword = ""
+                                                newPassword = ""
+                                                confirmPassword = ""
+                                                showSuccessAlert = true
+                                            }
+                                        } catch {
+                                            print("Failed to update password: \(error.localizedDescription)")
+                                        }
+                                    }
+                                }
+                                Button("Cancel", role: .cancel) { }
                             }
                         }
                     }
-                    // TODO: Bug Fix button alignment to leading
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .accentColor(Color.pTPrimary)
+                    .alert("Password Changed", isPresented: $showSuccessAlert) {
+                        Button("OK", role: .cancel) { }
+                    } message: {
+                        Text("Your password has been successfully updated.")
+                    }
+                    }
+                
+                    VStack {
+                            SecondaryButton(title: "Sign Out", action: {
+                                self.showLogoutAlert = true // Set to true to show the alert when tapped
+                            })
+                            .padding()
+                            .frame(alignment: .center)
+                            .alert(isPresented: $showLogoutAlert) { // Configure the alert
+                                Alert(
+                                    title: Text("Confirm Sign Out"),
+                                    message: Text("Are you sure you want to sign out?"),
+                                    primaryButton: .destructive(Text("Sign Out")) {
+                                        print("Logging out...")
+                                        authViewModel.logOut()
+                                    },
+                                    secondaryButton: .cancel()
+                                )
+                            }
+                        }
+                
                 }
-                //TODO: Change to Turner book color
-                .accentColor(.blue)
-
-                Section{
-                    VStack{
-                        //TODO: Make Sign Out button Red?
-                        //TODO: Should this just be another option in the form rather than a button? It may look cleaner, its a bit chunky right now
-                        // Logout button
-                        //TODO: Redo the button
-                        PrimaryButton(title: "Sign Out", action: {
-                            authViewModel.logOut()
-                        })
+                Text("Delete Account")
+                        .fontWeight(.bold)
+                        .foregroundColor(.red)
+                        .onTapGesture {
+                            self.showAccountAlert = true // Set to true to show the alert when tapped
+                        }
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .center)
-                        
-                        Divider()
+                        .alert(isPresented: $showAccountAlert) { // Configure the alert
+                            Alert(
+                                title: Text("Confirm Deletion"),
+                                message: Text("Are you sure you want to delete your account? This action cannot be undone."),
+                                primaryButton: .destructive(Text("Delete")) {
+                                    print("Delete button pressed. Attempting to delete user...")
+                                    authViewModel.deleteUser()
+                                },
+                                secondaryButton: .cancel()
+                            )
                     }
-                    
-                    // Delete account needs to be in a separate VStack from logout, Xcode fails delete account function otherwise
-                    VStack{
-                        Button("Delete Account", action: {
-                            print("Delete button pressed. Attempting to delete user...")
-                            authViewModel.deleteUser()
-                        })
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.red)
-                        .cornerRadius(10)
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .center)
-                    }
-                }
-            }
         }
+    }
+}
+
+struct AccountView_Previews: PreviewProvider {
+    static var previews: some View {
+        AccountView()
+            .environmentObject(AuthViewModel())
     }
 }

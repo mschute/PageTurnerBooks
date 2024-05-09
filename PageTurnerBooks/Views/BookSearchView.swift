@@ -18,27 +18,45 @@ struct BookSearchView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Button("Start Scanning") {
-                    isShowingScanner = true
-                }
-                .sheet(isPresented: $isShowingScanner, onDismiss: checkForBooks) {
-                    BarcodeScannerView(isShowingScanner: $isShowingScanner, coordinator: makeCoordinator())
-                }
-
-                Button("Search Books") {
+                Button(action: {
                     isShowingSearchBar = true
+                }) {
+                    Image("searchIcon")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 300, height: 220)
+                        .overlay(Rectangle().foregroundColor(Color.black.opacity(0.4)))
+                        .overlay(Text("Search Books")
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundColor(.white))
+                        .cornerRadius(10)
                 }
                 .sheet(isPresented: $isShowingSearchBar) {
                     SearchBarView(searchText: $searchText, viewModel: viewModel, coordinator: makeCoordinator())
                         .environmentObject(bookManager)
                 }
-
-                .sheet(isPresented: $isShowingDetail) {
-                    if let book = bookManager.books.first {
-                        BookDetailView(viewModel: viewModel, bookItem: book)
-                    }
+                .padding(50)
+                
+                Button(action: {
+                    isShowingScanner = true
+                }) {
+                    Image("scanIcon")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 300, height: 220)
+                        .overlay(Rectangle().foregroundColor(Color.black.opacity(0.4)))
+                        .overlay(Text("Scan Barcode")
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundColor(.white))
+                        .cornerRadius(10)
+                }
+                .sheet(isPresented: $isShowingScanner, onDismiss: checkForBooks) {
+                    BarcodeScannerView(isShowingScanner: $isShowingScanner, coordinator: makeCoordinator())
                 }
             }
+            .frame(maxHeight: .infinity, alignment: .top)
+            .padding(.top, 80)
+            .ignoresSafeArea(edges: .top)
         }
     }
     
@@ -62,6 +80,7 @@ struct BookSearchView_Previews: PreviewProvider {
         
         return BookSearchView()
             .environmentObject(bookManager)
-            .environmentObject(booksListViewModel)  // Adding BooksListViewModel to the environment
+            .environmentObject(booksListViewModel)
     }
 }
+
