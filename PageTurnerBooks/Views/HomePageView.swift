@@ -12,6 +12,8 @@ struct HomePageView: View {
     @EnvironmentObject var bookTrackerViewModel: BookTrackerViewModel
     @EnvironmentObject var booksListViewModel: BooksListViewModel
     
+    //TODO: When loading, the UI is messed up. Perhaps add a frame around the header so the elements stay in place?
+    
     var body: some View {
         
         ZStack(alignment: .top){

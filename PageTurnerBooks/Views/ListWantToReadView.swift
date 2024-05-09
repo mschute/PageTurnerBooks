@@ -12,9 +12,15 @@ struct ListWantToReadView: View {
 
     var body: some View {
         VStack {
-            Text("Want to Read 📕")
+            Text("Want to Read")
                 .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
                 .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color.pTPrimary)
+                .padding(.top, 50)
+                .ignoresSafeArea()
             Text("\(viewModel.wantToReadBooks.count) books")
                 .font(.title2)
             List(viewModel.wantToReadBooks, id: \.id) { book in

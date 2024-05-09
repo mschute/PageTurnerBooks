@@ -12,6 +12,9 @@ struct SignUpView: View {
     @FocusState private var fieldIsFocused: Bool
 
     @EnvironmentObject var authViewModel: AuthViewModel
+    
+    //TODO: The title gets pushed up out of screen when the keyboard appears. I think because the input fields get pushed up. Maybe put the fields in a scroll view to rectify that?
+    //TODO: After registration, directed to sign-in page
     var body: some View {
         VStack {
             Text("Register")
@@ -37,7 +40,6 @@ struct SignUpView: View {
                     .keyboardType(.default)
                     .focused($fieldIsFocused)
                 
-                // Confirm Password input field
                 InputField(text: $confirmPassword, title: "Confirm Password", placeholder: "Confirm your password", isSecureField: true)
                     .autocapitalization(.none)
                     .keyboardType(.default)
@@ -46,7 +48,8 @@ struct SignUpView: View {
             .padding(40)
             .padding(.top, 20)
             
-            VStack(spacing: 30){
+            VStack(spacing: 30) {
+                
                 Button("Register", action: {
                     fieldIsFocused = false
                     Task {
@@ -58,7 +61,7 @@ struct SignUpView: View {
                 .font(.system(size: 18, weight: .bold, design: .default))
                 .padding(.horizontal, 20)
                 .padding(.vertical, 10)
-                .background(email.isEmpty || fullName.isEmpty || password.isEmpty || confirmPassword.isEmpty ? Color.gray : Color.pTPrimary)
+                .background(email.isEmpty || fullName.isEmpty || password.isEmpty || confirmPassword.isEmpty ? Color.gray : Color.pTSecondary)
                 .foregroundColor(Color.white)
                 .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
                 .frame(minWidth: 100, minHeight: 50, maxHeight: 50, alignment: .center)
@@ -71,7 +74,8 @@ struct SignUpView: View {
                     Text(errorMessage)
                 })
                 
-                HStack{
+                HStack {
+                    
                     Text("Already have an account?")
                     NavigationLink(destination: SignInView()) {
                         Text("Sign In")

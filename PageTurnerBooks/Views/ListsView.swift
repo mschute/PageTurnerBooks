@@ -11,19 +11,43 @@ struct ListsView: View {
     @ObservedObject var viewModel: BooksListViewModel
     
     var body: some View {
-        NavigationView {
-            List {
-                NavigationLink(destination: ListWantToReadView(viewModel: viewModel)) {
-                    Text("Want to Read")
+        
+        NavigationStack {
+            ZStack {
+                Color.pTPrimary.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                
+                VStack(spacing: 0){
+                    VStack {
+                        Text("Reading List")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity, maxHeight: -20 )
+                            .background(Color.pTPrimary)
+                            .padding(.top, 80)
+                            .edgesIgnoringSafeArea(.top)
+                    }
+                    .background(Color.pTPrimary)
+                    .edgesIgnoringSafeArea(.top)
+                    List {
+                        Section {
+                            NavigationLink(destination: ListWantToReadView(viewModel: viewModel)) {
+                                Text("Want to Read")
+                            }
+                            
+                            NavigationLink(destination: ListCurrentlyReadingView(viewModel: viewModel)) {
+                                Text("Currently Reading")
+                            }
+                            
+                            NavigationLink(destination: ListFinishedReadingView(viewModel: viewModel)) {
+                                Text("Finished Reading")
+                            }
+                        }
+                    }
+                    .listStyle(GroupedListStyle())
                 }
-                NavigationLink(destination: ListCurrentlyReadingView(viewModel: viewModel)) {
-                    Text("Currently Reading")
-                }
-                NavigationLink(destination: ListFinishedReadingView(viewModel: viewModel)) {
-                    Text("Finished Reading")
-                }
+                .navigationBarTitle("", displayMode: .inline)
             }
-            .navigationBarTitle("Reading Lists 📚")
         }
     }
 }

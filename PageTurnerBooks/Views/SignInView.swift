@@ -12,7 +12,6 @@ struct SignInView: View {
     @FocusState private var fieldIsFocused: Bool
     
     var body: some View {
-        //TODO: Style choice stripe? or visit sign up page for other view
 
         NavigationStack{
             Text("Sign In")
@@ -24,8 +23,11 @@ struct SignInView: View {
                 .background(Color.pTPrimary)
                 .padding(.top, 50)
                 .ignoresSafeArea()
+            
             VStack(spacing: 20) {
-                ScrollView{
+                
+                ScrollView {
+                    
                     VStack(spacing: 25) {
                         InputField(text: $email, title: "Email Address", placeholder: "name@example.com", isSecureField: false)
                             .keyboardType(.emailAddress)
@@ -37,7 +39,8 @@ struct SignInView: View {
                             .keyboardType(.default)
                             .focused($fieldIsFocused)
                         
-                        VStack(spacing: 30){
+                        VStack(spacing: 30) {
+                            
                             Button("Sign In", action: {
                                 fieldIsFocused = false
                                 Task {
@@ -55,7 +58,7 @@ struct SignInView: View {
                             .font(.system(size: 18, weight: .bold, design: .default))
                             .padding(.horizontal, 20)
                             .padding(.vertical, 10)
-                            .background(email.isEmpty || password.isEmpty ? Color.gray : Color.pTPrimary)
+                            .background(email.isEmpty || password.isEmpty ? Color.gray : Color.pTSecondary)
                             .foregroundColor(Color.white)
                             .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
                             .frame(minWidth: 100, minHeight: 50, maxHeight: 50, alignment: .center)
@@ -67,7 +70,8 @@ struct SignInView: View {
                                 Text(errorMessage)
                             })
                             
-                            HStack{
+                            HStack {
+                                
                                 Text("No Account?")
                                 NavigationLink(destination: SignUpView()) {
                                     Text("Sign Up")

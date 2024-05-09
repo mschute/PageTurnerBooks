@@ -34,12 +34,12 @@ struct LandingPageView: View {
                             NavigationLink(destination: SignInView()) {
                                 Text("Sign In")
                             }
-                            .buttonStyle(PrimaryButtonStyle())
+                            .buttonStyle(SecondaryButtonStyle())
                             
                             NavigationLink(destination: SignUpView()) {
                                 Text("Sign Up")
                             }
-                            .buttonStyle(SecondaryButtonStyle())
+                            .buttonStyle(PrimaryButtonStyle())
                         }
                         .padding(.horizontal)
                         

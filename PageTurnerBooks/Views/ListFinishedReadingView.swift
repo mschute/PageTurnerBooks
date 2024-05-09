@@ -12,9 +12,15 @@ struct ListFinishedReadingView: View {
 
     var body: some View {
         VStack {
-            Text("Finished Books 🏁")
+            Text("Finished Reading")
                 .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
                 .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color.pTPrimary)
+                .padding(.top, 50)
+                .ignoresSafeArea()
             List(viewModel.finishedReadingBooks, id: \.id) { book in
                 HStack {
                     VStack{

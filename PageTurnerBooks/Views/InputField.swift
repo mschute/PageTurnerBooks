@@ -23,6 +23,7 @@ struct InputField: View {
             if isSecureField{
                 SecureField(placeholder, text: $text)
                     .font(.system(size: 14))
+                    .textContentType(isSecureField ? .oneTimeCode : nil)
                     
             } else {
                 TextField(placeholder, text: $text)

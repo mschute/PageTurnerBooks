@@ -186,6 +186,7 @@
 				A2D6217C2BE9883A006DBB06 /* BooksListViewModel.swift */,
 				A2A307BD2BE7122000C99DF2 /* BookTrackerViewModel.swift */,
 				A2B2354F2BE7FE0B0088FF0D /* Coordinator.swift */,
+				A2B235512BE7FE100088FF0D /* VideoCaptureView.swift */,
 				A2B235452BE7FDF10088FF0D /* URLExtensions.swift */,
 			);
 			path = ViewModels;
@@ -265,7 +266,6 @@
 				A2EA5A7A2BE567BC008956F8 /* SignInView.swift */,
 				A2EA5A7C2BE567CC008956F8 /* SignUpView.swift */,
 				A2EA5A7E2BE567DE008956F8 /* TrackerView.swift */,
-				A2B235512BE7FE100088FF0D /* VideoCaptureView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
