@@ -9,6 +9,9 @@ import SwiftUI
 
 struct BookDetailComponent: View {
     @ObservedObject var viewModel: BooksListViewModel
+    @State private var showAlert = false
+    @State private var alertMessage = ""
+    
     let bookItem: BookItem
 
     var body: some View {
@@ -24,16 +27,32 @@ struct BookDetailComponent: View {
         }
     
     private var addToListView: some View {
-            Menu {
-                Button("Want to Read", action: { viewModel.addBookToFirestore(book: bookItem, listType: .wantToRead) })
-                Button("Currently Reading", action: { viewModel.addBookToCurrentlyReadingAndTrack(book: bookItem) })
-                Button("Finished Reading", action: { viewModel.addBookToFinishedReadingAndTrack(book: bookItem) })
-            } label: {
-                        // Using CustomButton as the label for the Menu
-                        Button("Add to List", action: {})
-                            .fixedSize()
-                    }
+        Menu {
+            Button("Want to Read") {
+                viewModel.addBookToFirestore(book: bookItem, listType: .wantToRead) { success, message in
+                    alertMessage = message
+                    showAlert = true
+                }
+            }
+            Button("Currently Reading") {
+                viewModel.addBookToCurrentlyReadingAndTrack(book: bookItem) { success, message in
+                    alertMessage = message
+                    showAlert = true
+                }
+            }
+            Button("Finished Reading") {
+                viewModel.addBookToFinishedReadingAndTrack(book: bookItem) { success, message in
+                    alertMessage = message
+                    showAlert = true
+                }
+            }
+        } label: {
+            Button("Add to List", action: {}).fixedSize()
         }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Book Addition Status"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
+    }
     
     
     private var thumbnailAndDetailsView: some View {
