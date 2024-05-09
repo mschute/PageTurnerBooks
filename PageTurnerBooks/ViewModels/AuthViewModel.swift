@@ -46,21 +46,25 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    func createUser(withEmail email: String, password: String, fullName: String) async throws {
+    func createUser(withEmail email: String, password: String, fullName: String, completion: @escaping (Bool, String) -> Void) async throws {
+        guard password.count >= 6 else {
+            completion(false, "Password must be at least 6 characters long.")
+            return
+        }
+
         do {
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
-            DispatchQueue.main.async {
-                self.userSession = result.user
-                print("User creation successful - User ID: \(result.user.uid)")
-            }
             let user = User(id: result.user.uid, fullName: fullName, email: email)
-            let encodedUser = try Firestore.Encoder().encode(user)
-            let db = Firestore.firestore()
-            try await db.collection("Users").document(user.id).setData(encodedUser)
-            print("Firestore user data set for User ID: \(user.id)")
-            await fetchUser()
-        } catch {
-            print("Failed to create user: \(error.localizedDescription)")
+            try await Firestore.firestore().collection("Users").document(user.id).setData(from: user)
+            completion(true, "Registration successful!")
+        } catch let error as NSError {
+            if error.code == AuthErrorCode.emailAlreadyInUse.rawValue {
+                completion(false, "This email is already in use.")
+            } else if error.code == AuthErrorCode.invalidEmail.rawValue {
+                completion(false, "Invalid email format.")
+            } else {
+                completion(false, error.localizedDescription)
+            }
         }
     }
     
