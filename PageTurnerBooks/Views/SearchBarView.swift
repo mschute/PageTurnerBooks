@@ -42,5 +42,8 @@ struct SearchBarView: View {
                 isShowingSearchBar = false
             })
         }
+        .tint(.pTPrimary)
     }
 }
+
+

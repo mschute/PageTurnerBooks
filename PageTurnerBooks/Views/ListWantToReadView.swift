@@ -68,7 +68,7 @@ struct ListWantToReadView: View {
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
-                    .padding(.vertical, 5)
+                    .padding(.vertical, 10)
                 }
             }
             .listStyle(GroupedListStyle())
@@ -112,6 +112,7 @@ struct ListWantToReadView: View {
             }
         }
     }
+        
 }
 
 struct ListWantToRead_Preview: PreviewProvider {

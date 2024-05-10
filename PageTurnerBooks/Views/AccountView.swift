@@ -175,7 +175,7 @@ struct AccountView: View {
                 }
                 Text("Delete Account")
                     .fontWeight(.bold)
-                    .foregroundColor(.red)
+                    .foregroundColor(.pTWarning)
                     .onTapGesture {
                         self.showAccountAlert = true // Set to true to show the alert when tapped
                     }

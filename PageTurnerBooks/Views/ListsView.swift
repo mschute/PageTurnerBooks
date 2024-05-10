@@ -9,7 +9,6 @@ struct ListsView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                
                 VStack(spacing: 0){
                     Text("Reading List")
                         .font(.largeTitle)
@@ -68,6 +67,7 @@ struct ListsView: View {
                 .navigationBarTitle("", displayMode: .inline)
             }
         }
+        .tint(.white)
     }
 }
 

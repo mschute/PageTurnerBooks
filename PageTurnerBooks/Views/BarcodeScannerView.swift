@@ -25,5 +25,6 @@ struct BarcodeScannerView: View {
             })
             .onAppear(perform: coordinator.startSession)
         }
+        .tint(.pTPrimary)
     }
 }
