@@ -10,19 +10,18 @@ struct ListsView: View {
         
         NavigationStack {
             ZStack {
-                Color.pTPrimary.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                Color.pTPrimary.edgesIgnoringSafeArea(.top)
+                
                 
                 VStack(spacing: 0){
-                    VStack {
                         Text("Reading List")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundColor(.white)
-                            .frame(maxWidth: .infinity, maxHeight: -20 )
+                            .frame(maxWidth: .infinity, maxHeight: 0)
                             .background(Color.pTPrimary)
                             .padding(.top, 80)
-                            .edgesIgnoringSafeArea(.top)
-                    }
+                            .padding(.bottom, -20)
                     .background(Color.pTPrimary)
                     .edgesIgnoringSafeArea(.top)
                     List {
