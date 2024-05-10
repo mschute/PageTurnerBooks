@@ -39,50 +39,68 @@ struct ListFinishedReadingView: View {
             List(viewModel.finishedReadingBooks, id: \.id) { book in
                 VStack(alignment: .leading) {
                     BookRow(book: book, viewModel: viewModel)
-                    if var dates = trackingInfo[book.id] {
-                        
-                        DatePicker("End Date", selection: Binding<Date>(
-                            get: { dates.endDate ?? Date() },
-                            set: { newDate in
-                                dates.endDate = newDate
-                                viewModel.bookTrackerVM.updateEndDate(bookId: book.id, endDate: newDate)
-                                trackingInfo[book.id]?.endDate = newDate  // Update local state
-                            }
-                        ), displayedComponents: .date)
-                    }
+                    
+                    HStack {
+                        if let dates = trackingInfo[book.id] {
+                            Text("End Date:")
+                                .foregroundColor(.black)
 
-                    Button(action: {
-                        bookToDelete = book
-                        showingDeleteAlert = true
-                    }) {
-                        Image(systemName: "trash")
-                            .foregroundColor(.red)
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    .alert(isPresented: $showingDeleteAlert) {
-                        Alert(
-                            title: Text("Confirm Deletion"),
-                            message: Text("Are you sure you want to delete '\(bookToDelete?.volumeInfo.title ?? "this book")'?"),
-                            primaryButton: .destructive(Text("Delete")) {
-                                if let bookToDelete = bookToDelete {
-                                    viewModel.deleteBookFromFirestore(bookId: bookToDelete.id, listType: .finishedReading)
+                            DatePicker("", selection: Binding<Date>(
+                                get: { dates.endDate ?? Date() },
+                                set: { newDate in
+                                    var newDates = dates
+                                    newDates.endDate = newDate
+                                    trackingInfo[book.id] = newDates
+                                    viewModel.bookTrackerVM.updateEndDate(bookId: book.id, endDate: newDate)
                                 }
-                            },
-                            secondaryButton: .cancel() {
-                                bookToDelete = nil
-                            }
-                        )
+                            ), displayedComponents: .date)
+                            .datePickerStyle(.compact)
+                            .labelsHidden()
+                        }
+
+                        Spacer()
+
+                        Button(action: {
+                            bookToDelete = book
+                            showingDeleteAlert = true
+                        }) {
+                            Image(systemName: "trash")
+                                .foregroundColor(.red)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
-                    .padding(.top, 5)
+                    .padding(.vertical, 5)
+                }
+                .alert(isPresented: $showingDeleteAlert) {
+                    Alert(
+                        title: Text("Confirm Deletion"),
+                        message: Text("Are you sure you want to delete '\(bookToDelete?.volumeInfo.title ?? "this book")'?"),
+                        primaryButton: .destructive(Text("Delete")) {
+                            if let bookToDelete = bookToDelete {
+                                viewModel.deleteBookFromFirestore(bookId: bookToDelete.id, listType: .finishedReading)
+                            }
+                        },
+                        secondaryButton: .cancel() {
+                            bookToDelete = nil
+                        }
+                    )
                 }
             }
-            .listStyle(InsetGroupedListStyle())
-            .tint(.ptSecondary)
+        .listStyle(GroupedListStyle())
+        .tint(.ptSecondary)
+        .padding(.top, -10)
+    }
+    .edgesIgnoringSafeArea(.top)
+    .onAppear {
+        for book in viewModel.finishedReadingBooks {
+            fetchTrackingData(for: book.id)
         }
-        .onAppear {
-            for book in viewModel.finishedReadingBooks {
-                fetchTrackingData(for: book.id)
-            }
-        }
+    }
+}
+}
+
+struct ListFinishedReadingView_Preview: PreviewProvider {
+    static var previews: some View {
+        ListFinishedReadingView(viewModel: BooksListViewModel(userId: "xR8M6o1Km9WCyJiePsNvXlVsAH03"))
     }
 }

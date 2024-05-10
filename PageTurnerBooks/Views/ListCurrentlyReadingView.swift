@@ -9,8 +9,8 @@ struct ListCurrentlyReadingView: View {
     @State private var bookToDelete: BookItem?
 
     var body: some View {
-        NavigationView {  // Ensures navigation capability
-            VStack(spacing: 0) {
+        NavigationView {
+            VStack{
                 Text("Currently Reading")
                     .font(.largeTitle)
                     .fontWeight(.bold)
@@ -51,20 +51,21 @@ struct ListCurrentlyReadingView: View {
                             }
                         }
                         
-                        // Navigation link for tracking below the book information
                         NavigationLink(destination: TrackerView(viewModel: BookTrackerViewModel(userId: viewModel.userId, tracker: BookTrackerModel(id: book.id, userId: viewModel.userId, startDate: Date(), endDate: nil, lastPageRead: 0, totalPageCount: book.volumeInfo.pageCount ?? 0, bookTitle: book.volumeInfo.title)), listViewModel: viewModel)) {
                             Text("Track")
                                 .fontWeight(.bold)
-                                .frame(maxWidth: .infinity, alignment: .trailing) // Align to the right
-                                .padding(.trailing) // Optional padding for better alignment
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                                .padding(.trailing)
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
-                    .padding(.vertical) // Add padding to space out list items
+                    .padding(.vertical)
                 }
                 .listStyle(GroupedListStyle())
                 .tint(.ptSecondary)
+                .padding(.top, -10)
             }
+            .edgesIgnoringSafeArea(.top)
         }
     }
 }

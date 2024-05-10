@@ -7,40 +7,63 @@ struct ListsView: View {
     @ObservedObject var viewModel: BooksListViewModel
     
     var body: some View {
-        
         NavigationStack {
             ZStack {
-                Color.pTPrimary.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                 
                 VStack(spacing: 0){
-                    VStack {
-                        Text("Reading List")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity, maxHeight: -20 )
-                            .background(Color.pTPrimary)
-                            .padding(.top, 80)
-                            .edgesIgnoringSafeArea(.top)
-                    }
-                    .background(Color.pTPrimary)
-                    .edgesIgnoringSafeArea(.top)
-                    List {
-                        Section {
+                    Text("Reading List")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity, maxHeight: 0)
+                        .background(Color.pTPrimary)
+                        .padding(.top, 81)
+                        .padding(.bottom, 40)
+                        .background(Color.pTPrimary)
+                        .edgesIgnoringSafeArea(.top)
+                    
+                    ScrollView {
+                        VStack {
                             NavigationLink(destination: ListWantToReadView(viewModel: viewModel)) {
-                                Text("Want to Read")
+                                Image("WantToRead")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 350, height: 150)
+                                    .overlay(Rectangle().foregroundColor(Color.black.opacity(0.4)))
+                                    .overlay(Text("Want to Read")
+                                        .font(.system(size: 24, weight: .bold))
+                                        .foregroundColor(.white))
+                                    .cornerRadius(10)
                             }
-                            
+                            .padding(.bottom, 20)
+
                             NavigationLink(destination: ListCurrentlyReadingView(viewModel: viewModel)) {
-                                Text("Currently Reading")
+                                Image("CurrentlyReading")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 350, height: 150)
+                                    .overlay(Rectangle().foregroundColor(Color.black.opacity(0.4)))
+                                    .overlay(Text("Currently Reading")
+                                        .font(.system(size: 24, weight: .bold))
+                                        .foregroundColor(.white))
+                                    .cornerRadius(10)
                             }
-                            
+                            .padding(.bottom, 20)
+
                             NavigationLink(destination: ListFinishedReadingView(viewModel: viewModel)) {
-                                Text("Finished Reading")
+                                Image("FinishedReading")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 350, height: 150)
+                                    .overlay(Rectangle().foregroundColor(Color.black.opacity(0.37)))
+                                    .overlay(Text("Finished Reading")
+                                        .font(.system(size: 24, weight: .bold))
+                                        .foregroundColor(.white))
+                                    .cornerRadius(10)
                             }
                         }
                     }
-                    .listStyle(GroupedListStyle())
+                    .frame(maxWidth: .infinity)
                 }
                 .navigationBarTitle("", displayMode: .inline)
             }
@@ -53,4 +76,3 @@ struct ListsView_Preview: PreviewProvider {
         ListsView(viewModel: BooksListViewModel(userId: "9laC5umqf4T6fviudjD6HcuN1pW2"))
     }
 }
-

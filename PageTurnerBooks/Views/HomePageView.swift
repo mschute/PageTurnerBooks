@@ -35,7 +35,7 @@ struct HomePageView: View {
                         }
                     }
                     Spacer()
-                    Text("Continue reading...")
+                    Text("You are currently reading...")
                         .font(.system(size: 20, weight: .semibold))
                         .foregroundColor(.white)
                         .padding()
