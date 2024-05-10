@@ -1,9 +1,5 @@
 //
 //  BooksListViewModel.swift
-//  PageTurnerBooks
-//
-//  Created by Brad on 06/05/2024.
-//
 
 import SwiftUI
 import Combine
@@ -18,12 +14,11 @@ class BooksListViewModel: ObservableObject {
     @Published var currentlyReadingBooks: [BookItem] = []
     @Published var finishedReadingBooks: [BookItem] = []
     
-    private var userId: String
-    private var bookTrackerVM: BookTrackerViewModel
+    internal var userId: String
+    internal var bookTrackerVM: BookTrackerViewModel
     
     init(userId: String) {
             self.userId = userId
-            // Create a default tracker model
             let defaultTracker = BookTrackerModel(
             id: "",
               userId: userId,
@@ -32,22 +27,18 @@ class BooksListViewModel: ObservableObject {
               lastPageRead: 0,
               totalPageCount: 0,
               bookTitle: "")
-            // Initialize the BookTrackerViewModel with the userId and the default tracker
             self.bookTrackerVM = BookTrackerViewModel(userId: userId, tracker: defaultTracker)
-            // Fetch books from Firestore for each list
             loadBooksFor(listType: .wantToRead)
             loadBooksFor(listType: .currentlyReading)
             loadBooksFor(listType: .finishedReading)
         }
     
-    // Function to load books for a specific list
     func loadBooksFor(listType: BookListType) {
         let db = Firestore.firestore()
         let userRef = db.collection("Users").document(userId)
         let listCollection = userRef.collection(listType.rawValue)
         print("Fetching books for \(userId) from \(listType.rawValue)")
         
-        // Set up a listener for real-time updates
         listCollection.addSnapshotListener { (snapshot, error) in
             if let error = error {
                 print("Error fetching books for \(listType.rawValue): \(error)")
@@ -98,19 +89,16 @@ class BooksListViewModel: ObservableObject {
         }
     }
 
-    
     func addBookToFirestore(book: BookItem, listType: BookListType, completion: @escaping (Bool, String) -> Void) {
         let db = Firestore.firestore()
         let userRef = db.collection("Users").document(userId)
 
-        // First, check if the book already exists in any list
         bookExistsInAnyList(bookId: book.id) { exists in
             if exists {
                 print("Book already exists in one of the lists.")
-                completion(false, "This book is already on one of your lists.") // Notify caller that the book exists
-                return // Exit the function if the book already exists
+                completion(false, "This book is already on one of your lists.")
+                return
             } else {
-                // Proceed with adding the book if it does not exist
                 let listCollection = userRef.collection(listType.rawValue)
                 var data: [String: Any] = [
                     "id": book.id,
@@ -130,21 +118,18 @@ class BooksListViewModel: ObservableObject {
                     ]
                 ]
 
-                // Set data for the book in Firestore and then execute the completion handler if successful
                 listCollection.document(book.id).setData(data) { error in
                     if let error = error {
                         print("Error adding book: \(error.localizedDescription)")
-                        completion(false, "Error adding book: \(error.localizedDescription)") // Notify caller of error
+                        completion(false, "Error adding book: \(error.localizedDescription)")
                     } else {
                         print("Book successfully added.")
-                        completion(true, "Book successfully added to your \(listType.rawValue) list.") // Notify caller of success
+                        completion(true, "Book successfully added to your \(listType.rawValue) list.")
                     }
                 }
             }
         }
     }
-
-
     
     func deleteBookFromFirestore(bookId: String, listType: BookListType) {
         let db = Firestore.firestore()
@@ -152,9 +137,7 @@ class BooksListViewModel: ObservableObject {
         let listCollection = userRef.collection(listType.rawValue)
         let bookDocument = listCollection.document(bookId)
         
-        // Delete the tracking data subcollection first
         deleteTrackingData(bookDocument: bookDocument) {
-            // After deleting tracking data, delete the book document
             bookDocument.delete { error in
                 if let error = error {
                     print("Error deleting book: \(error.localizedDescription)")
@@ -167,19 +150,16 @@ class BooksListViewModel: ObservableObject {
 
     func deleteTrackingData(bookDocument: DocumentReference, completion: @escaping () -> Void) {
         let trackingCollection = bookDocument.collection("tracking")
-        // Retrieve all documents in the tracking subcollection
         trackingCollection.getDocuments { (snapshot, error) in
             guard let documents = snapshot?.documents else {
                 print("No tracking data found or error: \(error?.localizedDescription ?? "Unknown error")")
                 completion()
                 return
             }
-            
-            // Use a batch to delete all tracking data documents
+
             let batch = Firestore.firestore().batch()
             documents.forEach { batch.deleteDocument($0.reference) }
-            
-            // Commit the batch
+
             batch.commit { error in
                 if let error = error {
                     print("Error deleting tracking data: \(error.localizedDescription)")
@@ -217,7 +197,6 @@ class BooksListViewModel: ObservableObject {
         }
     }
 
-    
     func addBookToFinishedReadingAndTrack(book: BookItem, completion: @escaping (Bool, String) -> Void) {
         self.bookExistsInAnyList(bookId: book.id) { exists in
             if exists {
@@ -244,26 +223,22 @@ class BooksListViewModel: ObservableObject {
         }
     }
     
-    
     func completeBookAndMoveToFinished(bookId: String) {
-        let endDate = Date() // Setting the current date as the end date
+        let endDate = Date()
         let userRef = Firestore.firestore().collection("Users").document(userId)
         let currentlyReadingRef = userRef.collection("CurrentlyReading").document(bookId)
         let finishedReadingRef = userRef.collection("FinishedReading").document(bookId)
 
-        // Fetch book data from CurrentlyReading
         currentlyReadingRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 var bookData = document.data() ?? [:]
-                bookData["endDate"] = endDate  // Add the end date to the book data
+                bookData["endDate"] = endDate
                 
-                // Fetch tracking data
                 currentlyReadingRef.collection("tracking").document("trackingData").getDocument { (trackingDoc, trackingError) in
                     if let trackingDoc = trackingDoc, trackingDoc.exists {
                         var trackingData = trackingDoc.data() ?? [:]
-                        trackingData["endDate"] = endDate  // Add the end date to the tracking data
+                        trackingData["endDate"] = endDate
 
-                        // Start copying process
                         Firestore.firestore().runTransaction({ (transaction, errorPointer) -> Any? in
                             transaction.setData(bookData, forDocument: finishedReadingRef)
                             transaction.setData(trackingData, forDocument: finishedReadingRef.collection("tracking").document("trackingData"))
@@ -287,31 +262,24 @@ class BooksListViewModel: ObservableObject {
         }
     }
     
-    //TODO: Needs testing on a book within WantToRead list (also needs button/link implemented to test the function in there)
     func moveBookToCurrentlyReading(bookId: String) {
-        let wantToReadRef = Firestore.firestore().collection("Users").document(userId)
-                                                     .collection("WantToRead").document(bookId)
+        let wantToReadRef = Firestore.firestore().collection("Users").document(userId).collection("WantToRead").document(bookId)
 
-        // Fetch book data from WantToRead
         wantToReadRef.getDocument { (document, error) in
             if let document = document, document.exists {
-                // Deserialise the document into a BookItem object
                 do {
                     let book = try document.data(as: BookItem.self)
-                    
-                    // Add the book to CurrentlyReading and set up tracking
-                    self.addBookToCurrentlyReadingAndTrack(book: book) { success, message in
-                        if success {
-                            // Delete the book from WantToRead after successfully moving it to CurrentlyReading
-                            wantToReadRef.delete { error in
-                                if let error = error {
-                                    print("Error deleting book from WantToRead: \(error.localizedDescription)")
-                                } else {
+                    wantToReadRef.delete { error in
+                        if let error = error {
+                            print("Error deleting book from WantToRead: \(error.localizedDescription)")
+                        } else {
+                            self.addBookToCurrentlyReadingAndTrack(book: book) { success, message in
+                                if success {
                                     print("Book successfully moved from WantToRead to CurrentlyReading")
+                                } else {
+                                    print("Failed to move book to Currently Reading: \(message)")
                                 }
                             }
-                        } else {
-                            print("Failed to move book to Currently Reading: \(message)")
                         }
                     }
                 } catch {
@@ -343,7 +311,6 @@ class BooksListViewModel: ObservableObject {
         }
     }
 
-
     func addBookToList(book: BookItem, listType: BookListType) {
         DispatchQueue.main.async {
             switch listType {
@@ -357,8 +324,6 @@ class BooksListViewModel: ObservableObject {
         }
     }
     
-
-    // Enum to specify list types
     enum BookListType: String {
         case wantToRead = "WantToRead"
         case currentlyReading = "CurrentlyReading"

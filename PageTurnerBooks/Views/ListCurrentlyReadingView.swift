@@ -1,54 +1,76 @@
 //
-//  ListCurrentlyReading.swift
-//  PageTurnerBooks
-//
-//  Created by Brad on 03/05/2024.
-//
+//  ListCurrentlyReadingView.swift
 
 import SwiftUI
 
 struct ListCurrentlyReadingView: View {
     @ObservedObject var viewModel: BooksListViewModel
-    
-    //TODO: Need to add tracker
-    //TODO: Need to combine the trash and tracker buttons into the bookrow somehow
-    //TODO: Need to change the chevron to white
-    //TODO: Hard time getting the frame for list title on ListsView to be have less height, consider increasing the size of these so it matches and is less obvious its different
-    //TODO: Reduce the white space
+    @State private var showingDeleteAlert = false
+    @State private var bookToDelete: BookItem?
 
     var body: some View {
-        VStack(spacing: 0) {
-            Text("Currently Reading")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundColor(.white)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color.pTPrimary)
-                .padding(.top, 50)
-                .ignoresSafeArea(edges: .top)
-
-            List(viewModel.currentlyReadingBooks, id: \.id) { book in 
-                HStack {
-                BookRow(book: book, viewModel: viewModel)
+        NavigationView {  // Ensures navigation capability
+            VStack(spacing: 0) {
+                Text("Currently Reading")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.pTPrimary)
+                    .padding(.top, 50)
+                    .ignoresSafeArea(edges: .top)
                 
-                    
-//                    Button(action: {
-//                        viewModel.deleteBookFromFirestore(bookId: book.id, listType: .currentlyReading)
-//                    }) {
-//                        Image(systemName: "trash")
-//                            .foregroundColor(.red)
-//                    }
+                List(viewModel.currentlyReadingBooks, id: \.id) { book in
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack {
+                            BookRow(book: book, viewModel: viewModel)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            Button(action: {
+                                bookToDelete = book
+                                showingDeleteAlert = true
+                            }) {
+                                Image(systemName: "trash")
+                                    .foregroundColor(.red)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .alert(isPresented: $showingDeleteAlert) {
+                                Alert(
+                                    title: Text("Confirm Deletion"),
+                                    message: Text("Are you sure you want to delete '\(bookToDelete?.volumeInfo.title ?? "this book")'?"),
+                                    primaryButton: .destructive(Text("Delete")) {
+                                        if let bookToDelete = bookToDelete {
+                                            viewModel.deleteBookFromFirestore(bookId: bookToDelete.id, listType: .currentlyReading)
+                                        }
+                                    },
+                                    secondaryButton: .cancel() {
+                                        bookToDelete = nil
+                                    }
+                                )
+                            }
+                        }
+                        
+                        // Navigation link for tracking below the book information
+                        NavigationLink(destination: TrackerView(viewModel: BookTrackerViewModel(userId: viewModel.userId, tracker: BookTrackerModel(id: book.id, userId: viewModel.userId, startDate: Date(), endDate: nil, lastPageRead: 0, totalPageCount: book.volumeInfo.pageCount ?? 0, bookTitle: book.volumeInfo.title)), listViewModel: viewModel)) {
+                            Text("Track")
+                                .fontWeight(.bold)
+                                .frame(maxWidth: .infinity, alignment: .trailing) // Align to the right
+                                .padding(.trailing) // Optional padding for better alignment
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
+                    .padding(.vertical) // Add padding to space out list items
                 }
+                .listStyle(GroupedListStyle())
+                .tint(.ptSecondary)
             }
-            .listStyle(InsetGroupedListStyle())
-            .tint(.ptSecondary)
         }
     }
 }
 
 struct ListCurrentlyReadingView_Preview: PreviewProvider {
     static var previews: some View {
-        ListCurrentlyReadingView(viewModel: BooksListViewModel(userId: "CF1SJXYsPnMu85IGAoeLKJjwx6t1"))
+        ListCurrentlyReadingView(viewModel: BooksListViewModel(userId: "xR8M6o1Km9WCyJiePsNvXlVsAH03"))
     }
 }

@@ -1,9 +1,5 @@
 //
 //  BookTrackerViewModel.swift
-//  PageTurnerBooks
-//
-//  Created by Staff on 04/05/2024.
-//
 
 import SwiftUI
 import Firebase
@@ -20,7 +16,6 @@ class BookTrackerViewModel: ObservableObject {
         }
 
     func updateTracking(bookId: String, tracking: BookTrackerModel, trackingStatus: String) {
-        // Define the tracking document based on the status
         let trackingRef = db.collection("Users").document(userId)
                              .collection(trackingStatus).document(bookId)
                              .collection("tracking").document("trackingData")
@@ -40,7 +35,6 @@ class BookTrackerViewModel: ObservableObject {
         }
     }
     
-    // Function to update the last page read
         func updateLastPageRead(bookId: String, lastPage: Int) {
             let trackingRef = db.collection("Users").document(userId)
                                  .collection("CurrentlyReading").document(bookId)
@@ -58,8 +52,6 @@ class BookTrackerViewModel: ObservableObject {
             }
         }
 
-
-    // Function to fetch tracking data
     func fetchTracking() {
         let trackingRef = db.collection("Users").document(userId)
                              .collection("CurrentlyReading").document(tracker.id)
@@ -76,7 +68,6 @@ class BookTrackerViewModel: ObservableObject {
         }
     }
     
-    //TODO: Needs testing on a trackable book
     func updateStartDate(bookId: String, startDate: Date) {
             let trackingRef = db.collection("Users").document(userId)
                                  .collection("CurrentlyReading").document(bookId)
@@ -94,10 +85,9 @@ class BookTrackerViewModel: ObservableObject {
             }
         }
     
-    //TODO: Needs testing on a trackable book
     func updateEndDate(bookId: String, endDate: Date) {
         let trackingRef = db.collection("Users").document(userId)
-                             .collection("CurrentlyReading").document(bookId)
+                             .collection("FinishedReading").document(bookId)
                              .collection("tracking").document("trackingData")
 
         trackingRef.updateData(["endDate": endDate]) { error in
@@ -111,6 +101,30 @@ class BookTrackerViewModel: ObservableObject {
             }
         }
     }
+    
+    // Fetch start and end dates for a book in the Finished Reading list
+        func fetchTrackingForFinishedBook(bookId: String, completion: @escaping (Date, Date?) -> Void) {
+            let trackingRef = db.collection("Users").document(userId)
+                .collection("FinishedReading").document(bookId)
+                .collection("tracking").document("trackingData")
+
+            trackingRef.getDocument { document, error in
+                if let document = document, document.exists {
+                    do {
+                        let trackingData = try document.data(as: BookTrackerModel.self)
+                        DispatchQueue.main.async {
+                            completion(trackingData.startDate, trackingData.endDate)
+                        }
+                    } catch {
+                        print("Error decoding tracking data: \(error)")
+                        completion(Date(), nil) // Handle error or provide default/fallback values
+                    }
+                } else {
+                    print("Error fetching tracking data: \(error?.localizedDescription ?? "Unknown error")")
+                    completion(Date(), nil) // Handle error or provide default/fallback values
+                }
+            }
+        }
     
 }
 

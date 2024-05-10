@@ -1,3 +1,6 @@
+//
+// AuthViewModel.swift
+
 import Foundation
 import Firebase
 import FirebaseFirestoreSwift
@@ -87,7 +90,6 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    
     func deleteUser() {
         
         guard let user = Auth.auth().currentUser, !user.uid.isEmpty else {
@@ -99,7 +101,6 @@ class AuthViewModel: ObservableObject {
         
         let db = Firestore.firestore()
         
-        // Function to delete a subcollection
         func deleteSubcollection(_ collectionPath: String, completion: @escaping () -> Void) {
             db.collection(collectionPath).getDocuments { snapshot, error in
                 guard let documents = snapshot?.documents else {
@@ -116,7 +117,6 @@ class AuthViewModel: ObservableObject {
             }
         }
         
-        // Delete each subcollection
         let subcollections = ["CurrentlyReading", "FinishedReading", "WantToRead"]
         let group = DispatchGroup()
         
@@ -128,7 +128,6 @@ class AuthViewModel: ObservableObject {
             }
         }
         
-        // After all subcollections are deleted, delete the user document and account
         group.notify(queue: .main) {
             db.collection("Users").document(user.uid).delete { error in
                 if let error = error {
@@ -154,8 +153,6 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    
-    
     func fetchUser() async {
         guard let uid = Auth.auth().currentUser?.uid, !uid.isEmpty else {
             print("Fetch user failed - User ID is nil or empty")
@@ -169,7 +166,6 @@ class AuthViewModel: ObservableObject {
             print("Failed to fetch user: \(error.localizedDescription)")
         }
     }
-    
     
     func updatePassword(currentPassword: String, newPassword: String) async throws {
         guard let user = Auth.auth().currentUser, let email = user.email else {
@@ -200,7 +196,6 @@ class AuthViewModel: ObservableObject {
 
             let credential = EmailAuthProvider.credential(withEmail: email, password: currentPassword)
             
-            // Re-authenticate user with the provided credentials
             user.reauthenticate(with: credential) { result, error in
                 if let error = error {
                     print("Re-authentication failed: \(error.localizedDescription)")
@@ -211,9 +206,6 @@ class AuthViewModel: ObservableObject {
                 }
             }
         }
-    
-    
-    
 }
 
 extension AuthViewModel {

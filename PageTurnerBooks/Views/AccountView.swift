@@ -1,9 +1,5 @@
 //
-//  Account.swift
-//  PageTurnerBooks
-//
-//  Created by Brad on 03/05/2024.
-//
+//  AccountView.swift
 
 import SwiftUI
 

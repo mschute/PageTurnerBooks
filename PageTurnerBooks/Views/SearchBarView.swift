@@ -1,8 +1,11 @@
+//
+// SearchBarView.swift
+
 import SwiftUI
 
 struct SearchBarView: View {
     @Binding var searchText: String
-    @Binding var isShowingSearchBar: Bool  // Added this line
+    @Binding var isShowingSearchBar: Bool
     @EnvironmentObject var bookManager: BookManager
     @ObservedObject var viewModel: BooksListViewModel
     var coordinator: Coordinator

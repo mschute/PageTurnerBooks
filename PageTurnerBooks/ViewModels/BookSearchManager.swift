@@ -1,8 +1,6 @@
 //
 //  BookSearchManager.swift
-//  BarCodeScanner
-//
-//  Created by Hogg Benjamin on 03/05/2024.
+
 //  Construct URL and makes API calls. Not for direct use by UI.
 
 import Foundation

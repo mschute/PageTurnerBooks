@@ -1,3 +1,6 @@
+//
+// BarcodeScannerView.swift
+
 import SwiftUI
 import AVFoundation
 

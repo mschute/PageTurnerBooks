@@ -1,9 +1,5 @@
 //
 //  BookSearchView.swift
-//  PageTurnerBooks
-//
-//  Created by Staff on 06/05/2024.
-//
 
 import SwiftUI
 
