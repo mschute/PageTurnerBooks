@@ -1,9 +1,5 @@
 //
 //  SmallPrimaryButton.swift
-//  PageTurnerBooks
-//
-//  Created by Staff on 07/05/2024.
-//
 
 import SwiftUI
 

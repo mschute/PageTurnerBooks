@@ -1,3 +1,6 @@
+//
+// VideoCaptureView.swift
+
 import SwiftUI
 import AVFoundation
 

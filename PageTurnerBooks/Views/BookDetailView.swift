@@ -1,3 +1,6 @@
+//
+// BookDetailView.swift
+
 import SwiftUI
 
 struct BookDetailView: View {

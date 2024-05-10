@@ -1,9 +1,5 @@
 //
 //  BookDetailsComponent.swift
-//  BarCodeScanner
-//
-//  Created by Hogg Benjamin on 05/05/2024.
-//
 
 import SwiftUI
 

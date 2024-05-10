@@ -1,9 +1,5 @@
 //
 //  URLExtensions.swift
-//  BarCodeScanner
-//
-//  Created by Hogg Benjamin on 04/05/2024.
-//
 
 import Foundation
 

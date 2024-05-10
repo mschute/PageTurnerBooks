@@ -1,6 +1,9 @@
-// Girish code, needs modifying
+//
+// SignUpView.swift
 
 import SwiftUI
+
+//TODO: The title gets pushed up out of screen when the keyboard appears. I think because the input fields get pushed up. Maybe put the fields in a scroll view to rectify that?
 
 struct SignUpView: View {
     @State private var email = ""
@@ -9,12 +12,12 @@ struct SignUpView: View {
     @State private var confirmPassword = ""
     @State private var showingError = false
     @State private var errorMessage = ""
-    @FocusState private var fieldIsFocused: Bool
+    @State private var navigateToSignIn = false
+    @State private var showingSuccess = false
 
     @EnvironmentObject var authViewModel: AuthViewModel
-    
-    //TODO: The title gets pushed up out of screen when the keyboard appears. I think because the input fields get pushed up. Maybe put the fields in a scroll view to rectify that?
-    //TODO: After registration, directed to sign-in page
+    @FocusState private var fieldIsFocused: Bool
+
     var body: some View {
         VStack {
             Text("Register")
@@ -47,17 +50,9 @@ struct SignUpView: View {
             }
             .padding(40)
             .padding(.top, 20)
-            
+
             VStack(spacing: 30) {
-                
-                Button("Register", action: {
-                    fieldIsFocused = false
-                    Task {
-                        Task {
-                            try await authViewModel.createUser(withEmail:email, password:password,fullName: fullName)
-                        }
-                    }
-                })
+                Button("Register", action: registerUser)
                 .font(.system(size: 18, weight: .bold, design: .default))
                 .padding(.horizontal, 20)
                 .padding(.vertical, 10)
@@ -67,15 +62,10 @@ struct SignUpView: View {
                 .frame(minWidth: 100, minHeight: 50, maxHeight: 50, alignment: .center)
                 .padding(.top, 20)
                 .disabled(email.isEmpty || fullName.isEmpty || password.isEmpty || confirmPassword.isEmpty)
-                .navigationBarBackButtonHidden(true)
-                .alert("Error", isPresented: $showingError, actions: {
-                    Button("Close", role: .cancel) { }
-                }, message: {
-                    Text(errorMessage)
-                })
                 
+                NavigationLink(destination: SignInView(), isActive: $navigateToSignIn) { EmptyView() }
+
                 HStack {
-                    
                     Text("Already have an account?")
                     NavigationLink(destination: SignInView()) {
                         Text("Sign In")
@@ -87,11 +77,47 @@ struct SignUpView: View {
                 Spacer()
             }
         }
+        .alert("Registration Error", isPresented: $showingError) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(errorMessage)
+        }
+        .alert("Registration Successful", isPresented: $showingSuccess) {
+            Button("OK") {
+                navigateToSignIn = true
+            }
+        } message: {
+            Text("Your account has been created successfully. Please sign in.")
+        }
+    }
+
+    private func registerUser() {
+        if password != confirmPassword {
+            errorMessage = "Passwords do not match."
+            showingError = true
+            return
+        }
+
+        Task {
+            do {
+                try await authViewModel.createUser(withEmail: email, password: password, fullName: fullName) { success, message in
+                    if success {
+                        showingSuccess = true
+                    } else {
+                        errorMessage = message
+                        showingError = true
+                    }
+                }
+            } catch {
+                errorMessage = "An unexpected error occurred: \(error.localizedDescription)"
+                showingError = true
+            }
+        }
     }
 }
 
 struct SignUpView_Previews: PreviewProvider {
     static var previews: some View {
-        SignUpView()
+        SignUpView().environmentObject(AuthViewModel.mock)
     }
 }

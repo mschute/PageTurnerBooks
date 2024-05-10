@@ -1,9 +1,5 @@
 //
-//  Tracker.swift
-//  PageTurnerBooks
-//
-//  Created by Brad on 03/05/2024.
-//
+//  TrackerView.swift
 
 import SwiftUI
 
@@ -28,7 +24,6 @@ struct TrackerView: View {
                             .fontWeight(.bold)
                             .multilineTextAlignment(.center)
 
-                        //TODO: Needs testing on a trackable book
                         DatePicker("Start Date", selection: Binding<Date>(
                             get: { viewModel.tracker.startDate },
                             set: { newDate in
@@ -38,19 +33,10 @@ struct TrackerView: View {
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        //TODO: Needs testing on a trackable book
-                        DatePicker("End Date", selection: Binding<Date>(
-                            get: { viewModel.tracker.endDate ?? Date() },
-                            set: { newDate in
-                                viewModel.updateEndDate(bookId: viewModel.tracker.id, endDate: newDate)
-                            }
-                        ), displayedComponents: .date)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        //TODO: Needs to re-direct to ListFinishedReadingView?
                         Button("Finish Reading") {
                             showingConfirmation = true
                         }
+                        .buttonStyle(PlainButtonStyle()) //TODO: This keeps function within borders, but needs colour
                         .alert(isPresented: $showingConfirmation) {
                             Alert(
                                 title: Text("Confirm Finish"),

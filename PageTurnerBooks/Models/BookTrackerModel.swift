@@ -1,9 +1,5 @@
 //
 //  BookTrackerModel.swift
-//  PageTurnerBooks
-//
-//  Created by Marta on 04/05/2024.
-//
 
 import Foundation
 

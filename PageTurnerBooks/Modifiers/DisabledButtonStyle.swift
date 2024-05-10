@@ -1,9 +1,5 @@
 //
 //  DisabledButtonStyle.swift
-//  PageTurnerBooks
-//
-//  Created by Staff on 08/05/2024.
-//
 
 import SwiftUI
 

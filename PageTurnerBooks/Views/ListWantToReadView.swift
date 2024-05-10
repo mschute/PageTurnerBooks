@@ -1,14 +1,15 @@
 //
-//  ListWantToRead.swift
-//  PageTurnerBooks
-//
-//  Created by Brad on 03/05/2024.
-//
+//  ListWantToReadView.swift
 
 import SwiftUI
 
 struct ListWantToReadView: View {
     @ObservedObject var viewModel: BooksListViewModel
+    @State private var showingDeleteAlert = false
+    @State private var bookToDelete: BookItem?
+    @State private var showingMoveAlert = false
+    @State private var alertMessage = ""
+    @State private var alertTitle = ""
 
     var body: some View {
         VStack {
@@ -21,39 +22,56 @@ struct ListWantToReadView: View {
                 .background(Color.pTPrimary)
                 .padding(.top, 50)
                 .ignoresSafeArea()
-            Text("\(viewModel.wantToReadBooks.count) books")
-                .font(.title2)
+
             List(viewModel.wantToReadBooks, id: \.id) { book in
                 HStack {
-                    VStack(alignment: .leading) {
-                        //TODO: Need to replace this with a BookRow that then links to a BookDetail
-                        Text(book.volumeInfo.title)
-                        Text(book.id) // Display the book ID as well to confirm the data is correct
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    
+                    BookRow(book: book, viewModel: viewModel)
+
                     Button(action: {
-                        viewModel.deleteBookFromFirestore(bookId: book.id, listType: .wantToRead)
+                        bookToDelete = book
+                        showingDeleteAlert = true
                     }) {
                         Image(systemName: "trash")
                             .foregroundColor(.red)
                     }
+                    .buttonStyle(PlainButtonStyle())
+                    .alert(isPresented: $showingDeleteAlert) {
+                        Alert(
+                            title: Text("Confirm Deletion"),
+                            message: Text("Are you sure you want to delete '\(bookToDelete?.volumeInfo.title ?? "this book")'?"),
+                            primaryButton: .destructive(Text("Delete")) {
+                                if let bookToDelete = bookToDelete {
+                                    viewModel.deleteBookFromFirestore(bookId: bookToDelete.id, listType: .wantToRead)
+                                }
+                            },
+                            secondaryButton: .cancel() {
+                                bookToDelete = nil
+                            }
+                        )
+                    }
+
+                    Button("Move to Currently Reading") {
+                        viewModel.moveBookToCurrentlyReading(bookId: book.id)
+                        alertTitle = "Move to Currently Reading"
+                        alertMessage = "Successfully moved '\(book.volumeInfo.title)' to Currently Reading."
+                        showingMoveAlert = true
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .foregroundColor(.blue)
+                    .padding(.leading, 5)
                 }
             }
-            .onAppear {
-                viewModel.loadBooksFor(listType: .wantToRead)
+            .listStyle(InsetGroupedListStyle())
+            .tint(.ptSecondary)
+            .alert(isPresented: $showingMoveAlert) {
+                Alert(title: Text(alertTitle), message: Text(alertMessage), dismissButton: .default(Text("OK")))
             }
-        }
-        Button("Refresh") {
-            viewModel.loadBooksFor(listType: .wantToRead)
         }
     }
 }
 
-struct ListWantToReadView_Preview: PreviewProvider {
+struct ListWantToRead_Preview: PreviewProvider {
     static var previews: some View {
-        ListWantToReadView(viewModel: BooksListViewModel(userId: "9laC5umqf4T6fviudjD6HcuN1pW2"))
+        ListWantToReadView(viewModel: BooksListViewModel(userId: "xR8M6o1Km9WCyJiePsNvXlVsAH03"))
     }
 }
