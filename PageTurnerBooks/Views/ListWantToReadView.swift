@@ -37,30 +37,45 @@ struct ListWantToReadView: View {
                 .ignoresSafeArea()
 
             List(viewModel.wantToReadBooks, id: \.id) { book in
-                HStack {
+                VStack(alignment: .leading) {
                     BookRow(book: book, viewModel: viewModel)
+                    
+                    HStack {
+                        Button("Start Reading") {
+                            bookToMove = book
+                            activeAlert = .confirmMove
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .font(.system(size: 14, weight: .bold, design: .default))
+                        .foregroundColor(.white)
+                        .padding(6)
+                        .background(Color.pTSecondary)
+                        .cornerRadius(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.pTSecondary)
+                        )
+                        .padding(.trailing, 10)
+                        
+                        Spacer()
 
-                    Button(action: {
-                        bookToDelete = book
-                        activeAlert = .confirmDelete
-                    }) {
-                        Image(systemName: "trash")
-                            .foregroundColor(.red)
+                        Button(action: {
+                            bookToDelete = book
+                            activeAlert = .confirmDelete
+                        }) {
+                            Image(systemName: "trash")
+                                .foregroundColor(.red)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
-                    .buttonStyle(PlainButtonStyle())
-
-                    Button("Move to Currently Reading") {
-                        bookToMove = book
-                        activeAlert = .confirmMove
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    .foregroundColor(.blue)
-                    .padding(.leading, 5)
+                    .padding(.vertical, 5)
                 }
             }
             .listStyle(GroupedListStyle())
             .tint(.ptSecondary)
+            .padding(.top, -20)
         }
+        .edgesIgnoringSafeArea(.top)
         .alert(item: $activeAlert) { alert -> Alert in
             switch alert {
             case .confirmDelete:
@@ -79,7 +94,7 @@ struct ListWantToReadView: View {
             case .confirmMove:
                 return Alert(
                     title: Text("Confirm Move"),
-                    message: Text("Are you sure you want to move '\(bookToMove?.volumeInfo.title ?? "this book")' to Currently Reading?"),
+                    message: Text("Are you sure you want to move '\(bookToMove?.volumeInfo.title ?? "this book")' to Currently Reading and begin Tracking?"),
                     primaryButton: .default(Text("Confirm")) {
                         if let bookToMove = bookToMove {
                             viewModel.moveBookToCurrentlyReading(bookId: bookToMove.id)
