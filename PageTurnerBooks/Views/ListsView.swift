@@ -9,7 +9,6 @@ struct ListsView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-//                Color.pTPrimary.edgesIgnoringSafeArea(.top)
                 
                 VStack(spacing: 0){
                     Text("Reading List")
@@ -25,9 +24,8 @@ struct ListsView: View {
                     
                     ScrollView {
                         VStack {
-                            // Picture link for "Want To Read"
                             NavigationLink(destination: ListWantToReadView(viewModel: viewModel)) {
-                                Image("WantToRead") // Set this image in your assets
+                                Image("WantToRead")
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: 350, height: 150)
@@ -39,9 +37,8 @@ struct ListsView: View {
                             }
                             .padding(.bottom, 20)
 
-                            // Picture link for "Currently Reading"
                             NavigationLink(destination: ListCurrentlyReadingView(viewModel: viewModel)) {
-                                Image("CurrentlyReading") // Set this image in your assets
+                                Image("CurrentlyReading")
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: 350, height: 150)
@@ -53,9 +50,8 @@ struct ListsView: View {
                             }
                             .padding(.bottom, 20)
 
-                            // Picture link for "Finished Reading"
                             NavigationLink(destination: ListFinishedReadingView(viewModel: viewModel)) {
-                                Image("FinishedReading") // Set this image in your assets
+                                Image("FinishedReading")
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: 350, height: 150)

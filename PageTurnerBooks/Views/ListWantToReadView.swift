@@ -3,13 +3,26 @@
 
 import SwiftUI
 
+enum ActiveAlert: Identifiable {
+    case confirmDelete, confirmMove, moveSuccess
+    
+    var id: Int {
+        switch self {
+        case .confirmDelete:
+            return 1
+        case .confirmMove:
+            return 2
+        case .moveSuccess:
+            return 3
+        }
+    }
+}
+
 struct ListWantToReadView: View {
     @ObservedObject var viewModel: BooksListViewModel
-    @State private var showingDeleteAlert = false
+    @State private var activeAlert: ActiveAlert?
     @State private var bookToDelete: BookItem?
-    @State private var showingMoveAlert = false
-    @State private var alertMessage = ""
-    @State private var alertTitle = ""
+    @State private var bookToMove: BookItem?
 
     var body: some View {
         VStack {
@@ -29,42 +42,58 @@ struct ListWantToReadView: View {
 
                     Button(action: {
                         bookToDelete = book
-                        showingDeleteAlert = true
+                        activeAlert = .confirmDelete
                     }) {
                         Image(systemName: "trash")
                             .foregroundColor(.red)
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .alert(isPresented: $showingDeleteAlert) {
-                        Alert(
-                            title: Text("Confirm Deletion"),
-                            message: Text("Are you sure you want to delete '\(bookToDelete?.volumeInfo.title ?? "this book")'?"),
-                            primaryButton: .destructive(Text("Delete")) {
-                                if let bookToDelete = bookToDelete {
-                                    viewModel.deleteBookFromFirestore(bookId: bookToDelete.id, listType: .wantToRead)
-                                }
-                            },
-                            secondaryButton: .cancel() {
-                                bookToDelete = nil
-                            }
-                        )
-                    }
 
                     Button("Move to Currently Reading") {
-                        viewModel.moveBookToCurrentlyReading(bookId: book.id)
-                        alertTitle = "Move to Currently Reading"
-                        alertMessage = "Successfully moved '\(book.volumeInfo.title)' to Currently Reading."
-                        showingMoveAlert = true
+                        bookToMove = book
+                        activeAlert = .confirmMove
                     }
                     .buttonStyle(PlainButtonStyle())
                     .foregroundColor(.blue)
                     .padding(.leading, 5)
                 }
             }
-            .listStyle(InsetGroupedListStyle())
+            .listStyle(GroupedListStyle())
             .tint(.ptSecondary)
-            .alert(isPresented: $showingMoveAlert) {
-                Alert(title: Text(alertTitle), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
+        .alert(item: $activeAlert) { alert -> Alert in
+            switch alert {
+            case .confirmDelete:
+                return Alert(
+                    title: Text("Confirm Deletion"),
+                    message: Text("Are you sure you want to delete '\(bookToDelete?.volumeInfo.title ?? "this book")'?"),
+                    primaryButton: .destructive(Text("Delete")) {
+                        if let bookToDelete = bookToDelete {
+                            viewModel.deleteBookFromFirestore(bookId: bookToDelete.id, listType: .wantToRead)
+                        }
+                    },
+                    secondaryButton: .cancel() {
+                        bookToDelete = nil
+                    }
+                )
+            case .confirmMove:
+                return Alert(
+                    title: Text("Confirm Move"),
+                    message: Text("Are you sure you want to move '\(bookToMove?.volumeInfo.title ?? "this book")' to Currently Reading?"),
+                    primaryButton: .default(Text("Confirm")) {
+                        if let bookToMove = bookToMove {
+                            viewModel.moveBookToCurrentlyReading(bookId: bookToMove.id)
+                            activeAlert = .moveSuccess
+                        }
+                    },
+                    secondaryButton: .cancel()
+                )
+            case .moveSuccess:
+                return Alert(
+                    title: Text("Move to Currently Reading"),
+                    message: Text("Successfully moved '\(bookToMove?.volumeInfo.title ?? "this book")' to Currently Reading."),
+                    dismissButton: .default(Text("OK"))
+                )
             }
         }
     }

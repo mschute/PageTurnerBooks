@@ -37,6 +37,7 @@ struct TrackerView: View {
                             showingConfirmation = true
                         }
                         .buttonStyle(PlainButtonStyle()) //TODO: This keeps function within borders, but needs colour
+                        .foregroundColor(.blue)
                         .alert(isPresented: $showingConfirmation) {
                             Alert(
                                 title: Text("Confirm Finish"),
