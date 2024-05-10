@@ -73,7 +73,7 @@ struct ListWantToReadView: View {
             }
             .listStyle(GroupedListStyle())
             .tint(.ptSecondary)
-            .padding(.top, -20)
+            .padding(.top, -10)
         }
         .edgesIgnoringSafeArea(.top)
         .alert(item: $activeAlert) { alert -> Alert in

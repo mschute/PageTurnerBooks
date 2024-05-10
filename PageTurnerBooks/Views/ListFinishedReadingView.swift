@@ -50,7 +50,7 @@ struct ListFinishedReadingView: View {
                                 set: { newDate in
                                     var newDates = dates
                                     newDates.endDate = newDate
-                                    trackingInfo[book.id] = newDates // Update the dictionary directly
+                                    trackingInfo[book.id] = newDates
                                     viewModel.bookTrackerVM.updateEndDate(bookId: book.id, endDate: newDate)
                                 }
                             ), displayedComponents: .date)
@@ -88,7 +88,7 @@ struct ListFinishedReadingView: View {
             }
         .listStyle(GroupedListStyle())
         .tint(.ptSecondary)
-        .padding(.top, -20) // Adjust this value as needed to reduce or remove space
+        .padding(.top, -10)
     }
     .edgesIgnoringSafeArea(.top)
     .onAppear {

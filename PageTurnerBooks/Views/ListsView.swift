@@ -17,7 +17,7 @@ struct ListsView: View {
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity, maxHeight: 0)
                         .background(Color.pTPrimary)
-                        .padding(.top, 83)
+                        .padding(.top, 81)
                         .padding(.bottom, 40)
                         .background(Color.pTPrimary)
                         .edgesIgnoringSafeArea(.top)

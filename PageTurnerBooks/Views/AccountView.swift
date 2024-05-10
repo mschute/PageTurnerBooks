@@ -31,7 +31,7 @@ struct AccountView: View {
                     .padding()
                     .frame(maxWidth: .infinity)
                     .background(Color.pTPrimary)
-                    .padding(.top, 50)
+                    .padding(.top, 48)
                     .ignoresSafeArea()
                 Form{
                     Section(){
