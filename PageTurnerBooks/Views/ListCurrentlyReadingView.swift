@@ -23,10 +23,32 @@ struct ListCurrentlyReadingView: View {
                 
                 List(viewModel.currentlyReadingBooks, id: \.id) { book in
                     VStack(alignment: .leading, spacing: 10) {
+                        BookRow(book: book, viewModel: viewModel)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
                         HStack {
-                            BookRow(book: book, viewModel: viewModel)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                            ZStack {
+                                Text("View Tracking")
+                                    .font(.system(size: 12, weight: .bold, design: .default))
+                                    .foregroundColor(.white)
+                                    .padding(9)
+                                    .background(Color.pTSecondary)
+                                    .cornerRadius(10)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(Color.pTSecondary)
+                                    )
+
+                                NavigationLink(destination: TrackerView(viewModel: BookTrackerViewModel(userId: viewModel.userId, tracker: BookTrackerModel(id: book.id, userId: viewModel.userId, startDate: Date(), endDate: nil, lastPageRead: 0, totalPageCount: book.volumeInfo.pageCount ?? 0, bookTitle: book.volumeInfo.title)), listViewModel: viewModel)) {
+                                    EmptyView()
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                .frame(width: 105, height: 30) // Confine the area of the NavigationLink
+                                .opacity(0.0) // Make the link itself invisible
+                            }
                             
+                            Spacer()
+
                             Button(action: {
                                 bookToDelete = book
                                 showingDeleteAlert = true
@@ -50,16 +72,8 @@ struct ListCurrentlyReadingView: View {
                                 )
                             }
                         }
-                        
-                        NavigationLink(destination: TrackerView(viewModel: BookTrackerViewModel(userId: viewModel.userId, tracker: BookTrackerModel(id: book.id, userId: viewModel.userId, startDate: Date(), endDate: nil, lastPageRead: 0, totalPageCount: book.volumeInfo.pageCount ?? 0, bookTitle: book.volumeInfo.title)), listViewModel: viewModel)) {
-                            Text("Track")
-                                .fontWeight(.bold)
-                                .frame(maxWidth: .infinity, alignment: .trailing)
-                                .padding(.trailing)
-                        }
-                        .buttonStyle(PlainButtonStyle())
+                        .padding(.vertical, 5)
                     }
-                    .padding(.vertical)
                 }
                 .listStyle(GroupedListStyle())
                 .tint(.ptSecondary)

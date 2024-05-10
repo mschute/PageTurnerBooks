@@ -46,9 +46,9 @@ struct ListWantToReadView: View {
                             activeAlert = .confirmMove
                         }
                         .buttonStyle(PlainButtonStyle())
-                        .font(.system(size: 14, weight: .bold, design: .default))
+                        .font(.system(size: 12, weight: .bold, design: .default))
                         .foregroundColor(.white)
-                        .padding(6)
+                        .padding(9)
                         .background(Color.pTSecondary)
                         .cornerRadius(10)
                         .overlay(
