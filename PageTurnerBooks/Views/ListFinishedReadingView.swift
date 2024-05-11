@@ -44,6 +44,7 @@ struct ListFinishedReadingView: View {
                         if let dates = trackingInfo[book.id] {
                             Text("End Date:")
                                 .foregroundColor(.black)
+                                .font(.system(size: 14, weight: .bold, design: .default))
 
                             DatePicker("", selection: Binding<Date>(
                                 get: { dates.endDate ?? Date() },
@@ -56,6 +57,7 @@ struct ListFinishedReadingView: View {
                             ), displayedComponents: .date)
                             .datePickerStyle(.compact)
                             .labelsHidden()
+                            .scaleEffect(0.8)
                         }
 
                         Spacer()
