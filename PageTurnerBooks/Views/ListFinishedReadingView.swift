@@ -8,6 +8,8 @@ struct ListFinishedReadingView: View {
     @State private var showingDeleteAlert = false
     @State private var bookToDelete: BookItem?
     @State private var trackingInfo: [String: (startDate: Date, endDate: Date?)] = [:]
+    @Environment(\.presentationMode) var presentationMode
+    
 
     private let itemFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -26,15 +28,30 @@ struct ListFinishedReadingView: View {
 
     var body: some View {
         VStack {
-            Text("Finished Reading")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundColor(.white)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color.pTPrimary)
-                .padding(.top, 50)
-                .ignoresSafeArea()
+            HStack{
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.white)
+                        .imageScale(.large)
+                        .fontWeight(.bold)
+                        .padding(.leading, 15)
+                }
+                Text("Finished Reading")
+                    .frame(maxWidth: .infinity)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .padding(.vertical, 11)
+
+                Spacer()
+                    .frame(maxWidth: 35)
+            }
+            .padding(.top, 51)
+            .background(Color.pTPrimary)
+            .ignoresSafeArea(edges: .horizontal)
+            .ignoresSafeArea(edges: .bottom)
 
             List(viewModel.finishedReadingBooks, id: \.id) { book in
                 VStack(alignment: .leading) {
@@ -92,6 +109,8 @@ struct ListFinishedReadingView: View {
         .tint(.ptSecondary)
         .padding(.top, -10)
     }
+    .navigationBarHidden(true)
+    .navigationBarBackButtonHidden(true)
     .edgesIgnoringSafeArea(.top)
     .onAppear {
         for book in viewModel.finishedReadingBooks {
@@ -99,6 +118,7 @@ struct ListFinishedReadingView: View {
         }
     }
 }
+
 }
 
 struct ListFinishedReadingView_Preview: PreviewProvider {
