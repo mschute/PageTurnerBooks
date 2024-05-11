@@ -188,9 +188,9 @@
 				A2B2354D2BE7FE060088FF0D /* BookSearchManager.swift */,
 				A2D6217C2BE9883A006DBB06 /* BooksListViewModel.swift */,
 				A2A307BD2BE7122000C99DF2 /* BookTrackerViewModel.swift */,
-				A2B2354F2BE7FE0B0088FF0D /* Coordinator.swift */,
 				A2B235512BE7FE100088FF0D /* VideoCaptureView.swift */,
 				A2B235452BE7FDF10088FF0D /* URLExtensions.swift */,
+				A2B2354F2BE7FE0B0088FF0D /* Coordinator.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -248,13 +248,14 @@
 		A2EA5A5F2BE565A3008956F8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0B4F6C772BE968AA001B7D2D /* BookSearchView.swift */,
+				A2B235492BE7FDFB0088FF0D /* BarcodeScannerView.swift */,
+				A2B2353F2BE7FDDD0088FF0D /* SearchBarView.swift */,
 				A2EA5A622BE5662B008956F8 /* AccountView.swift */,
 				A2B2354B2BE7FE000088FF0D /* BarcodeOverlay.swift */,
-				A2B235492BE7FDFB0088FF0D /* BarcodeScannerView.swift */,
 				A2B235432BE7FDEA0088FF0D /* BookDetailsComponent.swift */,
 				A2B235372BE7FDC30088FF0D /* BookDetailView.swift */,
 				A2B235412BE7FDE30088FF0D /* BookRow.swift */,
-				0B4F6C772BE968AA001B7D2D /* BookSearchView.swift */,
 				A2B2353D2BE7FDD80088FF0D /* ContentView.swift */,
 				A2EA5A682BE566F4008956F8 /* HomePageView.swift */,
 				0B40127B2BEA550A001DAA3C /* InputField.swift */,
@@ -265,7 +266,6 @@
 				A2EA5A702BE56755008956F8 /* ListsView.swift */,
 				0BA5012B2BE67A300049DB7F /* NavBar.swift */,
 				0B40128B2BEA9F70001DAA3C /* RotateLogo.swift */,
-				A2B2353F2BE7FDDD0088FF0D /* SearchBarView.swift */,
 				A2EA5A7A2BE567BC008956F8 /* SignInView.swift */,
 				A2EA5A7C2BE567CC008956F8 /* SignUpView.swift */,
 				A2EA5A7E2BE567DE008956F8 /* TrackerView.swift */,
