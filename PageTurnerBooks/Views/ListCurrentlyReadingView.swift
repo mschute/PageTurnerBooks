@@ -9,20 +9,38 @@ struct ListCurrentlyReadingView: View {
     @State private var bookToDelete: BookItem?
     @State private var selectedBook: BookItem?
     @State private var isTrackingNavigationActive = false
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
-                Text("Currently Reading")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.pTPrimary)
-                    .padding(.top, 50)
-                    .ignoresSafeArea(edges: .top)
-                
+                HStack {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(.white)
+                            .imageScale(.large)
+                            .fontWeight(.bold)
+                            .padding(.leading, 15)
+                            .padding(.bottom, 6)
+                    }
+                    
+                    Text("Currently Reading")
+                        .frame(maxWidth: .infinity)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(.top, 3)
+                        .padding(.bottom, 12)
+                    
+                    Spacer()
+                        .frame(maxWidth: 35)
+                }
+                .background(Color.pTPrimary)
+                .ignoresSafeArea(edges: .horizontal)
+                .ignoresSafeArea(edges: .bottom)
+
                 List(viewModel.currentlyReadingBooks, id: \.id) { book in
                     VStack{
                         BookRow(book: book, viewModel: viewModel)
@@ -56,7 +74,8 @@ struct ListCurrentlyReadingView: View {
                                 EmptyView()
                             }
                             .hidden()
-                                    
+ 
+                            
                                     Spacer()
 
                                     Button(action: {
@@ -89,7 +108,9 @@ struct ListCurrentlyReadingView: View {
                 .tint(.ptSecondary)
                 .padding(.top, -10)
             }
-            .edgesIgnoringSafeArea(.top)
+            //.edgesIgnoringSafeArea(.top)
+            .navigationBarHidden(true)
+            .navigationBarBackButtonHidden(true)
         }
     }
 }

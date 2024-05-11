@@ -6,9 +6,29 @@ import SwiftUI
 struct BookDetailView: View {
     @ObservedObject var viewModel: BooksListViewModel 
     let bookItem: BookItem
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
+        VStack {
+            HStack {
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .imageScale(.large)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color.pTPrimary)
+                        .padding()
+                }
+                
+                Spacer()
+            }
+        }
         BookDetailComponent(viewModel: viewModel, bookItem: bookItem)
+            .navigationBarTitle("", displayMode: .inline)
+            .navigationBarBackButtonHidden(true)
+            .navigationBarHidden(true)
+            .tint(.pTPrimary)
     }
 }
 
