@@ -7,10 +7,12 @@ struct ListCurrentlyReadingView: View {
     @ObservedObject var viewModel: BooksListViewModel
     @State private var showingDeleteAlert = false
     @State private var bookToDelete: BookItem?
+    @State private var selectedBook: BookItem?
+    @State private var isTrackingNavigationActive = false
 
     var body: some View {
         NavigationView {
-            VStack{
+            VStack {
                 Text("Currently Reading")
                     .font(.largeTitle)
                     .fontWeight(.bold)
@@ -22,12 +24,10 @@ struct ListCurrentlyReadingView: View {
                     .ignoresSafeArea(edges: .top)
                 
                 List(viewModel.currentlyReadingBooks, id: \.id) { book in
-                    VStack(alignment: .leading, spacing: 10) {
+                    VStack/*(alignment: .leading, spacing: 10)*/ {
                         BookRow(book: book, viewModel: viewModel)
-                            .frame(maxWidth: .infinity, alignment: .leading)
 
                         HStack {
-                            ZStack {
                                 Text("View Tracking")
                                     .font(.system(size: 12, weight: .bold, design: .default))
                                     .foregroundColor(.white)
@@ -38,41 +38,42 @@ struct ListCurrentlyReadingView: View {
                                         RoundedRectangle(cornerRadius: 10)
                                             .stroke(Color.pTSecondary)
                                     )
-
-                                NavigationLink(destination: TrackerView(viewModel: BookTrackerViewModel(userId: viewModel.userId, tracker: BookTrackerModel(id: book.id, userId: viewModel.userId, startDate: Date(), endDate: nil, lastPageRead: 0, totalPageCount: book.volumeInfo.pageCount ?? 0, bookTitle: book.volumeInfo.title)), listViewModel: viewModel)) {
-                                    EmptyView()
-                                }
-                                .buttonStyle(PlainButtonStyle())
-                                .frame(width: 105, height: 30) // Confine the area of the NavigationLink
-                                .opacity(0.0) // Make the link itself invisible
-                            }
-                            
-                            Spacer()
-
-                            Button(action: {
-                                bookToDelete = book
-                                showingDeleteAlert = true
-                            }) {
-                                Image(systemName: "trash")
-                                    .foregroundColor(.red)
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                            .alert(isPresented: $showingDeleteAlert) {
-                                Alert(
-                                    title: Text("Confirm Deletion"),
-                                    message: Text("Are you sure you want to delete '\(bookToDelete?.volumeInfo.title ?? "this book")'?"),
-                                    primaryButton: .destructive(Text("Delete")) {
-                                        if let bookToDelete = bookToDelete {
-                                            viewModel.deleteBookFromFirestore(bookId: bookToDelete.id, listType: .currentlyReading)
-                                        }
-                                    },
-                                    secondaryButton: .cancel() {
-                                        bookToDelete = nil
+                                    .onTapGesture {
+                                        self.selectedBook = book
+                                        self.isTrackingNavigationActive = true
                                     }
-                                )
-                            }
-                        }
-                        .padding(.vertical, 5)
+
+                                NavigationLink(destination: TrackerView(viewModel: BookTrackerViewModel(userId: viewModel.userId, tracker: BookTrackerModel(id: book.id, userId: viewModel.userId, startDate: Date(), endDate: nil, lastPageRead: 0, totalPageCount: book.volumeInfo.pageCount ?? 0, bookTitle: book.volumeInfo.title)), listViewModel: viewModel), isActive: $isTrackingNavigationActive) {
+                                        EmptyView()
+                                    }
+                                    .hidden()
+                                    
+                                    Spacer()
+
+                                    Button(action: {
+                                        bookToDelete = book
+                                        showingDeleteAlert = true
+                                    }) {
+                                        Image(systemName: "trash")
+                                            .foregroundColor(.red)
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                    .alert(isPresented: $showingDeleteAlert) {
+                                        Alert(
+                                            title: Text("Confirm Deletion"),
+                                            message: Text("Are you sure you want to delete '\(bookToDelete?.volumeInfo.title ?? "this book")'?"),
+                                            primaryButton: .destructive(Text("Delete")) {
+                                                if let bookToDelete = bookToDelete {
+                                                    viewModel.deleteBookFromFirestore(bookId: bookToDelete.id, listType: .currentlyReading)
+                                                }
+                                            },
+                                            secondaryButton: .cancel() {
+                                                bookToDelete = nil
+                                            }
+                                        )
+                                    }
+                                }
+                                .padding(.vertical, 5)
                     }
                 }
                 .listStyle(GroupedListStyle())
