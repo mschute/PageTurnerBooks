@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B1040F32BEFB2060051C282 /* CustomMenuStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1040F22BEFB2060051C282 /* CustomMenuStyle.swift */; };
 		0B40127C2BEA550A001DAA3C /* InputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B40127B2BEA550A001DAA3C /* InputField.swift */; };
 		0B40127E2BEA5711001DAA3C /* PTTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B40127D2BEA5711001DAA3C /* PTTextFieldStyle.swift */; };
 		0B4012802BEA5B00001DAA3C /* WarningButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B40127F2BEA5B00001DAA3C /* WarningButton.swift */; };
@@ -67,6 +68,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0B1040F22BEFB2060051C282 /* CustomMenuStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuStyle.swift; sourceTree = "<group>"; };
 		0B40127B2BEA550A001DAA3C /* InputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputField.swift; sourceTree = "<group>"; };
 		0B40127D2BEA5711001DAA3C /* PTTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTTextFieldStyle.swift; sourceTree = "<group>"; };
 		0B40127F2BEA5B00001DAA3C /* WarningButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningButton.swift; sourceTree = "<group>"; };
@@ -115,7 +117,7 @@
 		A2EA5A742BE5677C008956F8 /* Modal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		A2EA5A7A2BE567BC008956F8 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		A2EA5A7C2BE567CC008956F8 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
-		A2EA5A7E2BE567DE008956F8 /* TrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerView.swift; sourceTree = "<group>"; };
+		A2EA5A7E2BE567DE008956F8 /* TrackerView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = TrackerView.swift; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +157,7 @@
 				0B4012892BEA62BF001DAA3C /* SecondaryButtonStyle.swift */,
 				0BE3D7542BEBBEF80099FC01 /* Flip.swift */,
 				0BE3D7562BEBE3250099FC01 /* DisabledButtonStyle.swift */,
+				0B1040F22BEFB2060051C282 /* CustomMenuStyle.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 				A2EA5A732BE5676C008956F8 /* ListWantToReadView.swift in Sources */,
 				A2EA5A6F2BE5673D008956F8 /* ListFinishedReadingView.swift in Sources */,
 				A2B235382BE7FDC30088FF0D /* BookDetailView.swift in Sources */,
+				0B1040F32BEFB2060051C282 /* CustomMenuStyle.swift in Sources */,
 				0B40127C2BEA550A001DAA3C /* InputField.swift in Sources */,
 				A2B235422BE7FDE30088FF0D /* BookRow.swift in Sources */,
 				A2EA5A712BE56755008956F8 /* ListsView.swift in Sources */,
