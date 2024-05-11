@@ -54,6 +54,7 @@ struct BookSearchView: View {
             .padding(.top, 80)
             .ignoresSafeArea(edges: .top)
         }
+        .tint(.ptPrimary)
     }
     
     private func makeCoordinator() -> Coordinator {
