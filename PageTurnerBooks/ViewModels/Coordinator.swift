@@ -29,18 +29,28 @@ class Coordinator: NSObject, AVCaptureMetadataOutputObjectsDelegate {
         if let metadataObject = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
            let stringValue = metadataObject.stringValue {
             print("Scanned barcode: \(stringValue)")
-            if isValidISBN(stringValue) {
-                print("Valid ISBN extracted: \(stringValue)")
-                searchBooks(stringValue, source: .scanner)
+            if let validISBN = extractValidISBN(from: stringValue) {
+                print("Valid ISBN extracted: \(validISBN)")
+                searchBooks(validISBN, source: .scanner)
             } else {
                 print("Invalid or no ISBN found in barcode")
             }
         }
     }
 
-    func isValidISBN(_ isbn: String) -> Bool {
-        let strippedISBN = isbn.filter("0123456789".contains)
-        return strippedISBN.count == 10 || strippedISBN.count == 13
+    func extractValidISBN(from string: String) -> String? {
+        let regex = try! NSRegularExpression(pattern: "\\d+")
+        let results = regex.matches(in: string, range: NSRange(string.startIndex..., in: string))
+        
+        for match in results {
+            if let range = Range(match.range, in: string) {
+                let sequence = String(string[range])
+                if sequence.count == 10 || sequence.count == 13 {
+                    return sequence
+                }
+            }
+        }
+        return nil
     }
 
     func searchBooks(_ query: String, source: SearchSource) {

@@ -60,6 +60,10 @@ struct BookSearchView: View {
     private func makeCoordinator() -> Coordinator {
         let coordinator = Coordinator()
         coordinator.delegate = bookManager
+        coordinator.onBookRetrieved = {
+            self.isShowingScanner = false
+            self.isShowingSearchBar = true
+        }
         return coordinator
     }
     
@@ -69,7 +73,6 @@ struct BookSearchView: View {
         }
     }
 }
-
 
 struct BookSearchView_Previews: PreviewProvider {
     static var previews: some View {
