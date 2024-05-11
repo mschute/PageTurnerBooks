@@ -7,6 +7,8 @@ struct HomePageView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var bookTrackerViewModel: BookTrackerViewModel
     @EnvironmentObject var booksListViewModel: BooksListViewModel
+    @State private var selectedBook: BookItem?
+    @State private var isTrackingNavigationActive = false
     
     //TODO: When loading, the UI is messed up. Perhaps add a frame around the header so the elements stay in place?
     
@@ -44,57 +46,61 @@ struct HomePageView: View {
                         .multilineTextAlignment(.center)
                         .padding(.top, 37)
                     
-                    //                    NavigationStack{
-                    //                        ScrollView(.horizontal, showsIndicators: false) {
-                    //                            HStack {
-                    //                                ForEach(booksListViewModel.currentlyReadingBooks) { book in
-                    //                                    NavigationLink(destination: TrackerView(viewModel: BookTrackerViewModel(userId: authViewModel.currentUser?.id ?? "", tracker: BookTrackerModel(id: book.id, userId: authViewModel.currentUser?.id ?? "", startDate: Date(), endDate: nil, lastPageRead: 0, totalPageCount: book.volumeInfo.pageCount ?? 0, bookTitle: book.volumeInfo.title)), listViewModel: booksListViewModel)) {
-                    //                                        VStack {
-                    //                                            Text(book.volumeInfo.title)
-                    //                                                .foregroundColor(.primary)
-                    //                                            Text("Tap to track progress")
-                    //                                                .font(.caption)
-                    //                                                .foregroundColor(.secondary)
-                    //                                        }
-                    //                                    }
-                    //                                }
-                    //                            }
-                    //                        }
-                    //                        .frame(height: 200)
-                    
-                    Spacer()
-                    ScrollView(.vertical, showsIndicators: false) {
-                        VStack(alignment: .leading) {
-                            ForEach(Array(booksListViewModel.currentlyReadingBooks.prefix(4)), id: \.id) { book in
-                                VStack(alignment: .leading, spacing: 10){
-                                    BookRow(book: book, viewModel: booksListViewModel)
-                                    //TODO: Link to tracker
-                                    Button("Track", action: {
-                                        print("Tracker clicked")
-                                    })
-                                    .fontWeight(.bold)
+                    List(booksListViewModel.currentlyReadingBooks, id: \.id) { book in
+                        VStack{
+                            BookRow(book: book, viewModel: booksListViewModel)
+                            
+                            HStack {
+                                Text("View Tracking")
+                                    .font(.system(size: 12, weight: .bold, design: .default))
+                                    .foregroundColor(.white)
+                                    .padding(9)
+                                    .background(Color.pTSecondary)
+                                    .cornerRadius(10)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(Color.pTSecondary)
+                                    )
+                                    .onTapGesture {
+                                        self.selectedBook = book
+                                        DispatchQueue.main.async {
+                                            self.isTrackingNavigationActive = true
+                                        }
+                                    }
+                                
+                                NavigationLink(destination: TrackerView(viewModel: BookTrackerViewModel(userId: booksListViewModel.userId, tracker: BookTrackerModel(id: book.id, userId: booksListViewModel.userId, startDate: Date(), endDate: nil, lastPageRead: 0, totalPageCount: book.volumeInfo.pageCount ?? 0, bookTitle: book.volumeInfo.title)), listViewModel: booksListViewModel), isActive: Binding(
+                                    get: { self.selectedBook?.id == book.id && self.isTrackingNavigationActive },
+                                    set: { isActive in
+                                        if !isActive {
+                                            self.isTrackingNavigationActive = false
+                                        }
+                                    }
+                                )) {
+                                    EmptyView()
                                 }
-                                Divider()
+                                .hidden()
+                                
+                                Spacer()
+                                
                             }
+                            .padding(.vertical, 5)
                         }
                     }
-                    .padding()
+                    .listStyle(GroupedListStyle())
+                    .tint(.ptSecondary)
+                    .padding(.top, -10)
                 }
-                
-                .tint(.pTSecondary)
             }
         }
     }
 }
-// }
-//}
-
-struct HomePageView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomePageView()
-            .environmentObject(AuthViewModel.mock)
-            .environmentObject(BookTrackerViewModel.mock)
-            .environmentObject(BooksListViewModel(userId: "9laC5umqf4T6fviudjD6HcuN1pW2"))
+    
+    struct HomePageView_Previews: PreviewProvider {
+        static var previews: some View {
+            HomePageView()
+                .environmentObject(AuthViewModel.mock)
+                .environmentObject(BookTrackerViewModel.mock)
+                .environmentObject(BooksListViewModel(userId: "xR8M6o1Km9WCyJiePsNvXlVsAH03"))
+        }
     }
-}
-
+    

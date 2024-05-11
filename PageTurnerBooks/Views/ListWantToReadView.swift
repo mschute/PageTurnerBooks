@@ -105,7 +105,7 @@ struct ListWantToReadView: View {
                 )
             case .moveSuccess:
                 return Alert(
-                    title: Text("Move to Currently Reading"),
+                    title: Text("Moved to Currently Reading"),
                     message: Text("Successfully moved '\(bookToMove?.volumeInfo.title ?? "this book")' to Currently Reading."),
                     dismissButton: .default(Text("OK"))
                 )

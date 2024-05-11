@@ -24,7 +24,7 @@ struct ListCurrentlyReadingView: View {
                     .ignoresSafeArea(edges: .top)
                 
                 List(viewModel.currentlyReadingBooks, id: \.id) { book in
-                    VStack/*(alignment: .leading, spacing: 10)*/ {
+                    VStack{
                         BookRow(book: book, viewModel: viewModel)
 
                         HStack {
@@ -40,13 +40,22 @@ struct ListCurrentlyReadingView: View {
                                     )
                                     .onTapGesture {
                                         self.selectedBook = book
-                                        self.isTrackingNavigationActive = true
+                                        DispatchQueue.main.async {
+                                            self.isTrackingNavigationActive = true
+                                        }
                                     }
 
-                                NavigationLink(destination: TrackerView(viewModel: BookTrackerViewModel(userId: viewModel.userId, tracker: BookTrackerModel(id: book.id, userId: viewModel.userId, startDate: Date(), endDate: nil, lastPageRead: 0, totalPageCount: book.volumeInfo.pageCount ?? 0, bookTitle: book.volumeInfo.title)), listViewModel: viewModel), isActive: $isTrackingNavigationActive) {
-                                        EmptyView()
+                            NavigationLink(destination: TrackerView(viewModel: BookTrackerViewModel(userId: viewModel.userId, tracker: BookTrackerModel(id: book.id, userId: viewModel.userId, startDate: Date(), endDate: nil, lastPageRead: 0, totalPageCount: book.volumeInfo.pageCount ?? 0, bookTitle: book.volumeInfo.title)), listViewModel: viewModel), isActive: Binding(
+                                get: { self.selectedBook?.id == book.id && self.isTrackingNavigationActive },
+                                set: { isActive in
+                                    if !isActive {
+                                        self.isTrackingNavigationActive = false
                                     }
-                                    .hidden()
+                                }
+                            )) {
+                                EmptyView()
+                            }
+                            .hidden()
                                     
                                     Spacer()
 
