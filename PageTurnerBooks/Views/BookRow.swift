@@ -5,10 +5,10 @@ import SwiftUI
 
 struct BookRow: View {
     var book: BookItem
-    @ObservedObject var viewModel: BooksListViewModel  // Add this line
+    @ObservedObject var viewModel: BooksListViewModel
 
     var body: some View {
-        NavigationLink(destination: BookDetailView(viewModel: viewModel, bookItem: book)) {  // Updated
+        NavigationLink(destination: BookDetailView(viewModel: viewModel, bookItem: book)) {
             HStack {
                 thumbnailAndDetails
             }

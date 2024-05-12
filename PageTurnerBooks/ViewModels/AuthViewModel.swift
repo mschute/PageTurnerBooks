@@ -208,6 +208,7 @@ class AuthViewModel: ObservableObject {
         }
 }
 
+// Used to create previews
 extension AuthViewModel {
     static var mock: AuthViewModel {
         let mock = AuthViewModel()

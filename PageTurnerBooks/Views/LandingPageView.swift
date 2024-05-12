@@ -6,7 +6,6 @@ import SwiftUI
 struct LandingPageView: View {
     var body: some View {
         //TODO: Sliver of white space at the bottom
-        //TODO: Adjust for landscape
         NavigationStack {
             ZStack{
                 Image("backgroundImage")

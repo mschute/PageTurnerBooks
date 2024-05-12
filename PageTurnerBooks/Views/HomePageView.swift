@@ -10,8 +10,6 @@ struct HomePageView: View {
     @State private var selectedBook: BookItem?
     @State private var isTrackingNavigationActive = false
     
-    //TODO: When loading, the UI is messed up. Perhaps add a frame around the header so the elements stay in place?
-    
     var body: some View {
         
         ZStack(alignment: .top){
