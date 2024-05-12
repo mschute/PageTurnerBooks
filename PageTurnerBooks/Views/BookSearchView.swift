@@ -17,7 +17,7 @@ struct BookSearchView: View {
                 Button(action: {
                     isShowingSearchBar = true
                 }) {
-                    Image("searchIcon") // Ensure this image is correctly set in your assets
+                    Image("searchIcon")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 300, height: 220)
@@ -36,7 +36,7 @@ struct BookSearchView: View {
                 Button(action: {
                     isShowingScanner = true
                 }) {
-                    Image("scanIcon") // Ensure this image is correctly set in your assets
+                    Image("scanIcon")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 300, height: 220)
