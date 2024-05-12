@@ -20,7 +20,7 @@ struct BarcodeOverlay: View {
                 .overlay(
                     Text("Scan Barcode Here")
                         .foregroundColor(.white)
-                        .font(.largeTitle)
+                        .font(.title)
                 )
             .background(Color.black.opacity(0.5))
             .cornerRadius(20)
