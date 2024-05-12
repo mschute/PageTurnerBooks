@@ -3,8 +3,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 extension View {
     func flipped(_ axis: Axis = .horizontal, anchor: UnitPoint = .center) -> some View {
         modifier(FlippedViewModifier(axis: axis, anchor: anchor))
