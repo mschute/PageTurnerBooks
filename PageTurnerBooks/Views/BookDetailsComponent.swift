@@ -12,39 +12,60 @@ struct BookDetailComponent: View {
     
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 30) {
+            VStack(alignment: .leading, spacing: 23) {
+                Spacer()
+                Spacer()
                 HStack(alignment: .center) {
-                    VStack(alignment: .trailing, spacing: 16) {
-                            Text(bookItem.volumeInfo.title)
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .multilineTextAlignment(.trailing)
-                            if let subtitle = bookItem.volumeInfo.subtitle {
-                                Text(subtitle)
-                                    .font(.subheadline)
-                                    .multilineTextAlignment(.trailing)
-                            }
-                            if let authors = bookItem.volumeInfo.authors, !authors.isEmpty {
-                                Text("\(authors.joined(separator: ", "))")
-                                    .font(.subheadline)
-                                    .fontWeight(.medium)
-                                    .multilineTextAlignment(.trailing)
-                            } else {
-                                Text("Unknown author")
-                                    .font(.subheadline)
-                                    .fontWeight(.medium)
-                                    .multilineTextAlignment(.trailing)
-                            }
-                        Spacer()
-                        }
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .padding(.trailing, 4)
-                    
-                        thumbnailView
-                        .frame(maxWidth: 150, alignment: .trailing)
+                    thumbnailView
+                        .frame(width: 120, height: 120)
+                        .opacity(0.3)
                         .shadow(radius: 2)
+
+                    thumbnailView
+                        .frame(width: 150, height: 150)
+                        .shadow(radius: 3)
+                        .scaleEffect(1.1)
+
+                    thumbnailView
+                        .frame(width: 120, height: 120)
+                        .opacity(0.3)
+                        .shadow(radius: 2)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.bottom, 70)
+                
+                VStack {
+                    Text(bookItem.volumeInfo.title)
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                        
+                    
+                    if let subtitle = bookItem.volumeInfo.subtitle {
+                        Text(subtitle)
+                            .font(.subheadline)
+                            .padding(.leading)
+                            .padding(.trailing)
+                            .multilineTextAlignment(.center)
+                    }
+                    if let authors = bookItem.volumeInfo.authors, !authors.isEmpty {
+                        Text("Authors: \(authors.joined(separator: ", "))")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .multilineTextAlignment(.center)
+                            .padding(.top, 5)
+                            .padding(.leading)
+                            .padding(.trailing)
+                    } else {
+                        Text("Unknown author")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .multilineTextAlignment(.center)
+                    }
+                        
                     }
                     .frame(maxWidth: .infinity)
+                    .padding(5)
                 
                 Menu {
                     Button(action: {
@@ -109,10 +130,13 @@ struct BookDetailComponent: View {
                     Alert(title: Text("Book Addition Status"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                         
                 }
-                
-                Text(bookItem.volumeInfo.description ?? "No description available.")
                     
-                VStack(alignment: .leading, spacing: 10) {
+                VStack {
+                    HStack{
+                        Text(bookItem.volumeInfo.description ?? "No description available.")
+                    }
+                    .padding(.bottom, 15)
+                    
                     HStack {
                         Text("Authors: ")
                             .fontWeight(.bold)
@@ -187,10 +211,12 @@ struct BookDetailComponent: View {
                     }
                     .frame(maxWidth: .infinity)
                 }
+                .padding(.leading)
+                .padding(.trailing)
             }
-            .padding(.horizontal, 30)
-            .padding(.bottom, 30)
         }
+        .padding(20)
+        .frame(maxWidth: .infinity, alignment: .center)
     }
     
     

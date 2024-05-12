@@ -1,5 +1,5 @@
 //
-//  BookDetailView.swift
+// BookDetailView.swift
 
 import SwiftUI
 
@@ -14,11 +14,14 @@ struct BookDetailView: View {
                 Button(action: {
                     presentationMode.wrappedValue.dismiss()
                 }) {
+                    
                     Image(systemName: "chevron.left")
                         .imageScale(.large)
                         .fontWeight(.bold)
                         .foregroundColor(Color.pTPrimary)
-                        .padding()
+                        .padding(.leading, 20)
+                        .padding(.top, 50)
+                    
                 }
                 Spacer()
             }
@@ -28,6 +31,7 @@ struct BookDetailView: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
         .tint(.pTPrimary)
+        .padding(.top, -50)
     }
 }
 
