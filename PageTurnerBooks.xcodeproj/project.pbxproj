@@ -61,7 +61,6 @@
 		A2EA5A6F2BE5673D008956F8 /* ListFinishedReadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EA5A6E2BE5673D008956F8 /* ListFinishedReadingView.swift */; };
 		A2EA5A712BE56755008956F8 /* ListsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EA5A702BE56755008956F8 /* ListsView.swift */; };
 		A2EA5A732BE5676C008956F8 /* ListWantToReadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EA5A722BE5676C008956F8 /* ListWantToReadView.swift */; };
-		A2EA5A752BE5677C008956F8 /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EA5A742BE5677C008956F8 /* Modal.swift */; };
 		A2EA5A7B2BE567BC008956F8 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EA5A7A2BE567BC008956F8 /* SignInView.swift */; };
 		A2EA5A7D2BE567CC008956F8 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EA5A7C2BE567CC008956F8 /* SignUpView.swift */; };
 		A2EA5A7F2BE567DE008956F8 /* TrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EA5A7E2BE567DE008956F8 /* TrackerView.swift */; };
@@ -114,7 +113,6 @@
 		A2EA5A6E2BE5673D008956F8 /* ListFinishedReadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListFinishedReadingView.swift; sourceTree = "<group>"; };
 		A2EA5A702BE56755008956F8 /* ListsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsView.swift; sourceTree = "<group>"; };
 		A2EA5A722BE5676C008956F8 /* ListWantToReadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListWantToReadView.swift; sourceTree = "<group>"; };
-		A2EA5A742BE5677C008956F8 /* Modal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		A2EA5A7A2BE567BC008956F8 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		A2EA5A7C2BE567CC008956F8 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		A2EA5A7E2BE567DE008956F8 /* TrackerView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = TrackerView.swift; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; };
@@ -258,14 +256,12 @@
 				A2B235412BE7FDE30088FF0D /* BookRow.swift */,
 				A2B2353D2BE7FDD80088FF0D /* ContentView.swift */,
 				A2EA5A682BE566F4008956F8 /* HomePageView.swift */,
-				0B40127B2BEA550A001DAA3C /* InputField.swift */,
 				A2EA5A6A2BE5670B008956F8 /* LandingPageView.swift */,
 				A2EA5A6C2BE56726008956F8 /* ListCurrentlyReadingView.swift */,
 				A2EA5A6E2BE5673D008956F8 /* ListFinishedReadingView.swift */,
 				A2EA5A722BE5676C008956F8 /* ListWantToReadView.swift */,
 				A2EA5A702BE56755008956F8 /* ListsView.swift */,
 				0BA5012B2BE67A300049DB7F /* NavBar.swift */,
-				0B40128B2BEA9F70001DAA3C /* RotateLogo.swift */,
 				A2EA5A7A2BE567BC008956F8 /* SignInView.swift */,
 				A2EA5A7C2BE567CC008956F8 /* SignUpView.swift */,
 				A2EA5A7E2BE567DE008956F8 /* TrackerView.swift */,
@@ -276,11 +272,12 @@
 		A2EA5A802BE56A11008956F8 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				A2EA5A742BE5677C008956F8 /* Modal.swift */,
 				A2EA5A662BE566D2008956F8 /* PrimaryButton.swift */,
 				0B4012812BEA5B13001DAA3C /* SecondaryButton.swift */,
 				0B4012832BEA5B27001DAA3C /* SmallPrimaryButton.swift */,
 				0B40127F2BEA5B00001DAA3C /* WarningButton.swift */,
+				0B40127B2BEA550A001DAA3C /* InputField.swift */,
+				0B40128B2BEA9F70001DAA3C /* RotateLogo.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -405,7 +402,6 @@
 				A2EA5A692BE566F4008956F8 /* HomePageView.swift in Sources */,
 				A2EA5A6D2BE56726008956F8 /* ListCurrentlyReadingView.swift in Sources */,
 				A2A307BC2BE711EE00C99DF2 /* BookTrackerModel.swift in Sources */,
-				A2EA5A752BE5677C008956F8 /* Modal.swift in Sources */,
 				0B40128A2BEA62BF001DAA3C /* SecondaryButtonStyle.swift in Sources */,
 				A2A307CF2BE71E3F00C99DF2 /* AuthViewModel.swift in Sources */,
 				0B40128C2BEA9F70001DAA3C /* RotateLogo.swift in Sources */,
