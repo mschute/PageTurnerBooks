@@ -30,7 +30,6 @@ struct HomePageView: View {
                                         .fontWeight(.bold)
                                         .padding(.top, 20)
                                         .transition(.opacity)
-                                        .animation(.easeIn(duration: 0.5))
                                 } else {
                                     Text("Loading name...")
                                         .font(.system(size: 50))

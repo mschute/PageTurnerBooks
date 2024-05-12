@@ -1,9 +1,5 @@
 //
-//  CustomMenuStyle.swift
-//  PageTurnerBooks
-//
-//  Created by Staff on 11/05/2024.
-//
+// CustomMenuStyle
 
 import SwiftUI
 

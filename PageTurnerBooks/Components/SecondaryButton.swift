@@ -1,6 +1,7 @@
 //
 //  SecondaryButton.swift
 
+
 import SwiftUI
 
 struct SecondaryButton: View {
@@ -14,7 +15,7 @@ struct SecondaryButton: View {
         .font(.system(size: 18, weight: .bold, design: .default))
         .padding(.horizontal, 20)
         .padding(.vertical, 10)
-        .background(LinearGradient(gradient: Gradient(colors: [Color.pTSecondary.opacity(0.9), Color.pTSecondary]), startPoint: .topLeading, endPoint: .bottomTrailing))
+        .background(.ptSecondary)
         .foregroundColor(Color.white)
         .font(.system(size: 20, weight: .bold, design: .default))
         .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))

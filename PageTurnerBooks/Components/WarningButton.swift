@@ -14,7 +14,7 @@ struct WarningButton: View {
         .font(.system(size: 18, weight: .bold, design: .default))
         .padding(.horizontal, 20)
         .padding(.vertical, 10)
-        .background(LinearGradient(gradient: Gradient(colors: [Color.pTWarning.opacity(0.8), Color.pTWarning]), startPoint: .topLeading, endPoint: .bottomTrailing))
+        .background(Color.pTWarning)
         .foregroundColor(Color.white)
         .font(.system(size: 20, weight: .bold, design: .default))
         .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))

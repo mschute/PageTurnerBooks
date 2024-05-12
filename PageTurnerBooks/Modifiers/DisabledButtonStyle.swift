@@ -11,7 +11,6 @@ struct DisabledButtonStyle: ButtonStyle {
             .padding(.horizontal, 20)
             .padding(.vertical, 10)
             .background(Color.gray)
-//            .background(LinearGradient(gradient: Gradient(colors: [Color.gray.opacity(0.8), Color.gray]), startPoint: .topLeading, endPoint: .bottomTrailing))
             .foregroundColor(Color.white)
             .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
             .frame(minWidth: 100, minHeight: 50, maxHeight: 50, alignment: .center)
