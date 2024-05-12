@@ -10,11 +10,14 @@ import SwiftUI
 struct CustomMenuStyle: MenuStyle {
     func makeBody(configuration: Configuration) -> some View {
        Menu(configuration)
-        //configuration.label
-            //.frame(maxWidth: .infinity, alignment: .leading)
-            .padding(6)
-            .background(.white, in: RoundedRectangle(cornerRadius: 4, style: .circular))
-            .foregroundColor(.ptSecondary)
+            .padding(9)
+            .background(Color.white)
+            .foregroundColor(Color.pTPrimary)
+            .fontWeight(.bold)
+            .frame(maxWidth: 250, alignment: .center)
+            .overlay(RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+            )
     }
 }
 
