@@ -26,17 +26,22 @@ struct HomePageView: View {
                         Text("Welcome")
                             .font(.largeTitle)
                             .padding(.top, 10)
-                        if let fullName = authViewModel.currentUser?.fullName {
-                            Text(" \(fullName) ")
-                                .font(.system(size: 50))
-                                .fontWeight(.bold)
-                                .padding(.top, 20)
-                            //TODO: Improve animation
-                                .transition(.opacity)
-                                .animation(.easeIn(duration: 0.5))
-                        }
-                    }
-                    //Spacer()
+                                if let fullName = authViewModel.currentUser?.fullName {
+                                    Text(fullName)
+                                        .font(.system(size: 50))
+                                        .fontWeight(.bold)
+                                        .padding(.top, 20)
+                                        .transition(.opacity)
+                                        .animation(.easeIn(duration: 0.5))
+                                } else {
+                                    Text("Loading name...")
+                                        .font(.system(size: 50))
+                                        .fontWeight(.bold)
+                                        .padding(.top, 20)
+                                        .foregroundColor(.clear)                                                }
+                            }
+
+                    
                     Text("You are currently reading...")
                         .font(.system(size: 20, weight: .semibold))
                         .foregroundColor(.white)
@@ -45,7 +50,8 @@ struct HomePageView: View {
                         .background(Color.pTPrimary)
                         .multilineTextAlignment(.center)
                         .padding(.top, 37)
-                    
+                    //Spacer()
+                                        
                     List(booksListViewModel.currentlyReadingBooks, id: \.id) { book in
                         VStack{
                             BookRow(book: book, viewModel: booksListViewModel)
