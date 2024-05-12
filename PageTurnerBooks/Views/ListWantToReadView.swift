@@ -52,7 +52,6 @@ struct ListWantToReadView: View {
             .ignoresSafeArea(edges: .horizontal)
             .ignoresSafeArea(edges: .bottom)
 
-
             List(viewModel.wantToReadBooks, id: \.id) { book in
                 VStack(alignment: .leading) {
                     BookRow(book: book, viewModel: viewModel)
@@ -81,7 +80,7 @@ struct ListWantToReadView: View {
                             activeAlert = .confirmDelete
                         }) {
                             Image(systemName: "trash")
-                                .foregroundColor(.red)
+                                .foregroundColor(.pTWarning)
                         }
                         .buttonStyle(PlainButtonStyle())
                     }

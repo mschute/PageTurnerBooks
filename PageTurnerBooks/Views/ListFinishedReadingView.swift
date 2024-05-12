@@ -84,7 +84,7 @@ struct ListFinishedReadingView: View {
                             showingDeleteAlert = true
                         }) {
                             Image(systemName: "trash")
-                                .foregroundColor(.red)
+                                .foregroundColor(.pTWarning)
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
@@ -106,9 +106,10 @@ struct ListFinishedReadingView: View {
                 }
             }
         .listStyle(GroupedListStyle())
-        .tint(.ptSecondary)
+        .tint(.pTPrimary)
         .padding(.top, -10)
     }
+        .tint(.pTPrimary)
     .navigationBarHidden(true)
     .navigationBarBackButtonHidden(true)
     .edgesIgnoringSafeArea(.top)
