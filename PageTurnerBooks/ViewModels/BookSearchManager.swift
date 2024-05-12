@@ -1,6 +1,6 @@
 //
 //  BookSearchManager.swift
-
+//
 //  Construct URL and makes API calls. Not for direct use by UI.
 
 import Foundation
