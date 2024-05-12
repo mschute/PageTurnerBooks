@@ -154,47 +154,52 @@ struct AccountView: View {
                             }
                         }
                         
+                        Section(){
+                            VStack {
+                                SecondaryButton(title: "Sign Out", action: {
+                                    self.showLogoutAlert = true
+                                })
+                                .padding()
+                                .frame(alignment: .center)
+                                .alert(isPresented: $showLogoutAlert) {
+                                    Alert(
+                                        title: Text("Confirm Sign Out"),
+                                        message: Text("Are you sure you want to sign out?"),
+                                        primaryButton: .destructive(Text("Sign Out")) {
+                                            print("Logging out...")
+                                            authViewModel.logOut()
+                                        },
+                                        secondaryButton: .cancel()
+                                    )
+                                }
+                            }
+                        }
                         
-                        VStack {
-                            SecondaryButton(title: "Sign Out", action: {
-                                self.showLogoutAlert = true // Set to true to show the alert when tapped
-                            })
-                            .padding()
-                            .frame(alignment: .center)
-                            .alert(isPresented: $showLogoutAlert) { // Configure the alert
-                                Alert(
-                                    title: Text("Confirm Sign Out"),
-                                    message: Text("Are you sure you want to sign out?"),
-                                    primaryButton: .destructive(Text("Sign Out")) {
-                                        print("Logging out...")
-                                        authViewModel.logOut()
-                                    },
-                                    secondaryButton: .cancel()
-                                )
+                        
+                        Section(){
+                            VStack{
+                                Text("Delete Account")
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.pTWarning)
+                                    .onTapGesture {
+                                        self.showAccountAlert = true
+                                    }
+                                    .padding()
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                                    .alert(isPresented: $showAccountAlert) {
+                                        Alert(
+                                            title: Text("Confirm Deletion"),
+                                            message: Text("Are you sure you want to delete your account? This action cannot be undone."),
+                                            primaryButton: .destructive(Text("Delete")) {
+                                                print("Delete button pressed. Attempting to delete user...")
+                                                authViewModel.deleteUser()
+                                            },
+                                            secondaryButton: .cancel()
+                                        )
+                                    }
                             }
                         }
                     }
-                    Spacer()
-                    //TODO: This jumps to just above the keyboard when the keyboard is open
-                    Text("Delete Account")
-                        .fontWeight(.bold)
-                        .foregroundColor(.pTWarning)
-                        .onTapGesture {
-                            self.showAccountAlert = true // Set to true to show the alert when tapped
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .alert(isPresented: $showAccountAlert) {
-                            Alert(
-                                title: Text("Confirm Deletion"),
-                                message: Text("Are you sure you want to delete your account? This action cannot be undone."),
-                                primaryButton: .destructive(Text("Delete")) {
-                                    print("Delete button pressed. Attempting to delete user...")
-                                    authViewModel.deleteUser()
-                                },
-                                secondaryButton: .cancel()
-                            )
-                        }
                 }
             }
             
