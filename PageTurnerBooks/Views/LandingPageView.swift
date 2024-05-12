@@ -14,7 +14,7 @@ struct LandingPageView: View {
                     .opacity(0.2)
                     .padding(.bottom, -50)
                 
-                Spacer(minLength: 100)
+                Spacer(minLength: 40)
                 VStack{
                     
                     RotateLogo()
