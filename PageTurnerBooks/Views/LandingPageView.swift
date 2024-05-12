@@ -5,7 +5,6 @@ import SwiftUI
 
 struct LandingPageView: View {
     var body: some View {
-        //TODO: Sliver of white space at the bottom
         NavigationStack {
             ZStack{
                 Image("backgroundImage")
@@ -13,8 +12,9 @@ struct LandingPageView: View {
                     .aspectRatio(contentMode: .fill)
                     .edgesIgnoringSafeArea(.all)
                     .opacity(0.2)
+                    .padding(.bottom, -50)
                 
-                Spacer(minLength: 40)
+                Spacer(minLength: 100)
                 VStack{
                     
                     RotateLogo()
