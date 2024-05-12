@@ -30,7 +30,7 @@ struct AccountView: View {
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .padding(.top, 2)
-                        .padding(.bottom, 14)
+                        .padding(.bottom, 10)
                         .background(Color.pTPrimary)
                         .ignoresSafeArea(edges: .horizontal)
                         .ignoresSafeArea(edges: .bottom)
