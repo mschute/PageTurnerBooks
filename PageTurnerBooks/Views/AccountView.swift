@@ -17,6 +17,7 @@ struct AccountView: View {
     @State private var showingConfirmation = false
     @State private var isCurrentPasswordValid = false
     @State private var showSuccessAlert = false
+    @State private var hasTriedValidating: Bool = false
     @FocusState private var fieldIsFocused: Bool
     
     var body: some View {
@@ -30,7 +31,7 @@ struct AccountView: View {
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .padding(.top, 2)
-                        .padding(.bottom, 14)
+                        .padding(.bottom, 10)
                         .background(Color.pTPrimary)
                         .ignoresSafeArea(edges: .horizontal)
                         .ignoresSafeArea(edges: .bottom)
@@ -73,6 +74,7 @@ struct AccountView: View {
                                                         print("Re-authentication success, isValid set to \(isValid)")
                                                     }
                                                     isCurrentPasswordValid = isValid
+                                                    hasTriedValidating = true
                                                 }
                                             }
                                         }) {
@@ -82,7 +84,7 @@ struct AccountView: View {
                                         .padding(.trailing, 10)
                                     }
                                     
-                                    if !isCurrentPasswordValid && !currentPassword.isEmpty {
+                                    if !isCurrentPasswordValid && hasTriedValidating && !currentPassword.isEmpty {
                                         Text("Wrong password. Please try again.")
                                             .font(.caption)
                                             .foregroundColor(.red)
@@ -136,13 +138,21 @@ struct AccountView: View {
                                                         newPassword = ""
                                                         confirmPassword = ""
                                                         showSuccessAlert = true
+                                                        isCurrentPasswordValid = false
+                                                        hasTriedValidating = false
                                                     }
                                                 } catch {
                                                     print("Failed to update password: \(error.localizedDescription)")
                                                 }
                                             }
                                         }
-                                        Button("Cancel", role: .cancel) { }
+                                        Button("Cancel", role: .cancel) { 
+                                            currentPassword = ""
+                                            newPassword = ""
+                                            confirmPassword = ""
+                                            isCurrentPasswordValid = false
+                                            hasTriedValidating = false
+                                        }
                                     }
                                 }
                             }

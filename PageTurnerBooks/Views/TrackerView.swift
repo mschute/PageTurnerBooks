@@ -31,7 +31,7 @@ struct TrackerView: View {
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .padding(.top, 5)
-                        .padding(.bottom, 9)
+                        .padding(.bottom, 8)
                     
                     Spacer()
                         .frame(maxWidth: 36)

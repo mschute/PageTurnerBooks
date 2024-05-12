@@ -30,12 +30,12 @@ struct NavBar: View {
                 .tag(2)
                 
                 NavigationStack {
-                                    if !authViewModel.currentUserId.isEmpty {
-                                        ListsView(viewModel: BooksListViewModel(userId: authViewModel.currentUserId))
-                                    } else {
-                                        Text("No user logged in")
-                                    }
-                                }
+                    if !authViewModel.currentUserId.isEmpty {
+                        ListsView(viewModel: BooksListViewModel(userId: authViewModel.currentUserId))
+                    } else {
+                        Text("No user logged in")
+                    }
+                }
                 .tabItem {
                     Image(systemName: "list.bullet")
                     Text("Lists")
