@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0B1040F32BEFB2060051C282 /* CustomMenuStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1040F22BEFB2060051C282 /* CustomMenuStyle.swift */; };
 		0B40127C2BEA550A001DAA3C /* InputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B40127B2BEA550A001DAA3C /* InputField.swift */; };
-		0B40127E2BEA5711001DAA3C /* PTTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B40127D2BEA5711001DAA3C /* PTTextFieldStyle.swift */; };
 		0B4012802BEA5B00001DAA3C /* WarningButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B40127F2BEA5B00001DAA3C /* WarningButton.swift */; };
 		0B4012822BEA5B13001DAA3C /* SecondaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4012812BEA5B13001DAA3C /* SecondaryButton.swift */; };
 		0B4012842BEA5B27001DAA3C /* SmallPrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4012832BEA5B27001DAA3C /* SmallPrimaryButton.swift */; };
@@ -69,7 +68,6 @@
 /* Begin PBXFileReference section */
 		0B1040F22BEFB2060051C282 /* CustomMenuStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuStyle.swift; sourceTree = "<group>"; };
 		0B40127B2BEA550A001DAA3C /* InputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputField.swift; sourceTree = "<group>"; };
-		0B40127D2BEA5711001DAA3C /* PTTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTTextFieldStyle.swift; sourceTree = "<group>"; };
 		0B40127F2BEA5B00001DAA3C /* WarningButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningButton.swift; sourceTree = "<group>"; };
 		0B4012812BEA5B13001DAA3C /* SecondaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButton.swift; sourceTree = "<group>"; };
 		0B4012832BEA5B27001DAA3C /* SmallPrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallPrimaryButton.swift; sourceTree = "<group>"; };
@@ -151,7 +149,6 @@
 			isa = PBXGroup;
 			children = (
 				0B4012852BEA6199001DAA3C /* PrimaryButtonStyle.swift */,
-				0B40127D2BEA5711001DAA3C /* PTTextFieldStyle.swift */,
 				0B4012892BEA62BF001DAA3C /* SecondaryButtonStyle.swift */,
 				0BE3D7542BEBBEF80099FC01 /* Flip.swift */,
 				0BE3D7562BEBE3250099FC01 /* DisabledButtonStyle.swift */,
@@ -391,7 +388,6 @@
 				A2EA5A6B2BE5670B008956F8 /* LandingPageView.swift in Sources */,
 				0B4012842BEA5B27001DAA3C /* SmallPrimaryButton.swift in Sources */,
 				A2B2354C2BE7FE000088FF0D /* BarcodeOverlay.swift in Sources */,
-				0B40127E2BEA5711001DAA3C /* PTTextFieldStyle.swift in Sources */,
 				A2EA5A672BE566D2008956F8 /* PrimaryButton.swift in Sources */,
 				A2A307BE2BE7122000C99DF2 /* BookTrackerViewModel.swift in Sources */,
 				A2B235462BE7FDF10088FF0D /* URLExtensions.swift in Sources */,
