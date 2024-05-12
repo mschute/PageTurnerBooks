@@ -12,56 +12,102 @@ struct BookDetailComponent: View {
     
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                thumbnailView
+            VStack(alignment: .leading, spacing: 30) {
                 HStack(alignment: .center) {
-                    VStack(alignment: .center, spacing: 8) {
+                    VStack(alignment: .trailing, spacing: 16) {
                             Text(bookItem.volumeInfo.title)
-                                .font(.largeTitle)
+                                .font(.title3)
                                 .fontWeight(.bold)
-                                .multilineTextAlignment(.center)
+                                .multilineTextAlignment(.trailing)
                             if let subtitle = bookItem.volumeInfo.subtitle {
                                 Text(subtitle)
                                     .font(.subheadline)
-                                    .multilineTextAlignment(.center)
+                                    .multilineTextAlignment(.trailing)
+                            }
+                            if let authors = bookItem.volumeInfo.authors, !authors.isEmpty {
+                                Text("\(authors.joined(separator: ", "))")
+                                    .font(.subheadline)
+                                    .fontWeight(.medium)
+                                    .multilineTextAlignment(.trailing)
+                            } else {
+                                Text("Unknown author")
+                                    .font(.subheadline)
+                                    .fontWeight(.medium)
+                                    .multilineTextAlignment(.trailing)
+                            }
+                        Spacer()
+                        }
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding(.trailing, 4)
+                    
+                        thumbnailView
+                        .frame(maxWidth: 150, alignment: .trailing)
+                        .shadow(radius: 2)
+                    }
+                    .frame(maxWidth: .infinity)
+                
+                Menu {
+                    Button(action: {
+                        viewModel.addBookToFirestore(book: bookItem, listType: .wantToRead) { success, message in
+                            alertMessage = message
+                            showAlert = true
+                        }
+                    }) {
+                        HStack{
+                            Text("Want to Read")
+                            Spacer()
+                            if viewModel.isBookInList(bookId: bookItem.id, listType: .wantToRead) {
+                                Image(systemName: "checkmark").foregroundColor(.green)
                             }
                         }
                     }
                     .frame(maxWidth: .infinity)
 
-                //TODO: Need to create a different style of menu to pick these options. Not sure what would look good right now.
-                Menu {
-                    
-                    Button("Want to Read") {
-                        viewModel.addBookToFirestore(book: bookItem, listType: .wantToRead) { success, message in
-                            alertMessage = message
-                            showAlert = true
-                        }
-                    }
-                    Button("Currently Reading") {
+                    Button(action: {
                         viewModel.addBookToCurrentlyReadingAndTrack(book: bookItem) { success, message in
                             alertMessage = message
                             showAlert = true
                         }
+                    }) {
+                        HStack{
+                            Text("Currently Reading")
+                            Spacer()
+                            if viewModel.isBookInList(bookId: bookItem.id, listType: .currentlyReading) {
+                                Image(systemName: "checkmark").foregroundColor(Color.pTPrimary)
+                            }
+                        }
                     }
-                    Button("Finished Reading") {
+                    .frame(maxWidth: .infinity)
+
+                    Button(action: {
                         viewModel.addBookToFinishedReadingAndTrack(book: bookItem) { success, message in
                             alertMessage = message
                             showAlert = true
                         }
+                    }) {
+                        HStack{
+                            Text("Finished Reading")
+                            Spacer()
+                            if viewModel.isBookInList(bookId: bookItem.id, listType: .finishedReading) {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(Color.pTPrimary)
+                            }
+                        }
                     }
+                    .frame(maxWidth: .infinity)
+                    
+                    
                 } label: {
-                    Button("Add to List", action: {})
+                    Text("Add to List")
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    Spacer()
                         
                 }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(.ptSecondary)
-                .foregroundColor(.white)
-                .fontWeight(.bold)
-                .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
+                .menuStyle(CustomMenuStyle())
+                .frame(maxWidth: .infinity, alignment: .center)
                 .alert(isPresented: $showAlert) {
                     Alert(title: Text("Book Addition Status"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                        
                 }
                 
                 Text(bookItem.volumeInfo.description ?? "No description available.")
@@ -142,32 +188,40 @@ struct BookDetailComponent: View {
                     .frame(maxWidth: .infinity)
                 }
             }
-            .padding(30)
+            .padding(.horizontal, 30)
+            .padding(.bottom, 30)
         }
     }
+    
     
     private var thumbnailView: some View {
         Group {
             if let thumbnailURL = bookItem.volumeInfo.imageLinks?.thumbnail, let url = URL(string: thumbnailURL) {
+                
                 AsyncImage(
                     url: url,
                     content: { image in
                         image.resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(maxWidth: .infinity, maxHeight: 250)
-                            .cornerRadius(8)
+                            .frame(maxWidth: 150, maxHeight: 250)
+                            .overlay(RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                            )
+                        
                     },
                     placeholder: {
-                        Rectangle() // A better placeholder than just text
-                            .fill(Color.pTPrimary)
-                            .frame(maxWidth: .infinity, minHeight: 250)
+                        Rectangle()
+                            .fill(Color.gray)
+                            .frame(maxWidth: 150, minHeight: 250)
                             .cornerRadius(8)
                     }
                 )
+                
+                
             } else {
                 Rectangle() // Placeholder for books without thumbnails
-                    .fill(Color.secondary)
-                    .frame(maxWidth: .infinity, minHeight: 250)
+                    .fill(Color.gray)
+                    .frame(maxWidth: 150, minHeight: 250)
                     .cornerRadius(8)
             }
         }
@@ -176,124 +230,10 @@ struct BookDetailComponent: View {
     
 struct BookDetailComponent_Previews: PreviewProvider {
     static var previews: some View {
-        let viewModel = BooksListViewModel(userId: "9laC5umqf4T6fviudjD6HcuN1pW2") // Initialize your view model here
-        let book = BookItem(id: "1", volumeInfo: VolumeInfo(title: "Sample Book", subtitle: "Subtitle sample book", authors: ["Author1", "Author2"], publishedDate: "1984", pageCount: 346, language: "en", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean tristique metus molestie, auctor lorem vel, iaculis mauris. Phasellus fringilla tortor ac efficitur gravida. Cras fermentum eget velit accumsan viverra. Vestibulum fermentum purus nisi, eu pellentesque purus euismod sit amet. Nunc nibh nunc, euismod eget rhoncus sit amet, maximus imperdiet odio. Mauris mattis mollis iaculis. Morbi at diam risus. Praesent vestibulum commodo nibh quis volutpat. Integer sit amet malesuada magna. Vivamus augue tortor, elementum a efficitur at, interdum placerat nibh. Aenean id magna lectus. Donec semper lorem eget laoreet condimentum. Fusce hendrerit et leo sed elementum. Etiam sagittis sapien nulla, ac rhoncus leo laoreet imperdiet. Proin leo magna, dapibus et consectetur in, imperdiet maximus nulla.", imageLinks: nil, categories: ["Category 1", "Category 2"]))
+        let viewModel = BooksListViewModel(userId: "9laC5umqf4T6fviudjD6HcuN1pW2")
+        let book = BookItem(id: "1", volumeInfo: VolumeInfo(title: "Harry Potter and the Sorcerers Stone", subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", authors: ["Agatha Christie"], publishedDate: "1984", pageCount: 346, language: "en", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean tristique metus molestie, auctor lorem vel, iaculis mauris. Phasellus fringilla tortor ac efficitur gravida. Cras fermentum eget velit accumsan viverra. Vestibulum fermentum purus nisi, eu pellentesque purus euismod sit amet. Nunc nibh nunc, euismod eget rhoncus sit amet, maximus imperdiet odio. Mauris mattis mollis iaculis. Morbi at diam risus. Praesent vestibulum commodo nibh quis volutpat. Integer sit amet malesuada magna. Vivamus augue tortor, elementum a efficitur at, interdum placerat nibh. Aenean id magna lectus. Donec semper lorem eget laoreet condimentum. Fusce hendrerit et leo sed elementum. Etiam sagittis sapien nulla, ac rhoncus leo laoreet imperdiet. Proin leo magna, dapibus et consectetur in, imperdiet maximus nulla.", imageLinks: ImageLinks(smallThumbnail: "http://books.google.com/books/content?id=m8LyAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api", thumbnail: "http://books.google.com/books/content?id=m8LyAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"), categories: ["Category 1", "Category 2"]))
         return BookDetailView(viewModel: viewModel, bookItem: book)
     }
 }
-
-    
-    //    var body: some View {
-    //            ScrollView {
-    //                VStack(alignment: .leading, spacing: 12) {
-    //                    thumbnailAndDetailsView
-    //                    descriptionView
-    //                    metadataView
-    //                    addToListView
-    //                }
-    //                .padding()
-    //            }
-    //        }
-    //
-    //    private var addToListView: some View {
-    //        Menu {
-    //            Button("Want to Read") {
-    //                viewModel.addBookToFirestore(book: bookItem, listType: .wantToRead) { success, message in
-    //                    alertMessage = message
-    //                    showAlert = true
-    //                }
-    //            }
-    //            Button("Currently Reading") {
-    //                viewModel.addBookToCurrentlyReadingAndTrack(book: bookItem) { success, message in
-    //                    alertMessage = message
-    //                    showAlert = true
-    //                }
-    //            }
-    //            Button("Finished Reading") {
-    //                viewModel.addBookToFinishedReadingAndTrack(book: bookItem) { success, message in
-    //                    alertMessage = message
-    //                    showAlert = true
-    //                }
-    //            }
-    //        } label: {
-    //            Button("Add to List", action: {}).fixedSize()
-    //        }
-    //        .alert(isPresented: $showAlert) {
-    //            Alert(title: Text("Book Addition Status"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
-    //        }
-    //    }
-    //
-    //
-    //    private var thumbnailAndDetailsView: some View {
-    //        HStack {
-    //            thumbnailView
-    //            VStack(alignment: .leading, spacing: 8) {
-    //                Text(bookItem.volumeInfo.title)
-    //                    .font(.title)
-    //                if let subtitle = bookItem.volumeInfo.subtitle {
-    //                    Text(subtitle)
-    //                        .font(.subheadline)
-    //                }
-    //                if let authors = bookItem.volumeInfo.authors, !authors.isEmpty {
-    //                    Text("Authors: \(authors.joined(separator: ", "))")
-    //                } else {
-    //                    Text("Authors: Unknown")
-    //                }
-    //            }
-    //        }
-    //    }
-    //
-    //    private var thumbnailView: some View {
-    //        Group {
-    //            if let thumbnailURL = bookItem.volumeInfo.imageLinks?.thumbnail, let url = URL(string: thumbnailURL) {
-    //                AsyncImage(
-    //                    url: url,
-    //                    content: { image in
-    //                        image.resizable()
-    //                             .aspectRatio(contentMode: .fit)
-    //                             .frame(width: 100, height: 150)
-    //                             .cornerRadius(8)
-    //                    },
-    //                    placeholder: {
-    //                        Rectangle() // A better placeholder than just text
-    //                            .fill(Color.secondary)
-    //                            .frame(width: 100, height: 150)
-    //                            .cornerRadius(8)
-    //                    }
-    //                )
-    //            } else {
-    //                Rectangle() // Placeholder for books without thumbnails
-    //                    .fill(Color.secondary)
-    //                    .frame(width: 100, height: 150)
-    //                    .cornerRadius(8)
-    //            }
-    //        }
-    //    }
-    //
-    //    private var descriptionView: some View {
-    //        Text(bookItem.volumeInfo.description ?? "No description available.")
-    //            .padding(.top)
-    //    }
-    //
-    //    private var metadataView: some View {
-    //        VStack(alignment: .leading, spacing: 8) {
-    //            Text("Published: \(bookItem.volumeInfo.publishedDate ?? "Date not available")")
-    //            if let pageCount = bookItem.volumeInfo.pageCount {
-    //                Text("Pages: \(pageCount)")
-    //            }
-    //            Text("Language: \(bookItem.volumeInfo.language ?? "Not specified")")
-    //            if let categories = bookItem.volumeInfo.categories, !categories.isEmpty {
-    //                VStack(alignment: .leading) {
-    //                    Text("Categories:")
-    //                        .font(.headline)
-    //                    ForEach(categories, id: \.self) { category in
-    //                        Text(category)
-    //                            .padding(.leading, 10)
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
     
 

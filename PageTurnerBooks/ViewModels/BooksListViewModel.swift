@@ -331,6 +331,7 @@ class BooksListViewModel: ObservableObject {
     }
 }
 
+// Mock data for previews
 extension BooksListViewModel {
     static var mock: BooksListViewModel {
         let viewModel = BooksListViewModel(userId: "mockUser")
@@ -339,6 +340,20 @@ extension BooksListViewModel {
             BookItem(id: "2", volumeInfo: VolumeInfo(title: "1984", subtitle: "A dystopian novel", authors: ["George Orwell"], publishedDate: "1949", pageCount: 328, language: "English", description: "A novel about totalitarianism and surveillance.", imageLinks: ImageLinks(smallThumbnail: "url2", thumbnail: "url2"), categories: ["Fiction", "Dystopian"]))
         ]
         return viewModel
+    }
+}
+
+extension BooksListViewModel {
+    func isBookInList(bookId: String, listType: BookListType) -> Bool {
+        switch listType {
+        case .wantToRead:
+            return wantToReadBooks.contains(where: {$0.id == bookId})
+        case .currentlyReading:
+            return currentlyReadingBooks.contains(where: {$0.id == bookId})
+        case .finishedReading:
+            return finishedReadingBooks.contains(where: {$0.id == bookId})
+        }
+        
     }
 }
 
