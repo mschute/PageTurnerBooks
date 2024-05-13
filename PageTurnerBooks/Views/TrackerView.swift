@@ -55,7 +55,7 @@ struct TrackerView: View {
                                 }
                             ), displayedComponents: .date)
                             .fontWeight(.bold)
-                            .tint(.ptSecondary)
+                            .tint(Color.pTSecondary)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .alert(isPresented: $showingConfirmation) {
                                 Alert(
