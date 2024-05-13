@@ -26,9 +26,7 @@ struct SignInView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 20) {
-                
                 ScrollView {
-                    
                     VStack(spacing: 25) {
                         InputField(text: $email, title: "Email Address", placeholder: "name@example.com", isSecureField: false)
                             .keyboardType(.emailAddress)

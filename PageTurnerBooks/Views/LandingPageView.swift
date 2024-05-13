@@ -6,7 +6,7 @@ import SwiftUI
 struct LandingPageView: View {
     var body: some View {
         NavigationStack {
-            ZStack{
+            ZStack {
                 Image("backgroundImage")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
