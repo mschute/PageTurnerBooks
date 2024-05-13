@@ -32,7 +32,7 @@ struct BookSearchView: View {
                         SearchBarView(searchText: $searchText, isShowingSearchBar: $isShowingSearchBar, viewModel: viewModel, coordinator: makeCoordinator())
                             .environmentObject(bookManager)
                     }
-                    .padding(50)
+                    .padding(.bottom, 50)
                     
                     Button(action: {
                         isShowingScanner = true
@@ -52,7 +52,6 @@ struct BookSearchView: View {
                     }
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
-                .padding(.top, 80)
                 .ignoresSafeArea(edges: .top)
             }
         }
