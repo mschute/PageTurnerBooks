@@ -13,46 +13,48 @@ struct BookSearchView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                Button(action: {
-                    isShowingSearchBar = true
-                }) {
-                    Image("searchIcon")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 300, height: 220)
-                        .overlay(Rectangle().foregroundColor(Color.black.opacity(0.4)))
-                        .overlay(Text("Search Books")
-                            .font(.system(size: 24, weight: .bold))
-                            .foregroundColor(.white))
-                        .cornerRadius(10)
+            ScrollView{
+                VStack {
+                    Button(action: {
+                        isShowingSearchBar = true
+                    }) {
+                        Image("searchIcon")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 300, height: 220)
+                            .overlay(Rectangle().foregroundColor(Color.black.opacity(0.4)))
+                            .overlay(Text("Search Books")
+                                .font(.system(size: 24, weight: .bold))
+                                .foregroundColor(.white))
+                            .cornerRadius(10)
+                    }
+                    .fullScreenCover(isPresented: $isShowingSearchBar) {
+                        SearchBarView(searchText: $searchText, isShowingSearchBar: $isShowingSearchBar, viewModel: viewModel, coordinator: makeCoordinator())
+                            .environmentObject(bookManager)
+                    }
+                    .padding(50)
+                    
+                    Button(action: {
+                        isShowingScanner = true
+                    }) {
+                        Image("scanIcon")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 300, height: 220)
+                            .overlay(Rectangle().foregroundColor(Color.black.opacity(0.4)))
+                            .overlay(Text("Scan Barcode")
+                                .font(.system(size: 24, weight: .bold))
+                                .foregroundColor(.white))
+                            .cornerRadius(10)
+                    }
+                    .fullScreenCover(isPresented: $isShowingScanner, onDismiss: checkForBooks) {
+                        BarcodeScannerView(isShowingScanner: $isShowingScanner, coordinator: makeCoordinator())
+                    }
                 }
-                .fullScreenCover(isPresented: $isShowingSearchBar) {
-                    SearchBarView(searchText: $searchText, isShowingSearchBar: $isShowingSearchBar, viewModel: viewModel, coordinator: makeCoordinator())
-                        .environmentObject(bookManager)
-                }
-                .padding(50)
-                
-                Button(action: {
-                    isShowingScanner = true
-                }) {
-                    Image("scanIcon")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 300, height: 220)
-                        .overlay(Rectangle().foregroundColor(Color.black.opacity(0.4)))
-                        .overlay(Text("Scan Barcode")
-                            .font(.system(size: 24, weight: .bold))
-                            .foregroundColor(.white))
-                        .cornerRadius(10)
-                }
-                .fullScreenCover(isPresented: $isShowingScanner, onDismiss: checkForBooks) {
-                    BarcodeScannerView(isShowingScanner: $isShowingScanner, coordinator: makeCoordinator())
-                }
+                .frame(maxHeight: .infinity, alignment: .top)
+                .padding(.top, 80)
+                .ignoresSafeArea(edges: .top)
             }
-            .frame(maxHeight: .infinity, alignment: .top)
-            .padding(.top, 80)
-            .ignoresSafeArea(edges: .top)
         }
         .tint(.ptPrimary)
     }
