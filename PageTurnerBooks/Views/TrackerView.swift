@@ -73,7 +73,6 @@ struct TrackerView: View {
                                 Text("Last Page Read: ")
                                     .fontWeight(.bold)
                                 
-                                //Note: This works in the build but not in the preview
                                 if isEditing {
                                     TextField("", text: $lastPageString)
                                         .frame(width: 70, height: 30)
@@ -84,11 +83,13 @@ struct TrackerView: View {
                                     
                                 }
                                 Spacer()
-                                //TODO: Is this edit button too chunky? Would you prefer regular styling?
-                                HStack{
+                                HStack {
                                     Button(isEditing ? "Save" : "Edit") {
                                         if isEditing {
-                                            let lastPage = Int(lastPageString) ?? viewModel.tracker.lastPageRead
+                                            var lastPage = Int(lastPageString) ?? viewModel.tracker.lastPageRead
+                                            if lastPage > viewModel.tracker.totalPageCount {
+                                                lastPage = viewModel.tracker.totalPageCount
+                                            }
                                             viewModel.updateLastPageRead(bookId: viewModel.tracker.id, lastPage: lastPage)
                                         } else {
                                             lastPageString = "\(viewModel.tracker.lastPageRead)"
@@ -97,8 +98,8 @@ struct TrackerView: View {
                                     }
                                     .padding(.horizontal, 12)
                                     .padding(.vertical, 8)
-                                    .buttonStyle(PlainButtonStyle()) //Need to keep to prevent erroneous behaviour
-                                    .background(.ptSecondary)
+                                    .buttonStyle(PlainButtonStyle())
+                                    .background(Color.pTSecondary)
                                     .font(.system(size: 18, weight: .bold))
                                     .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
                                     .frame(minWidth: 100, minHeight: 50, maxHeight: 50, alignment: .trailing)
