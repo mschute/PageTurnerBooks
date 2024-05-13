@@ -34,7 +34,7 @@ struct BookDetailComponent: View {
                 .frame(maxWidth: .infinity)
                 .padding(.bottom, 70)
                 
-                VStack {
+                VStack(spacing: 10) {
                     Text(bookItem.volumeInfo.title)
                         .font(.title3)
                         .fontWeight(.bold)
@@ -49,7 +49,7 @@ struct BookDetailComponent: View {
                             .multilineTextAlignment(.center)
                     }
                     if let authors = bookItem.volumeInfo.authors, !authors.isEmpty {
-                        Text("Authors: \(authors.joined(separator: ", "))")
+                        Text("\(authors.joined(separator: ", "))")
                             .font(.subheadline)
                             .fontWeight(.medium)
                             .multilineTextAlignment(.center)
@@ -136,20 +136,6 @@ struct BookDetailComponent: View {
                         Text(bookItem.volumeInfo.description ?? "No description available.")
                     }
                     .padding(.bottom, 15)
-                    
-                    HStack {
-                        Text("Authors: ")
-                            .fontWeight(.bold)
-                            .frame(maxWidth: 120, alignment: .leading)
-                        
-                        if let authors = bookItem.volumeInfo.authors, !authors.isEmpty {
-                            Text("\(authors.joined(separator: ", "))")
-                        } else {
-                            Text("Unknown")
-                        }
-                        Spacer()
-                    }
-                    .frame(maxWidth: .infinity)
                     
                     HStack {
                         Text("Published: ")
